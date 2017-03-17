@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Đức Trí Nguyễn</title>
+    <link>https://ductri.github.io/index.xml</link>
+    <description>Recent content on Đức Trí Nguyễn</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy;2016 younetco company</copyright>
+    <lastBuildDate>Sat, 18 Mar 2017 00:37:24 +0700</lastBuildDate>
+    <atom:link href="https://ductri.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Xác suất trong học máy</title>
+      <link>https://ductri.github.io/post/xac-suat-trong-hoc-may/</link>
+      <pubDate>Sat, 18 Mar 2017 00:37:24 +0700</pubDate>
+      
+      <guid>https://ductri.github.io/post/xac-suat-trong-hoc-may/</guid>
+      <description>&lt;p&gt;Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.&lt;/p&gt;
+
+&lt;p&gt;Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (nổi tiếng như một nhà ảo thuật toán &amp;ldquo;Mathemagician&amp;rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.&lt;/p&gt;
+
+&lt;p&gt;Trong lĩnh vực IA, nhiều giải thuật nổi tiếng sử dụng hoặc có liên quan đến lý thuyết xác suất như: Hidden Markov Model, Bayesian Network, hoặc việc chứng minh mức độ của Random Forrest, &amp;hellip; Việc hiểu căn bản lý thuyết xác suất, đặc biệt là hiểu các định nghĩa hay dùng là rất cần thiết cho việc hiểu bản chất vấn đề và cách giải quyết trong các giải thuật học máy.&lt;/p&gt;
+
+&lt;p&gt;Cá nhân mình thấy mình có hơi nắm được lý thuyết. Nhưng xưa giờ toàn học trên tiếng Việt, nên khi đọc dô sách tiếng Anh lòi ra kha khá khái niệm mới mẻ hay ho, giờ tập hợp lại ở đây để tự hệ thống lại. Bài viết gồm hai phần. Phần đầu giới thiệu sơ lược lại, ko đi cặn kẽ chi tiết từ khái niệm,&amp;hellip; Phần 2 mô tả chi tiết các thuật ngữ hay gặp. Trong phần này, mình sẽ cố gắng mô tả một bức tranh tổng quan nhất về xác suất với điểm nhấn là các thuật ngữ. Trình bày như vậy dễ hiểu hơn vì mỗi định nghĩa sẽ được nêu trong một ngữ cảnh, chứ không đứng độc lập như định nghĩa thuần lý thuyết.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Sơ lược về xác suất&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Hiện nay có hơn một cách hiểu về xác suất ([1], [2], [3], [4]). Vì chúng ta chỉ quan tâm trong ngữ cảnh học máy, nên mình tham khảo theo Bishop[3], ông cho rằng có 2 hướng tiếp cận: Frenqtist Interpretation Probability (gọi tắt trong bài là FIP) và Bayesian Probability (gọi tắt trong bài là BP). Hướng FIP hiểu xác suất như tỉ lệ số lần thử nghiệm thành công, chia số lần thử nghiệm; hoặc số mẫu phù hợp chia cho kích thước không gian mẫu. Cách tiếp cận này mang hơi hướng của thống kê. Cách tiếp cận này dễ hiểu.&lt;/p&gt;
+
+&lt;p&gt;Cách tiếp cận thứ hai BP tổng quát hơn, cũng có phần tự nhiên hơn. Theo hướng này, Ví dụ với các phát biểu như: khả năng trái đất sẽ bị hủy diệt trong 100 năm tới, khả năng chiến tranh thế giới thứ 3 nổ ra, &amp;hellip; Các sự kiện trên rất hiếm khi xảy ra, hoặc chưa bao giờ xảy ra, nên không thể tiến hành các thử nghiệm để tính xác suất theo cách hiểu FIP. Hướng tiếp cận BP có tính tổng quát hơn. Xác suất được hiểu như một độ đo về mức độ tin tưởng. Từ đó, chúng ta có thể gán xác suất cho cả các sự kiện chưa bao giờ xảy ra.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Một số thuật ngữ hay gặp&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Khi nói đến xác suất, người ta ngầm định là đang nói đến xác suất trên một/nhiều biến (biến cố). Có 2 loại biến: biến rời rạc (dicrete variable) và biến liên tục (continuous variable). Chúng ta thường mong muốn có được cái cảm nhận nhanh về xác suất. Ví dụ như trong cờ bạc, ai cũng mong muốn biết xác suất một quả xúc xắc có giá trị mặt ngửa là bao nhiêu đối với từng giá trị trong đoạn [1-6] để chọn giá trị mặt ngửa tương ứng với xác suất cao nhất. Một ví dụ khác là trong một cửa hàng bán giày, chủ tiệm mong muốn biết xác suất ứng với kích thước chân của một người bất kỳ, để chọn sản xuất nhiều hơn loại giày với kích thước tương ứng với kích thước chân có xác suất cao nhất. Cách đơn giản nhất (và duy nhất, và cũng là dễ hiểu nhất) là ta đi tính xác suất cho từng giá trị, thống kê lại. Cái thống kê đó được gọi là phân phối xác suất (probability distribution). Tập hợp tất cả xác suất trên các điểm/trường hợp cho ta một phân phối xác suất. Như ở ví dụ con xúc xắc, xác suất để mặt ngửa xuất hiện 1 chấm là &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;6&lt;/sub&gt;, và tập hợp xác suất cho tất cả 6 mặt thì được coi là phân phối xác suất.&lt;/p&gt;
+
+&lt;p&gt;Đối với biến rời rạc như giá trị mặt ngửa của con xúc xắc, ta lập một bảng tương tự như Bảng 2.1.
+&amp;lt;&lt;Bảng 2.1&gt;&amp;gt;
+Bảng 2.1 được gọi là Bảng phân phối xác suất trên biến X, đây là cách để mô tả phân phối xác suất đối với biến rời rạc. Tuy nhiên, để Bảng 2.1 được gọi như thế, nó cần thoải hai điều kiện:
+- Giá trị pi &amp;gt; 0
+- Tổng các pi = 1&lt;/p&gt;
+
+&lt;p&gt;Ngoài ra, Bảng 2.1 còn có thể được mô hình hóa như Biểu đồ 2.1a. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến liên tục. Chỉ cần chỉnh sửa Biểu đồ 2.1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Biểu đồ 2.1b là Hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến liên tục. Cũng tương tự như biến rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:
+- Giá trị f(x0) &amp;gt; 0
+- Tổng các giá trị f(x) được tính bằng Tích phân&amp;hellip; = 1&lt;/p&gt;
+
+&lt;p&gt;Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến rời rạc) và Hàm mật độ xác suất (cho biến liên tục). Trong tiếng Anh, Hàm mật độ xác suất được dịch là Probability Density Function, tên này được viết tắt nghe rất hay: PDF. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là Probability Density Function of X, rồi nói X là biến rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là Probability Mass Function. &amp;ldquo;Mass&amp;rdquo; ở đây chỉ &amp;ldquo;đống&amp;rdquo; giá trị rời rạc. Ở đây, dễ có sự lẫn lộn giữa Probability Distribution với Probability Density/Mass Function. Qua tìm hiểu thì mình thấy Probability Density/Mass Function là một cái riêng, cụ thể của Probability Distribution.&lt;/p&gt;
+
+&lt;p&gt;Xác suất trong học máy thường xuất hiện các khái niệm xác suất tiên nghiệm (prior probability), xác suất hậu nghiệm (posterial probability), xác suất likelyhood, xác suất có điều kiện. Để làm rõ các khái niệm trên, chúng ta sẽ xem xét trong ngữ cảnh học máy. Vấn đề cốt lõi các của bài toán học máy là tìm tham số w, sao cho mô hình (model) f khi nhận vào một giá trị x, cùng với tham số w, cho ra kết quả giống với thực tế nhất. Để hỗ trợ cho việc tìm w, ta thường có tập dữ liệu D cho trước. Tất nhiên w, x có thể là giá trị scala, cũng có thể có nhiều chiều. Nhưng để đơn giản, cứ tạm thời xem chúng là giá trị scala.&lt;/p&gt;
+
+&lt;p&gt;Cách đơn giản, ngây thơ (vô số tội) là cho ngẫu nhiên w. Khi đó ta đụng đến khái niệm đầu tiên: p(w) được gọi là xác suất tiên nghiệm (Prior Probability). p(w) là phân phối xác suất trên w, lưu ý là phân phối xác suất, chứ ko phải là xác suất. Phân phối này hoặc là Mass, hoặc là Density. Điều này có nghĩa tổng xác suất lấy trên toàn miền giá trị w bằng 1. p(w) phản ánh sự chủ quan đối với biến w, bởi vì đơn thuần dựa trên trực giác, ta gán cho w một phân phối xác suất.&lt;/p&gt;
+
+&lt;p&gt;Tiếp theo, ta sử dụng đến giả thiết đã có D. Đến lược p(w|D) xuất hiện. Đây là một xác suất có điều kiện (conditional probability). Xác suất có điều kiện là xác suất với kết quả của một biến cố đã được biết trước. Lưu ý điều này không có nghĩa là biến cố đó phải xảy ra trước. Một bài toán đơn giản để mô tả về xác suất có điều kiện như sau: Có 2 hộp trắng và 1 hộp đen. Trong mỗi hộp trắng có 3 bi đỏ, 7 bi xanh. Trong mỗi hộp đen có 4 bi đỏ, 6 bi xanh. Chọn một hộp bất kỳ, sau đó lấy ngẫu nhiên 1 viên bi. Tìm xác suất để hộp được chọn là hộp trắng khi đã biết viên bi chọn ra có màu xanh. Đây là một xác suất có điều kiện, với điều kiện là một sự kiện (chọn viên bi) xảy ra sau sự kiện (chọn hộp) cần tìm xác suất. Quay trở lại p(w|D). p(w|D) là một phân phối xác suất có điều kiện. Đây là một hàm trên biến w. p(w|D) phản ánh xác suất cho w khi đã biết D. Xác suất này được gọi là xác suất hậu nghiệm (posterial probability), bởi vì chúng ta đang ước lượng cho w sau khi đã biết thông tin về D. Xác suất này tương ứng với việc tìm xác suất để chọn được bi xanh sau khi đã chọn hộp màu trắng. Tương tự như p(w), đây cũng là một Mass hoặc Density (tùy loại biến), cho nên tổng xác suất có điều kiện (D) trên toàn miền giá trị w cũng bằng 1.&lt;/p&gt;
+
+&lt;p&gt;Xác suất cuối cùng, và mình thấy hay nhất là xác suất likelyhood p(D|w) (likelihook probability). Nếu đã cảm thấy p(w|D) khá tự nhiên thì đến xác suất này tạo cảm giác khó hiểu lạ thường. Nhớ rằng D là cái mình đã có, w là cái mình cần tìm. Nghĩa là p(D|w) vẫn là hàm trên w như p(w|D), nhưng khác biệt là tổng xác suất trên toàn miền giá trị w không bằng 1, vì về mặt xác suất thì p(D|w) là phân bố xác suất có điều kiện trên D. Ý nghĩa xác suất này là thể hiện độ phù hợp của D đối với những giá trị w khác nhau. Mục đính chính của học máy thể hiện ở đây: Ta mong muốn tìm w để đạt được giá trị tối đa của p(D|w), nghĩa là tìm w sao cho phù hợp nhất với tập D đã có.&lt;/p&gt;
+
+&lt;p&gt;Chốt chỗ này cái. Ta có ba xác suất: xác suất tiền nghiệm, xác suất hậu nghiệm và xác suất likelihood. Quan hệ của ba xác suất suất thể hiện qua công thức xác suất Bayesian:
+p(w|D) = p(D|w)*p(w) / p(D)
+Vì D là cái đã có và cố định, ta xem p(D) như hằng số. Khi đó:
+p(w|D) ~ p(D|w) * p(w)
+posterial probability ~ likelihood probability * prior probability&lt;/p&gt;
+
+&lt;p&gt;Công thức trên là nền tảng cơ bản cho các giải thuật học máy, cho ta một cái nhìn về bản chất về vấn đề cần giải quyết trong học máy.&lt;/p&gt;
+
+&lt;p&gt;Tham khảo
+[1] Sách xác suất lớp 11
+[2] &lt;a href=&#34;https://en.wikipedia.org/wiki/Frequentist_probability&#34;&gt;https://en.wikipedia.org/wiki/Frequentist_probability&lt;/a&gt;, mục Alternatives view
+[3] C. M. Bishop, Pattern Recognition and Machine Learning (Information Science and Statistics). Secaucus, NJ, USA: Springer-Verlag New York, Inc., 2006.
+[4] Slide xác suất thống kê Khoa khoa học và Kỹ thuật máy tính - Đại học Bách Khoa TP. HCM&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
