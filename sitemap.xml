@@ -7,7 +7,18 @@
   </url>
   
   <url>
+    <loc>https://ductri.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://ductri.github.io/post/</loc>
+    <lastmod>2017-03-18T00:37:24+07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://ductri.github.io/categories/to%C3%A1n/</loc>
     <lastmod>2017-03-18T00:37:24+07:00</lastmod>
     <priority>0</priority>
   </url>

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Đức Trí Nguyễn</title>
-    <link>https://ductri.github.io/index.xml</link>
-    <description>Recent content on Đức Trí Nguyễn</description>
+    <title>Toán on Đức Trí Nguyễn</title>
+    <link>https://ductri.github.io/categories/to%C3%A1n/index.xml</link>
+    <description>Recent content in Toán on Đức Trí Nguyễn</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy;2016 younetco company</copyright>
-    <lastBuildDate>Sat, 18 Mar 2017 00:37:24 +0700</lastBuildDate>
-    <atom:link href="https://ductri.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://ductri.github.io/categories/to%C3%A1n/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Xác suất trong học máy</title>
