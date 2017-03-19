@@ -162,19 +162,19 @@
 
 <p>Cách tiếp cận thứ hai BP tổng quát hơn, cũng có phần tự nhiên hơn. Ví dụ với các phát biểu như: khả năng trái đất sẽ bị hủy diệt trong 100 năm tới, khả năng chiến tranh thế giới thứ 3 nổ ra, &hellip; Các sự kiện trên rất hiếm khi xảy ra, hoặc chưa bao giờ xảy ra, nên không thể tiến hành các thử nghiệm để tính xác suất theo cách hiểu FIP. Hướng tiếp cận BP có tính tổng quát hơn. Xác suất được hiểu như một độ đo về mức độ tin tưởng. Từ đó, chúng ta có thể gán xác suất cho cả các sự kiện chưa bao giờ xảy ra.</p>
 
-<h1 id="2-xác-suất-trên-biến-rời-rạc-và-liên-tục">2. Xác suất trên biến rời rạc và liên tục</h1>
+<h1 id="2-xác-suất-trên-biến-ngẫu-nhiên-rời-rạc-và-liên-tục">2. Xác suất trên biến ngẫu nhiên rời rạc và liên tục</h1>
 
-<p>Khi nói đến xác suất, người ta ngầm định là đang nói đến xác suất trên một/nhiều biến (biến cố). Khi nói đến xác suất chung chung, ta thường bị nhầm lẫn giữa hai khái niệm. Khái niệm thường mặc định được hiểu là xác suất khi một biến cố X nhận giá trị x0, được ký hiện là p(X = x0), đôi khi được viết tắt là p(x0). Ví dụ như nói trong hộp có 3 bi đỏ, 5 bi xanh, 4 bi vàng, 2 bi xám, thì xác suất để chọn được bi đỏ là <sup>3</sup>&frasl;<sub>14</sub>. Nói như vậy nghĩa là xác suất để biến cố chọn bi (X) trúng bi màu đỏ là <sup>3</sup>&frasl;<sub>14</sub>, p(X = bi đỏ) = <sup>3</sup>&frasl;<sub>14</sub>.</p>
+<p>Khi nói đến xác suất, người ta ngầm định là đang nói đến xác suất trên một/nhiều biến (biến cố). Ta thường bị nhầm lẫn giữa hai khái niệm. Khái niệm thường mặc định được hiểu là xác suất khi một biến cố X nhận giá trị x<sub>0</sub>, được ký hiện là p(X = x<sub>0</sub>), đôi khi được viết tắt là p(x<sub>0</sub>). Ví dụ như nói trong hộp có 3 bi đỏ, 5 bi xanh, 4 bi vàng, 2 bi xám, thì xác suất để chọn được bi đỏ là <sup>3</sup>&frasl;<sub>14</sub>. Nói như vậy nghĩa là xác suất để biến cố chọn bi (X) trúng bi màu đỏ là <sup>3</sup>&frasl;<sub>14</sub>, p(X = bi đỏ) = <sup>3</sup>&frasl;<sub>14</sub>.</p>
 
 <p>Khái niệm thứ hai tổng quát hơn: phân phối xác suất (<strong>probability distribution</strong>) trên biến cố X, được ký hiện là p(X). Ta đi tìm xác suất cho mọi giá trị mà biến cố X có thể có, rồi tính xác suất cho từng giá trị đó, thì sẽ có được một phân phối xác suất. Trong ví dụ trên, tính thêm các xác suất p(X = bi xanh), p(X = bi vàng), p(X = bi xám),  thì ta sẽ có được phân phối xác suất cho biến X (biến cố X).</p>
 
-<p>Có 2 loại biến: biến rời rạc (<strong>dicrete variable</strong>) và biến liên tục (<strong>continuous variable</strong>). Ở ví dụ trên, X là một biến rời rạc. Để mô tả phân phối xác suất cho biến rời rạc, ta lập một bảng tương tự như Bảng 1.</p>
+<p>Có 2 loại biến ngẫu nhiên: biến ngẫu nhiên rời rạc (<strong>dicrete variable</strong>) và biến ngẫu nhiên liên tục (<strong>continuous variable</strong>). Ở ví dụ trên, X là một biến ngẫu nhiên rời rạc. Để mô tả phân phối xác suất cho biến ngẫu nhiên rời rạc, ta lập một bảng tương tự như Bảng 1.</p>
 
 <p><strong>Bảng 1.</strong> Bảng phân phối xác suất trên biến X</p>
 
 <p><img src="/img/bang-phan-phoi-xac-suat.png" alt="Example image" /></p>
 
-<p>Bảng 1 được gọi là Bảng phân phối xác suất trên biến X. Đây là cách để mô tả phân phối xác suất đối với biến rời rạc. Tuy nhiên, để Bảng 1 được gọi như thế, nó cần thoải hai điều kiện:</p>
+<p>Bảng 1 được gọi là Bảng phân phối xác suất trên biến X. Đây là cách để mô tả phân phối xác suất đối với biến ngẫu nhiên rời rạc. Tuy nhiên, để Bảng 1 được gọi như thế, nó cần thoải hai điều kiện:</p>
 
 <ul>
 <li>Giá trị p(X) &gt; 0</li>
@@ -187,19 +187,19 @@
 
 <p><img src="/img/ham-mat-do-xac-suat.png" alt="Example image" /></p>
 
-<p>Ngoài ra, Bảng 1 còn có thể được mô hình hóa như Hình 1. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến liên tục. Chỉ cần chỉnh sửa Biểu đồ 2.1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Biểu đồ 2.1b là Hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến liên tục. Cũng tương tự như biến rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:</p>
+<p>Ngoài ra, Bảng 1 còn có thể được mô hình hóa như Hình 1. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến ngẫu nhiên liên tục. Chỉ cần chỉnh sửa Biểu đồ 2.1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Biểu đồ 2.1b là Hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến ngẫu nhiên liên tục. Cũng tương tự như biến ngẫu nhiên rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:</p>
 
 <ul>
-<li>Giá trị f(x0) &gt; 0</li>
+<li>Giá trị f(x<sub>0</sub>) &gt; 0</li>
 <li>Tổng các giá trị f(x) bằng 1, trong trường hợp này X liên tục nên tích phân trên toàn miền X bằng 1</li>
 </ul>
 
-<p>Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến rời rạc) và Hàm mật độ xác suất (cho biến liên tục). Trong tiếng Anh, hàm mật độ xác suất được dịch là <strong>Probability Density Function</strong>, tên này được viết tắt nghe rất hay: <strong>PDF</strong>. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là <strong>Probability Density Function of X</strong>, rồi nói X là biến rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là <strong>Probability Mass Function</strong>. &ldquo;Mass&rdquo; ở đây chỉ &ldquo;đống&rdquo; giá trị rời rạc.</p>
+<p>Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến ngẫu nhiên rời rạc) và Hàm mật độ xác suất (cho biến ngẫu nhiên liên tục). Trong tiếng Anh, hàm mật độ xác suất được dịch là <strong>Probability Density Function</strong>, tên này được viết tắt nghe rất hay: <strong>PDF</strong>. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là <strong>Probability Density Function of X</strong>, rồi nói X là biến ngẫu nhiên rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là <strong>Probability Mass Function</strong>. &ldquo;Mass&rdquo; ở đây chỉ &ldquo;đống&rdquo; giá trị rời rạc.</p>
 
 <p>Ở đây, dễ có sự lẫn lộn giữa <strong>Probability Distribution</strong> với <strong>Probability Density/Mass Function</strong>. <strong>Probability Density/Mass Function</strong> là một cái riêng, cụ thể của <strong>Probability Distribution</strong>. <strong>Probability Distribution</strong> thỏa 2 điều kiện  mới được gọi là <strong>Probability Density/Mass Function</strong>:</p>
 
 <ul>
-<li>Giá trị P(X=x0) lớn hơn 0</li>
+<li>Giá trị P(X=x<sub>0</sub>) lớn hơn 0</li>
 <li>Tổng P(X) trên toàn miền giá trị X bằng 1</li>
 </ul>
 
