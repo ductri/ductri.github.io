@@ -53,7 +53,7 @@
 
 &lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/ham-mat-do-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Hình 2.&lt;/strong&gt; Biểu đồ phân bố xác suất&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hình 2.&lt;/strong&gt; Hàm mật độ xác suất&lt;/p&gt;
 
 &lt;p&gt;Ngoài ra, Bảng 1 còn có thể được mô hình hóa như Hình 1. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến ngẫu nhiên liên tục. Chỉ cần chỉnh sửa Hình 1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Hình 2 là hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến ngẫu nhiên liên tục. Cũng tương tự như biến ngẫu nhiên rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:&lt;/p&gt;
 
