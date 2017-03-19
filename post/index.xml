@@ -43,26 +43,28 @@
 &lt;p&gt;Bảng 1 được gọi là Bảng phân phối xác suất trên biến X. Đây là cách để mô tả phân phối xác suất đối với biến ngẫu nhiên rời rạc. Tuy nhiên, để Bảng 1 được gọi như thế, nó cần thoải hai điều kiện:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Giá trị p(X) &amp;gt; 0&lt;/li&gt;
-&lt;li&gt;Tổng các p(X) = 1&lt;/li&gt;
+&lt;li&gt;Giá trị p(X = x&lt;sub&gt;i&lt;/sub&gt;) &amp;gt; 0&lt;/li&gt;
+&lt;li&gt;Tổng các p(X = x&lt;sub&gt;i&lt;/sub&gt;) = 1&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Hình 1.&lt;/strong&gt; Biểu đồ phân bố xác suất&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/bieu-do-phan-bo-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;strong&gt;Hình 1.&lt;/strong&gt; Biểu đồ phân bố xác suất&lt;/p&gt;
+
 &lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/ham-mat-do-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Ngoài ra, Bảng 1 còn có thể được mô hình hóa như Hình 1. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến ngẫu nhiên liên tục. Chỉ cần chỉnh sửa Biểu đồ 2.1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Biểu đồ 2.1b là Hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến ngẫu nhiên liên tục. Cũng tương tự như biến ngẫu nhiên rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hình 2.&lt;/strong&gt; Biểu đồ phân bố xác suất&lt;/p&gt;
+
+&lt;p&gt;Ngoài ra, Bảng 1 còn có thể được mô hình hóa như Hình 1. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến ngẫu nhiên liên tục. Chỉ cần chỉnh sửa Hình 1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Hình 2 là hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến ngẫu nhiên liên tục. Cũng tương tự như biến ngẫu nhiên rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Giá trị f(x&lt;sub&gt;0&lt;/sub&gt;) &amp;gt; 0&lt;/li&gt;
+&lt;li&gt;Giá trị f(x&lt;sub&gt;i&lt;/sub&gt;) &amp;gt; 0&lt;/li&gt;
 &lt;li&gt;Tổng các giá trị f(x) bằng 1, trong trường hợp này X liên tục nên tích phân trên toàn miền X bằng 1&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến ngẫu nhiên rời rạc) và Hàm mật độ xác suất (cho biến ngẫu nhiên liên tục). Trong tiếng Anh, hàm mật độ xác suất được dịch là &lt;strong&gt;Probability Density Function&lt;/strong&gt;, tên này được viết tắt nghe rất hay: &lt;strong&gt;PDF&lt;/strong&gt;. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là &lt;strong&gt;Probability Density Function of X&lt;/strong&gt;, rồi nói X là biến ngẫu nhiên rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là &lt;strong&gt;Probability Mass Function&lt;/strong&gt;. &amp;ldquo;Mass&amp;rdquo; ở đây chỉ &amp;ldquo;đống&amp;rdquo; giá trị rời rạc.&lt;/p&gt;
+&lt;p&gt;Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến ngẫu nhiên rời rạc) và Hàm mật độ xác suất (cho biến ngẫu nhiên liên tục). Trong tiếng Anh, hàm mật độ xác suất được dịch là &lt;strong&gt;Probability Density Function&lt;/strong&gt;, tên này được viết tắt nghe rất hay: &lt;strong&gt;PDF&lt;/strong&gt;. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là &lt;strong&gt;Probability Density Function of X&lt;/strong&gt;, rồi nói X là biến ngẫu nhiên rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là &lt;strong&gt;Probability Mass Function&lt;/strong&gt;. &amp;ldquo;Mass&amp;rdquo; ý chỉ &amp;ldquo;đống&amp;rdquo; giá trị rời rạc.&lt;/p&gt;
 
-&lt;p&gt;Ở đây, dễ có sự lẫn lộn giữa &lt;strong&gt;Probability Distribution&lt;/strong&gt; với &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt;. &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt; là một cái riêng, cụ thể của &lt;strong&gt;Probability Distribution&lt;/strong&gt;. &lt;strong&gt;Probability Distribution&lt;/strong&gt; thỏa 2 điều kiện  mới được gọi là &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;Ở đây, dễ có sự lẫn lộn giữa &lt;strong&gt;Probability Distribution&lt;/strong&gt; với &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt;. Nhớ rằng &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt; là một cái riêng, cái cụ thể của &lt;strong&gt;Probability Distribution&lt;/strong&gt;. Chỉ khi nào &lt;strong&gt;Probability Distribution&lt;/strong&gt; thỏa 2 điều kiện  mới được gọi là &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt;:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Giá trị P(X=x&lt;sub&gt;0&lt;/sub&gt;) lớn hơn 0&lt;/li&gt;
