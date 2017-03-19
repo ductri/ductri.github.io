@@ -2,3 +2,7 @@
 .entry-meta {
     padding-top: 20px;
 }
+
+.content-summary > p {
+	text-align: left;
+}
