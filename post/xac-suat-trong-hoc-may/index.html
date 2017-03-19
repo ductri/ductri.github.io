@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
- <title>Xác suất trong học máy</title>
+ <title>Xác suất trong học máy (Phần 1)</title>
 
 
 
@@ -133,7 +133,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="entry-header">
-       Xác suất trong học máy
+       Xác suất trong học máy (Phần 1)
       </div>
     </div>
   </div>
@@ -154,15 +154,11 @@
 
 <p>Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.</p>
 
-<p>Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (được biết đến như một nhà ảo thuật toán &ldquo;Mathemagician&rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.</p>
-
-<p>Trong lĩnh vực IA, nhiều giải thuật nổi tiếng sử dụng hoặc có liên quan đến lý thuyết xác suất như: Hidden Markov Model, Bayesian Network, hoặc việc chứng minh mức độ của Random Forrest, &hellip; Việc hiểu căn bản lý thuyết xác suất, đặc biệt là hiểu các định nghĩa hay dùng là rất cần thiết cho việc hiểu bản chất vấn đề và cách giải quyết trong các giải thuật học máy.</p>
-
-<p>Cá nhân mình thấy mình có &ldquo;hơi&rdquo; nắm được lý thuyết xác suất. Nhưng xưa giờ toàn học trên tiếng Việt, nên khi đọc sách tiếng Anh lòi ra kha khá khái niệm mới mẻ, hay ho, giờ viết ra để tự hệ thống lại. Mình dự định sẽ viết 2 bài. Nội dung trong bài đầu này giới thiệu sơ lược lại về xác suất, cung cấp cái nhìn tổng quát trên góc nhìn toán học, chưa liên quan gì học máy ở đây cả&hellip; Bài sau sẽ mô tả chi tiết các thuật ngữ hay gặp: prior probability, likelihood probability, posterial probability, conditional probability.</p>
+<p>Cá nhân mình thấy mình có &ldquo;hơi&rdquo; nắm được lý thuyết xác suất. Nhưng xưa giờ toàn học trên tiếng Việt, nên khi đọc sách tiếng Anh lòi ra kha khá khái niệm mới mẻ, hay ho, giờ viết ra để tự hệ thống lại. Vì dài quá nên mình chia làm 2 bài. Nội dung trong bài đầu này giới thiệu sơ lược lại về xác suất, cung cấp cái nhìn tổng quát trên góc nhìn toán học, chưa liên quan gì học máy ở đây cả&hellip; Bài sau sẽ mô tả chi tiết các thuật ngữ hay gặp: prior probability, likelihood probability, posterial probability, conditional probability.</p>
 
 <h1 id="1-các-cách-hiểu-về-xác-suất">1. Các cách hiểu về xác suất</h1>
 
-<p>Hiện nay có hơn một cách hiểu về xác suất ([1], [2], [3], [4]). Vì chúng ta chỉ quan tâm trong ngữ cảnh học máy, nên mình tham khảo theo Bishop[3], ông cho rằng có 2 hướng tiếp cận: Frenqtist Interpretation Probability (gọi tắt trong bài là FIP) và Bayesian Probability (gọi tắt trong bài là BP). Hướng FIP hiểu xác suất như tỉ lệ số lần thử nghiệm thành công, chia số lần thử nghiệm; hoặc số mẫu phù hợp chia cho kích thước không gian mẫu. Cách tiếp cận này mang hơi hướng của thống kê. Cách tiếp cận này dễ hiểu.</p>
+<p>Hiện nay có hơn một cách hiểu về xác suất ([1], [2], [3], [4]). Vì chúng ta chỉ quan tâm trong ngữ cảnh học máy, nên mình tham khảo theo Bishop[3], ông cho rằng có 2 hướng tiếp cận: <strong>Frenqtist Interpretation Probability</strong> (gọi tắt trong bài là FIP) và <strong>Bayesian Probability</strong> (gọi tắt trong bài là BP). Hướng FIP hiểu xác suất như tỉ lệ số lần thử nghiệm thành công, chia số lần thử nghiệm; hoặc số mẫu phù hợp chia cho kích thước không gian mẫu. Cách tiếp cận này mang hơi hướng của thống kê. Cách tiếp cận này dễ hiểu.</p>
 
 <p>Cách tiếp cận thứ hai BP tổng quát hơn, cũng có phần tự nhiên hơn. Ví dụ với các phát biểu như: khả năng trái đất sẽ bị hủy diệt trong 100 năm tới, khả năng chiến tranh thế giới thứ 3 nổ ra, &hellip; Các sự kiện trên rất hiếm khi xảy ra, hoặc chưa bao giờ xảy ra, nên không thể tiến hành các thử nghiệm để tính xác suất theo cách hiểu FIP. Hướng tiếp cận BP có tính tổng quát hơn. Xác suất được hiểu như một độ đo về mức độ tin tưởng. Từ đó, chúng ta có thể gán xác suất cho cả các sự kiện chưa bao giờ xảy ra.</p>
 
@@ -170,9 +166,9 @@
 
 <p>Khi nói đến xác suất, người ta ngầm định là đang nói đến xác suất trên một/nhiều biến (biến cố). Khi nói đến xác suất chung chung, ta thường bị nhầm lẫn giữa hai khái niệm. Khái niệm thường mặc định được hiểu là xác suất khi một biến cố X nhận giá trị x0, được ký hiện là p(X = x0), đôi khi được viết tắt là p(x0). Ví dụ như nói trong hộp có 3 bi đỏ, 5 bi xanh, 4 bi vàng, 2 bi xám, thì xác suất để chọn được bi đỏ là <sup>3</sup>&frasl;<sub>14</sub>. Nói như vậy nghĩa là xác suất để biến cố chọn bi (X) trúng bi màu đỏ là <sup>3</sup>&frasl;<sub>14</sub>, p(X = bi đỏ) = <sup>3</sup>&frasl;<sub>14</sub>.</p>
 
-<p>Khái niệm thứ hai tổng quát hơn: phân phối xác suất (probability distribution) trên biến cố X, được ký hiện là p(X). Ta đi tìm xác suất cho mọi giá trị mà biến cố X có thể có, rồi tính xác suất cho từng giá trị đó, thì sẽ có được một phân phối xác suất. Trong ví dụ trên, tính thêm các xác suất p(X = bi xanh), p(X = bi vàng), p(X = bi xám),  thì ta sẽ có được phân phối xác suất cho biến X (biến cố X).</p>
+<p>Khái niệm thứ hai tổng quát hơn: phân phối xác suất (<strong>probability distribution</strong>) trên biến cố X, được ký hiện là p(X). Ta đi tìm xác suất cho mọi giá trị mà biến cố X có thể có, rồi tính xác suất cho từng giá trị đó, thì sẽ có được một phân phối xác suất. Trong ví dụ trên, tính thêm các xác suất p(X = bi xanh), p(X = bi vàng), p(X = bi xám),  thì ta sẽ có được phân phối xác suất cho biến X (biến cố X).</p>
 
-<p>Có 2 loại biến: biến rời rạc (dicrete variable) và biến liên tục (continuous variable). Ở ví dụ trên, X là một biến rời rạc. Để mô tả phân phối xác suất cho biến rời rạc, ta lập một bảng tương tự như Bảng 1.</p>
+<p>Có 2 loại biến: biến rời rạc (<strong>dicrete variable</strong>) và biến liên tục (<strong>continuous variable</strong>). Ở ví dụ trên, X là một biến rời rạc. Để mô tả phân phối xác suất cho biến rời rạc, ta lập một bảng tương tự như Bảng 1.</p>
 
 <p><strong>Bảng 1.</strong> Bảng phân phối xác suất trên biến X</p>
 
@@ -181,8 +177,8 @@
 <p>Bảng 1 được gọi là Bảng phân phối xác suất trên biến X. Đây là cách để mô tả phân phối xác suất đối với biến rời rạc. Tuy nhiên, để Bảng 1 được gọi như thế, nó cần thoải hai điều kiện:</p>
 
 <ul>
-<li>Giá trị pi &gt; 0</li>
-<li>Tổng các pi = 1</li>
+<li>Giá trị p(X) &gt; 0</li>
+<li>Tổng các p(X) = 1</li>
 </ul>
 
 <p><strong>Hình 1.</strong> Biểu đồ phân bố xác suất</p>
@@ -195,10 +191,19 @@
 
 <ul>
 <li>Giá trị f(x0) &gt; 0</li>
-<li>Tổng các giá trị f(x) được tính bằng Tích phân&hellip; = 1</li>
+<li>Tổng các giá trị f(x) bằng 1, trong trường hợp này X liên tục nên tích phân trên toàn miền X bằng 1</li>
 </ul>
 
-<p>Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến rời rạc) và Hàm mật độ xác suất (cho biến liên tục). Trong tiếng Anh, Hàm mật độ xác suất được dịch là Probability Density Function, tên này được viết tắt nghe rất hay: PDF. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là Probability Density Function of X, rồi nói X là biến rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là Probability Mass Function. &ldquo;Mass&rdquo; ở đây chỉ &ldquo;đống&rdquo; giá trị rời rạc. Ở đây, dễ có sự lẫn lộn giữa Probability Distribution với Probability Density/Mass Function. Qua tìm hiểu thì mình thấy Probability Density/Mass Function là một cái riêng, cụ thể của Probability Distribution.</p>
+<p>Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến rời rạc) và Hàm mật độ xác suất (cho biến liên tục). Trong tiếng Anh, hàm mật độ xác suất được dịch là <strong>Probability Density Function</strong>, tên này được viết tắt nghe rất hay: <strong>PDF</strong>. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là <strong>Probability Density Function of X</strong>, rồi nói X là biến rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là <strong>Probability Mass Function</strong>. &ldquo;Mass&rdquo; ở đây chỉ &ldquo;đống&rdquo; giá trị rời rạc.</p>
+
+<p>Ở đây, dễ có sự lẫn lộn giữa <strong>Probability Distribution</strong> với <strong>Probability Density/Mass Function</strong>. <strong>Probability Density/Mass Function</strong> là một cái riêng, cụ thể của <strong>Probability Distribution</strong>. <strong>Probability Distribution</strong> thỏa 2 điều kiện  mới được gọi là <strong>Probability Density/Mass Function</strong>:</p>
+
+<ul>
+<li>Giá trị P(X=x0) lớn hơn 0</li>
+<li>Tổng P(X) trên toàn miền giá trị X bằng 1</li>
+</ul>
+
+<p>Xong, hết phần 1. Phần 2 sẽ nói xác suất trong ngữ cảnh học máy.</p>
 
       </div>
     </div>
