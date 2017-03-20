@@ -4,5 +4,9 @@
 }
 
 .content-summary > p {
-	text-align: left;
+/*	text-align: left;*/
+}
+
+.entry-content {
+	font-family: "Arbutus Slab"
 }
