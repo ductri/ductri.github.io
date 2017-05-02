@@ -8,5 +8,10 @@
 }
 
 .entry-content {
-	font-family: "Arbutus Slab"
+	font-family: "Arbutus Slab";
+	color: #000;
+}
+
+.entry-header {
+	color: #000;
 }

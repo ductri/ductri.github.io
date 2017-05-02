@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ductri.github.io/post/linear-regression-yeu-em-lan-nua/</loc>
+    <lastmod>2017-05-02T16:12:58+07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://ductri.github.io/post/xac-suat-trong-hoc-may-phan2/</loc>
     <lastmod>2017-03-19T10:19:05+07:00</lastmod>
   </url>
@@ -18,19 +23,19 @@
   
   <url>
     <loc>https://ductri.github.io/post/</loc>
-    <lastmod>2017-03-19T10:19:05+07:00</lastmod>
+    <lastmod>2017-05-02T16:12:58+07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://ductri.github.io/categories/to%C3%A1n/</loc>
-    <lastmod>2017-03-19T10:19:05+07:00</lastmod>
+    <lastmod>2017-05-02T16:12:58+07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://ductri.github.io/</loc>
-    <lastmod>2017-03-19T10:19:05+07:00</lastmod>
+    <lastmod>2017-05-02T16:12:58+07:00</lastmod>
     <priority>0</priority>
   </url>
   

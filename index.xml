@@ -7,8 +7,67 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy;2016 younetco company</copyright>
-    <lastBuildDate>Sun, 19 Mar 2017 10:19:05 +0700</lastBuildDate>
+    <lastBuildDate>Tue, 02 May 2017 16:12:58 +0700</lastBuildDate>
     <atom:link href="https://ductri.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Linear Regression - Yêu em lần nữa</title>
+      <link>https://ductri.github.io/post/linear-regression-yeu-em-lan-nua/</link>
+      <pubDate>Tue, 02 May 2017 16:12:58 +0700</pubDate>
+      
+      <guid>https://ductri.github.io/post/linear-regression-yeu-em-lan-nua/</guid>
+      <description>
+
+&lt;p&gt;Yêu một người đến được lúc cưới là đã yêu người đó nhiều hơn một lần. Đọc ở đâu đó thấy vậy. Mình với em nó quen nhau cũng được một thời gian rồi. Đến nay chưa xác định cưới xin gì nhưng mình cảm nhận được là mình đang yêu em nó lần thứ hai. Nay mình viết bài này để ôn lại về chuyện tình mình với em nó.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Mô tả lại số đo 3 vòng của em nó (&lt;em&gt;Linear Regression&lt;/em&gt;): Cho trước tập data $ X=\{\mathsf{x_1}, \mathsf{x_2}, &amp;hellip;, \mathsf{x_n} \} $ có nhãn tương ứng $T=\{t_1, t_2, &amp;hellip;, t_n\}$. Tìm (dự đoán) giá trị $y$ tại điểm $\mathsf{x}$ bất kỳ với giả sử y có thể biểu diễn tuyển tính thông qua $\mathsf{x}$.&lt;/p&gt;
+
+&lt;h3 id=&#34;một-số-quy-ước&#34;&gt;&lt;em&gt;Một số quy ước&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;$X$: tập hợp&lt;/li&gt;
+&lt;li&gt;$x$: biến x có giá trị scala&lt;/li&gt;
+&lt;li&gt;$\mathsf{x}$: biến x là vectec&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;cách-truyền-thống-để-tán-em-nó&#34;&gt;Cách truyền thống để tán em nó&lt;/h3&gt;
+
+&lt;p&gt;Chúng ta giả sử: $$y = f(\mathsf{x}) = \mathsf{w}\mathsf{x} = w_0 + w_1x_1 + w_2x_2 + &amp;hellip; + w_nx_n$$&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ban đầu khởi tạo $\mathsf{w}=[w_0, w_1, w_2, &amp;hellip;, w_n]$ bất kỳ.&lt;/li&gt;
+&lt;li&gt;Tính hàm chi phí $L = \frac{1}{2}\sum_{i=1}^{n} t_i (t_i - y_i)^2$.&lt;/li&gt;
+&lt;li&gt;Dùng &lt;em&gt;gradient descent&lt;/em&gt; để tìm hướng mà $\mathsf{w}$ giảm, cập nhật $\mathsf{w}$ mới.&lt;/li&gt;
+&lt;li&gt;Lặp lại bước 2 cho đến khi $L$ nhỏ hơn mức mà mình cảm thấy thoải mãn.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cuối cùng ta có được $\mathsf{w}$, nghĩa là có được công thức thần thánh $y = \mathsf{w}\mathsf{x}$. Từ nay cần là thay $\mathsf{x}$ vào, ta có ngay $y$. Vậy là em nó thuộc về mình :v&lt;/p&gt;
+
+&lt;h3 id=&#34;cách-hiện-đại-để-tán-em-nó&#34;&gt;Cách hiện đại để tán em nó&lt;/h3&gt;
+
+&lt;p&gt;Cách tán truyền thống của thế hệ 0x trên khá ổn, tuy nhiên giới trẻ thích cái mới. Bọn nó thích thả thính sành điệu hơn. Vậy là bọn nhỏ dạy mình cách cách tán em nó bằng xác suất.
+Trước khi áp dụng cách tán này, chúng ta cần nhìn 3 vòng của em nó với một ánh mắt khác: Cũng cùng giả thiết như trên, nhưng yêu cầu không chỉ là tìm một giá trị $y$ tại điểm $\mathsf{x}$ bất kỳ, mà tìm phân bố xác suất của $y$ tại điểm $\mathsf{x}$ bất kỳ. Tức là thay vì đi tìm $y=f(\mathsf{x})$, ta đi tìm $p(y|\mathsf{x})$.&lt;/p&gt;
+
+&lt;p&gt;Nói là tìm phân bố xác suất, nhưng ta cần một giả sử để thu hẹp phạm vi tìm kiếm: xác suất cần tìm có phân phối tự nhiên $p(y|\mathsf{x}, \mathsf{w}) = N(y|f(\mathsf{x}), \sigma^2)$ với $f(\mathsf{x})$ chính là &lt;strong&gt;mean&lt;/strong&gt; của phân bố xác suất. Điều này có nghĩa với mỗi $\mathsf{x}$, ta xác định phân bố $N(y|f(x), \sigma^2)$, với $f(\mathsf{x})$ được xác định như cũ, $f(\mathsf{x}) = \mathsf{w}\mathsf{x} = w_0 + w_1x_1 + w_2x_2 + &amp;hellip; + w_nx_n$.&lt;/p&gt;
+
+&lt;p&gt;Với giả thiết ta có là $X$, $T$, để xác định $\mathsf{w}$ và $\sigma^2$, ta dùng &lt;em&gt;Maximum likelihood&lt;/em&gt; trên xác suất $p(T|X, \mathsf{w}, \sigma^2)$&lt;/p&gt;
+
+&lt;p&gt;Ta có:
+$$p = N(y|f(\mathsf{x}), \sigma^2)$$
+Áp dụng công thức trên cho tất cả các điểm trong tập dữ liệu huấn luyện:
+$$p_1 = N(y|f(\mathsf{x_1}), \sigma^2)$$
+$$p_2 = N(y|f(\mathsf{x_2}), \sigma^2)$$
+$$&amp;hellip;$$
+$$p_n = N(y|f(\mathsf{x_n}), \sigma^2)$$&lt;/p&gt;
+
+&lt;p&gt;Vì các xác suất trên độc lập nhau, suy ra:&lt;/p&gt;
+
+&lt;p&gt;$$p(T|X, \mathsf{w}, \sigma^2) = \prod p_i = \prod N(t_i|f(\mathsf{x}_i), \sigma^2)$$
+$$\Leftrightarrow \log_p(T|X, \mathsf{w}, \sigma^2) = $$&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Xác suất trong học máy (Phần 2)</title>
