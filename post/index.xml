@@ -7,65 +7,77 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy;2016 younetco company</copyright>
-    <lastBuildDate>Tue, 02 May 2017 16:12:58 +0700</lastBuildDate>
+    <lastBuildDate>Sun, 28 May 2017 22:19:54 +0700</lastBuildDate>
     <atom:link href="https://ductri.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Linear Regression - Yêu em lần nữa</title>
-      <link>https://ductri.github.io/post/linear-regression-yeu-em-lan-nua/</link>
-      <pubDate>Tue, 02 May 2017 16:12:58 +0700</pubDate>
+      <title>Gradient - Cái giống khó hiểu :3</title>
+      <link>https://ductri.github.io/post/gradient-what-the-fuck-is-this/</link>
+      <pubDate>Sun, 28 May 2017 22:19:54 +0700</pubDate>
       
-      <guid>https://ductri.github.io/post/linear-regression-yeu-em-lan-nua/</guid>
+      <guid>https://ductri.github.io/post/gradient-what-the-fuck-is-this/</guid>
       <description>
 
-&lt;p&gt;Yêu một người đến được lúc cưới là đã yêu người đó nhiều hơn một lần. Đọc ở đâu đó thấy vậy. Mình với em nó quen nhau cũng được một thời gian rồi. Đến nay chưa xác định cưới xin gì nhưng mình cảm nhận được là mình đang yêu em nó lần thứ hai. Nay mình viết bài này để ôn lại về chuyện tình mình với em nó.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Gradient Descent&lt;/em&gt; là cụm từ được nghe rất nhiều khi học về MLP, Neuron Network, hay CNN. Quen em nó nhau lâu rồi, nhìn mặt nhau miết, tưởng mình đã hiểu nhau, mà tới nay mới vẽ lẽ vừa không hiểu và vừa hiểu sai em nó quá trời&amp;hellip; Nay nhờ hoàn cảnh đưa đẩy mà mình hiểu thêm được em nó chút xíu.&lt;/p&gt;
 
-&lt;hr /&gt;
+&lt;h3 id=&#34;gradient-em-nó-là-ai&#34;&gt;Gradient - em nó là ai ?&lt;/h3&gt;
 
-&lt;p&gt;Mô tả lại số đo 3 vòng của em nó (&lt;em&gt;Linear Regression&lt;/em&gt;): Cho trước tập data $ X=\{\mathsf{x_1}, \mathsf{x_2}, &amp;hellip;, \mathsf{x_n} \} $ có nhãn tương ứng $T=\{t_1, t_2, &amp;hellip;, t_n\}$. Tìm (dự đoán) giá trị $y$ tại điểm $\mathsf{x}$ bất kỳ với giả sử y có thể biểu diễn tuyển tính thông qua $\mathsf{x}$.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Gradient&lt;/em&gt; của một hàm $f(x_1, x_2, &amp;hellip;, x_n)$, được ký hiệu $\nabla f$ là một vector $n$ chiều, mà mỗi thành phần trong vector đó là một đạo hàm riêng phần (&lt;em&gt;partial derivative&lt;/em&gt;) theo từng biến của hàm đó: $$\nabla f=(\frac{df}{dx_1}, \frac{df}{dx_1}, &amp;hellip;, \frac{df}{dx_n})$$&lt;/p&gt;
 
-&lt;h3 id=&#34;một-số-quy-ước&#34;&gt;&lt;em&gt;Một số quy ước&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;Sau đây là 2 điều mình mới hiểu ra:&lt;/p&gt;
+
+&lt;h3 id=&#34;1-vector-gradient-tại-một-điểm-cho-mình-biết-từ-điểm-đó-hướng-nào-làm-tăng-giá-trị-f-nhiều-nhất-có-thể-tại-sao-lại-là-tăng&#34;&gt;&lt;strong&gt;1. Vector gradient tại một điểm cho mình biết từ điểm đó, hướng nào làm tăng giá trị $f$ nhiều nhất có thể. Tại sao lại là tăng ?&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;Chấp nhận điều này lâu rồi, tự nhiên hôm qua mới ngớ ra: Tại sao lại là hướng tăng (Hình 1) mà không phải là hướng giảm ?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/gradient-what-the-fuck-is-this/myth1.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hình 1.&lt;/strong&gt; Hướng của vector &lt;em&gt;gradient&lt;/em&gt; luôn chỉ về phía cao hơn&lt;/p&gt;
+
+&lt;p&gt;Wow wow, là vì do ông nào định nghĩa nó như vậy :v. Mỗi thành phần của vector &lt;em&gt;gradient&lt;/em&gt; là một đạo hàm riêng phần, giờ thử xét $\frac{df}{dx}$.
+Định nghĩa đạo hàm theo [1]:
+$$\frac{df}{dx} = \frac{f(x+\epsilon)-f(x)}{\epsilon}$$
+với $\epsilon&amp;gt;0$ và đủ nhỏ. Mấu chốt đều nằm ở ông $\epsilon$, vì $ \epsilon&amp;gt;0$, nên chiều của $\frac{df}{dx}$ chỉ còn phụ thuộc vào tử số.&lt;/p&gt;
+
+&lt;p&gt;Từ đó ta xét 2 trường hợp $\vec{AB}$ và $\vec{CD}$ sẽ hiểu:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;$X$: tập hợp&lt;/li&gt;
-&lt;li&gt;$x$: biến x có giá trị scala&lt;/li&gt;
-&lt;li&gt;$\mathsf{x}$: biến x là vectec&lt;/li&gt;
+&lt;li&gt;Vector AB: $$\frac{df}{dx}=\frac{f(A) - f(B)}{x_A - x_B}$$
+Vì $f(A)&amp;lt;f(B)$ (trong trường hợp này), cho nên tử âm, $\vec{AB}$ chỉ về hướng âm, cũng là hướng của $f$ tăng.&lt;/li&gt;
+&lt;li&gt;Vector CD: $$\frac{df}{dx}=\frac{f(D) - f( C)}{x_D - x_C}$$
+Vì $f( C)&amp;lt;f(D)$ (trong trường hợp này), cho nên tử dương, $\vec{CD}$ chỉ về hướng dương, cũng là hướng của $f$ tăng.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;cách-truyền-thống-để-tán-em-nó&#34;&gt;Cách truyền thống để tán em nó&lt;/h3&gt;
+&lt;p&gt;Vì vậy mà $\frac{df}{dx}$ luôn chỉ về hướng $f$ tăng.&lt;/p&gt;
 
-&lt;p&gt;Chúng ta giả sử: $$y = f(\mathsf{x}) = \mathsf{w}\mathsf{x} = w_0 + w_1x_1 + w_2x_2 + &amp;hellip; + w_nx_n$$&lt;/p&gt;
+&lt;h3 id=&#34;2-vector-gradient-trực-giao-perpendicular-với-contour-line-của-hàm&#34;&gt;&lt;strong&gt;2. Vector &lt;em&gt;gradient&lt;/em&gt; trực giao (&lt;em&gt;perpendicular&lt;/em&gt;) với &lt;em&gt;contour line&lt;/em&gt; của hàm&lt;/strong&gt;&lt;/h3&gt;
 
-&lt;ul&gt;
-&lt;li&gt;Ban đầu khởi tạo $\mathsf{w}=[w_0, w_1, w_2, &amp;hellip;, w_n]$ bất kỳ.&lt;/li&gt;
-&lt;li&gt;Tính hàm chi phí $L = \frac{1}{2}\sum_{i=1}^{n} t_i (t_i - y_i)^2$.&lt;/li&gt;
-&lt;li&gt;Dùng &lt;em&gt;gradient descent&lt;/em&gt; để tìm hướng mà $\mathsf{w}$ giảm, cập nhật $\mathsf{w}$ mới.&lt;/li&gt;
-&lt;li&gt;Lặp lại bước 2 cho đến khi $L$ nhỏ hơn mức mà mình cảm thấy thoải mãn.&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Điều này nghe bực mình + rối rắm kinh khủng khi cứ nhớ lớp 12, được học đạo hàm của hàm $y = f(x)$ tại $x_0$ chính là pháp tuyến của $f(x)$ tại $x_0$. Rà lại, đọc về đạo hàm (&lt;em&gt;derivative&lt;/em&gt;) thấy đâu đâu cũng vẽ hình tiếp tuyến [1], cái khỉ gì giờ lại là trực giao ? Với vừa nãy ở trên mới nói là hướng làm tăng $f$, sao giờ lại có chuyện trực giao ở đây ?&lt;/p&gt;
 
-&lt;p&gt;Cuối cùng ta có được $\mathsf{w}$, nghĩa là có được công thức thần thánh $y = \mathsf{w}\mathsf{x}$. Từ nay cần là thay $\mathsf{x}$ vào, ta có ngay $y$. Vậy là em nó thuộc về mình :v&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/gradient-what-the-fuck-is-this/myth2a.png&#34; alt=&#34;Example image&#34; /&gt;
+&lt;img src=&#34;https://ductri.github.io/img/gradient-what-the-fuck-is-this/myth2b.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;cách-hiện-đại-để-tán-em-nó&#34;&gt;Cách hiện đại để tán em nó&lt;/h3&gt;
+&lt;p&gt;&lt;center&gt;&lt;strong&gt;Hình 2.&lt;/strong&gt; Vector trong hình 2.a hay 2.b mới đúng là vector &lt;em&gt;gradient&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;Cách tán truyền thống của thế hệ 0x trên khá ổn, tuy nhiên giới trẻ thích cái mới. Bọn nó thích thả thính sành điệu hơn. Vậy là bọn nhỏ dạy mình cách cách tán em nó bằng xác suất.
-Trước khi áp dụng cách tán này, chúng ta cần nhìn 3 vòng của em nó với một ánh mắt khác: Cũng cùng giả thiết như trên, nhưng yêu cầu không chỉ là tìm một giá trị $y$ tại điểm $\mathsf{x}$ bất kỳ, mà tìm phân bố xác suất của $y$ tại điểm $\mathsf{x}$ bất kỳ. Tức là thay vì đi tìm $y=f(\mathsf{x})$, ta đi tìm $p(y|\mathsf{x})$.&lt;/p&gt;
+&lt;p&gt;Mấu chốt nằm ở khái niệm &lt;em&gt;contour line&lt;/em&gt;. Nó có vài tên khác nhau: contour line, level set, level curve. Định nghĩa ở đây cả [2]. Đại khái một contour line là tập hợp những điểm làm cho hàm có cùng một giá trị $y_0$ nào đó. Hàm có miền vô hạn thì cũng có nghĩa là có vô số contour line.&lt;/p&gt;
 
-&lt;p&gt;Nói là tìm phân bố xác suất, nhưng ta cần một giả sử để thu hẹp phạm vi tìm kiếm: xác suất cần tìm có phân phối tự nhiên $p(y|\mathsf{x}, \mathsf{w}) = N(y|f(\mathsf{x}), \sigma^2)$ với $f(\mathsf{x})$ chính là &lt;strong&gt;mean&lt;/strong&gt; của phân bố xác suất. Điều này có nghĩa với mỗi $\mathsf{x}$, ta xác định phân bố $N(y|f(x), \sigma^2)$, với $f(\mathsf{x})$ được xác định như cũ, $f(\mathsf{x}) = \mathsf{w}\mathsf{x} = w_0 + w_1x_1 + w_2x_2 + &amp;hellip; + w_nx_n$.&lt;/p&gt;
+&lt;p&gt;Vậy là Hình 2.a và 2.b đang biểu diễn hai đường khác nhau: đường màu đen trong hình 2.a là đồ thị biểu diễn sự phụ thuộc $y$ theo $x$ qua hàm $y=f(x)$, đường màu xanh trong hình 2.b là một đường &lt;em&gt;contour line&lt;/em&gt; biểu diễn của hàm $g(x)=0$. Mình bị nhầm lẫn bởi vì lâu nay học các hàm $y=f(x)$, đa số đều là hàm đơn biến, biểu diễn đồ thị của nó bằng tọa độ 2 chiều. Nhưng với các hàm đa biến (từ 2 biến trở lên), người ta khó biểu diễn đồ thị của hàm trên tọa độ 2 chiều nữa, nên người ta nghĩ ra cái &lt;em&gt;contour line&lt;/em&gt; dễ biểu diễn hơn.&lt;/p&gt;
 
-&lt;p&gt;Với giả thiết ta có là $X$, $T$, để xác định $\mathsf{w}$ và $\sigma^2$, ta dùng &lt;em&gt;Maximum likelihood&lt;/em&gt; trên xác suất $p(T|X, \mathsf{w}, \sigma^2)$&lt;/p&gt;
+&lt;p&gt;Khi học về Linear Regression, $y=WX + b$, người ta thường lấy ví dụ $W$ và $X$ có 2 chiều, cụ thể $y=w_1x_1 + w_2x_2 + w_0$, điều này khiến mình liên tưởng đến hàm $y=ax + b$ hồi xưa có học, chỉ là chuyển vế qua thì $x$, $y$ tương ứng $w_1$, $w_2$. Điều này sai hoàn toàn, SAI ÁC LIỆT LUÔN. Chính từ đây dẫn tới những nhầm lẫn khi đọc đến vector &lt;em&gt;gradient&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;Ta có:
-$$p = N(y|f(\mathsf{x}), \sigma^2)$$
-Áp dụng công thức trên cho tất cả các điểm trong tập dữ liệu huấn luyện:
-$$p_1 = N(y|f(\mathsf{x_1}), \sigma^2)$$
-$$p_2 = N(y|f(\mathsf{x_2}), \sigma^2)$$
-$$&amp;hellip;$$
-$$p_n = N(y|f(\mathsf{x_n}), \sigma^2)$$&lt;/p&gt;
+&lt;p&gt;Nói chính xác thì $y=ax+b$ chỉ là một phần tử trong tập &lt;em&gt;contour line&lt;/em&gt; của $y=w_1x_1 + w_2x_2 + w_0$. Và nhiệm vụ của Linear Regression là đi tìm một &lt;em&gt;contour line&lt;/em&gt; trong tập các &lt;em&gt;contour line&lt;/em&gt; ở trên.&lt;/p&gt;
 
-&lt;p&gt;Vì các xác suất trên độc lập nhau, suy ra:&lt;/p&gt;
+&lt;p&gt;Về chuyện ngày lớp 12 được dạy rằng đạo hàm của hàm $y=f(x)$ là một vector có phương tiếp tuyến với đồ thị $f(x)$. Điều này được giải thích như sau: Hàm $y=f(x)$ là hàm một biến. Nếu vẽ theo kiểu &lt;em&gt;contour line&lt;/em&gt;, mỗi &lt;em&gt;contour line&lt;/em&gt; sẽ là 1 điểm. Vì vậy mà đương nhiên nó thoải điều kiện vector &lt;em&gt;gradient&lt;/em&gt; trực giao với đường &lt;em&gt;contour line&lt;/em&gt;. Không có mâu thuẫn gì ở đây cả.&lt;/p&gt;
 
-&lt;p&gt;$$p(T|X, \mathsf{w}, \sigma^2) = \prod p_i = \prod N(t_i|f(\mathsf{x}_i), \sigma^2)$$
-$$\Leftrightarrow \log_p(T|X, \mathsf{w}, \sigma^2) = $$&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;P.s: Viết ra mới thấy, tuy đã hiểu, đã nắm được cái bản chất, mà muốn thể hiện nó ra vẫn khó thiệt. Bài này quá lủng cũng.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;tham-khảo&#34;&gt;&lt;strong&gt;Tham khảo&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;[1] &lt;a href=&#34;https://en.wikipedia.org/wiki/Derivative&#34;&gt;https://en.wikipedia.org/wiki/Derivative&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[2] &lt;a href=&#34;https://en.wikipedia.org/wiki/Level_set&#34;&gt;https://en.wikipedia.org/wiki/Level_set&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;[3] Anzai, Yuichiro. Pattern recognition and machine learning. Elsevier, 2012.&lt;/p&gt;
 </description>
     </item>
     

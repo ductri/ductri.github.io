@@ -8,8 +8,15 @@
 }
 
 .entry-content {
-	font-family: "Arbutus Slab";
+	/*Arbutus Slab*/
+	font-family: "Slabo";
+	font-size: 13pt;
 	color: #000;
+	
+}
+
+.entry-content p {
+	text-align: justify;
 }
 
 .entry-header {
