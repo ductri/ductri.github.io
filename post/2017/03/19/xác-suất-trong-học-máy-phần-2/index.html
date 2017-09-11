@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xác suất trong học máy (Phần 2) | Classic</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">/home/classic</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/home</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/categories/">~/categories</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/subscribe</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Xác suất trong học máy (Phần 2)</span></h1>
+
+<h2 class="date">2017/03/19</h2>
+<p class="terms">
+  
+  
+  Categories: <a href="/categories/to%C3%A1n">Toán</a> 
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (được biết đến như một nhà ảo thuật toán &ldquo;Mathemagician&rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.</p>
+
+<p>Trong lĩnh vực IA, nhiều giải thuật có liên quan đến lý thuyết xác suất như: Hidden Markov Model, Bayesian Network, chứng minh ưu điểm của Random Forrest,&hellip; Việc hiểu căn bản lý thuyết xác suất, đặc biệt là hiểu các định nghĩa hay dùng là rất cần thiết cho việc hiểu bản chất vấn đề và cách giải quyết trong các giải thuật học máy.</p>
+
+<p>Tiếp theo <a href="https://ductri.github.io/post/xac-suat-trong-hoc-may/"><em>phần 1</em></a>, trong bài viết này mình sẽ nói chi tiết về các thuật ngữ xác suất hay gặp trong các giải thuật học máy. Xác suất trong học máy thường xuất hiện các khái niệm: xác suất tiên nghiệm (<em>prior probability</em>), xác suất hậu nghiệm (<em>posterial probability</em>), hàm <em>likelihood</em>, xác suất có điều kiện (<em>conditional probability</em>). Vấn đề cốt lõi các của bài toán học máy là tìm tham số w, sao cho mô hình (model) f khi nhận vào một giá trị x, cùng với tham số w, cho ra kết quả giống với thực tế nhất. Để hỗ trợ cho việc tìm w, ta thường có tập dữ liệu D cho trước. Tất nhiên w, x có thể là giá trị scala, cũng có thể có nhiều chiều. Nhưng để đơn giản, cứ tạm thời xem chúng là giá trị scala.</p>
+
+<h1 id="1-xác-suất-tiên-nghiệm">1. Xác suất tiên nghiệm</h1>
+
+<p>Cách đơn giản, ngây thơ (vô số tội) là cho ngẫu nhiên w. Khi đó ta đụng đến khái niệm đầu tiên: p(w) được gọi là xác suất tiên nghiệm (<em>prior probability</em>). p(w) là phân phối xác suất trên w, lưu ý là phân phối xác suất, chứ ko phải là xác suất. Phân phối này hoặc là Mass, hoặc là Density. Điều này có nghĩa tổng xác suất lấy trên toàn miền giá trị w bằng 1. p(w) phản ánh sự chủ quan đối với biến w, bởi vì đơn thuần dựa trên trực giác, ta gán cho w một phân phối xác suất.</p>
+
+<h1 id="2-xác-suất-hậu-nghiệm">2. Xác suất hậu nghiệm</h1>
+
+<p>Tiếp theo, ta sử dụng đến giả thiết đã có D. Đến lược p(w|D) xuất hiện. Đây là một xác suất có điều kiện (<em>conditional probability</em>).</p>
+
+<p>Xác suất có điều kiện là xác suất với kết quả của một biến cố đã được biết trước. Lưu ý điều này không có nghĩa là biến cố đó phải xảy ra trước. Một bài toán đơn giản để mô tả về xác suất có điều kiện như sau: Có 2 hộp trắng và 1 hộp đen. Trong mỗi hộp trắng có 3 bi đỏ, 7 bi xanh. Trong mỗi hộp đen có 4 bi đỏ, 6 bi xanh. Chọn một hộp bất kỳ, sau đó lấy ngẫu nhiên 1 viên bi. Tìm xác suất để hộp được chọn là hộp trắng khi đã biết viên bi chọn ra có màu xanh. Đây là một xác suất có điều kiện, với điều kiện là một biến cố (chọn viên bi) xảy ra sau biến cố (chọn hộp) cần tìm xác suất.</p>
+
+<p>Quay trở lại p(w|D). Nhớ rằng p(w|D) là một hàm trên biến w. p(w|D) phản ánh sự ước lượng cho w khi đã biết D. Xác suất này được gọi là xác suất hậu nghiệm (<em>posterial probability</em>), bởi vì chúng ta đang ước lượng cho w sau khi đã biết thông tin về D. Xác suất này tương ứng với việc tìm xác suất để chọn được bi xanh sau khi đã chọn hộp màu trắng. Tương tự như p(w), đây cũng là một Mass hoặc Density (tùy loại biến), cho nên tổng xác suất có điều kiện (D) trên toàn miền giá trị w cũng bằng 1.</p>
+
+<h1 id="3-hàm-likelihood">3. Hàm likelihood</h1>
+
+<p>Xác suất cuối cùng, và mình thấy hay nhất là hàm <em>likelihood</em>: p(D|w). Nếu đã cảm thấy p(w|D) khá tự nhiên thì đến xác suất này tạo cảm giác khó hiểu lạ thường. Nhớ rằng D là cái mình đã có, w là cái mình cần tìm. Nghĩa là p(D|w) vẫn là hàm trên w như p(w|D), nhưng khác biệt là tổng xác suất trên toàn miền giá trị w không bằng 1, vì về mặt xác suất thì p(D|w) là phân bố xác suất có điều kiện trên D. Về bản chất thì rõ ràng nó là xác suất, nhưng người ta chỉ nói làm hàm likelihood chứ không gọi là xác suất likelihood. Theo mình thì người ta gọi như vậy để phân biệt với p(w) và p(w|D). Hai xác suất này là 2 phân bố xác suất thuộc <em>mass/density probability distribution</em> trên biến w, tức là xét trên toàn miền giá trị w thì tổng giá trị xác suất luôn bằng 1. Còn p(D|w) tuy cũng là <em>mass/density probability distribution</em> nhưng lại đối với biến D, nên tổng xác suất trên miền giá trị w không nhất thiết bằng 1.</p>
+
+<p>Ý nghĩa xác suất p(D|w) là thể hiện độ phù hợp của D đối với những giá trị w khác nhau. Mục đính chính của học máy thể hiện ở đây: Ta mong muốn tìm w để đạt được giá trị tối đa của p(D|w), nghĩa là tìm w sao cho phù hợp nhất với tập D đã có.</p>
+
+<p>Cuộc sống nhiều chuyện vượt quá tầm tay ta, D là một trong những cái đó. Trong khi đó, cách ta bước tiếp, cách ta đáp ứng với cái D đó (w), ta có thể kiểm soát được. Vậy nên thôi đừng hỏi vì sao D xảy ra, đừng mong chờ D sẽ thay đổi (dữ liệu training có sẳn rồi, cố định bà nó rồi), hãy điều chỉnh w sao cho phù hợp với D nhất, tìm w để tối ưu hóa p(D|w), đó mới là điều cần boăn khoăn, cần suy nghĩ. Nhưng cụ thể làm sao thì là chuyện riêng của mỗi bác giải thuật học máy, ở đây mình không bàn.</p>
+
+<h1 id="4-quan-hệ-giữa-ba-xác-suất-trên">4. Quan hệ giữa ba xác suất trên</h1>
+
+<p>Chốt chỗ này cái. Ta có ba xác suất: xác suất tiền nghiệm, xác suất hậu nghiệm và hàm likelihood. Quan hệ của ba xác suất suất thể hiện qua công thức xác suất Bayesian:</p>
+
+<blockquote>
+<p>p(w|D) = p(D|w) x p(w) / p(D)</p>
+</blockquote>
+
+<p>Vì D là cái đã có và cố định, ta xem p(D) như hằng số. Khi đó:</p>
+
+<blockquote>
+<p>p(w|D) ~ p(D|w) x p(w)</p>
+
+<p><em>posterial probability ~ likelihood probability x prior probability</em></p>
+</blockquote>
+
+<p>Công thức trên là nền tảng cơ bản cho các giải thuật học máy, cho ta một cái nhìn về bản chất về vấn đề cần giải quyết trong học máy.</p>
+
+<h1 id="tham-khảo">Tham khảo</h1>
+
+<p>Bishop, Christopher M. &ldquo;Pattern recognition.&rdquo; Machine Learning 128 (2006).</p>
+
+</main>
+
+    <footer>
+      
+<script async src="//yihui.name/js/center-img.js"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+      
+      <hr/>
+      Open-Source | <a href="https://github.com/goodroot/hugo-classic">Github</a> | <a href="https://twitter.com/thegoodroot">Twitter</a>
+      
+    </footer>
+  </body>
+</html>
+

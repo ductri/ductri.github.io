@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Xác suất trong học máy (Phần 1) | Classic</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">/home/classic</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/home</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/categories/">~/categories</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/subscribe</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Xác suất trong học máy (Phần 1)</span></h1>
+
+<h2 class="date">2017/03/18</h2>
+<p class="terms">
+  
+  
+  Categories: <a href="/categories/to%C3%A1n">Toán</a> 
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<p>Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.</p>
+
+<p>Cá nhân mình thấy mình có &ldquo;hơi&rdquo; nắm được lý thuyết xác suất. Nhưng xưa giờ toàn học trên tiếng Việt, nên khi đọc sách tiếng Anh lòi ra kha khá khái niệm mới mẻ, hay ho, giờ viết ra để tự hệ thống lại. Vì dài quá nên mình chia làm 2 bài. Nội dung trong bài đầu này giới thiệu sơ lược lại về xác suất, cung cấp cái nhìn tổng quát trên góc nhìn toán học, chưa liên quan gì học máy ở đây cả&hellip; Bài sau sẽ mô tả chi tiết các thuật ngữ hay gặp: prior probability, likelihood probability, posterial probability, conditional probability.</p>
+
+<h1 id="1-các-cách-hiểu-về-xác-suất">1. Các cách hiểu về xác suất</h1>
+
+<p>Hiện nay có hơn một cách hiểu về xác suất ([1], [2], [3], [4]). Vì chúng ta chỉ quan tâm trong ngữ cảnh học máy, nên mình tham khảo theo Bishop[3], ông cho rằng có 2 hướng tiếp cận: <strong>Frenqtist Interpretation Probability</strong> (gọi tắt trong bài là FIP) và <strong>Bayesian Probability</strong> (gọi tắt trong bài là BP). Hướng FIP hiểu xác suất như tỉ lệ số lần thử nghiệm thành công, chia số lần thử nghiệm; hoặc số mẫu phù hợp chia cho kích thước không gian mẫu. Cách tiếp cận này mang hơi hướng của thống kê. Cách tiếp cận này dễ hiểu.</p>
+
+<p>Cách tiếp cận thứ hai BP tổng quát hơn, cũng có phần tự nhiên hơn. Ví dụ với các phát biểu như: khả năng trái đất sẽ bị hủy diệt trong 100 năm tới, khả năng chiến tranh thế giới thứ 3 nổ ra, &hellip; Các sự kiện trên rất hiếm khi xảy ra, hoặc chưa bao giờ xảy ra, nên không thể tiến hành các thử nghiệm để tính xác suất theo cách hiểu FIP. Hướng tiếp cận BP có tính tổng quát hơn. Xác suất được hiểu như một độ đo về mức độ tin tưởng. Từ đó, chúng ta có thể gán xác suất cho cả các sự kiện chưa bao giờ xảy ra.</p>
+
+<h1 id="2-xác-suất-trên-biến-ngẫu-nhiên-rời-rạc-và-liên-tục">2. Xác suất trên biến ngẫu nhiên rời rạc và liên tục</h1>
+
+<p>Khi nói đến xác suất, người ta ngầm định là đang nói đến xác suất trên một/nhiều biến (biến cố). Ta thường bị nhầm lẫn giữa hai khái niệm. Khái niệm thường mặc định được hiểu là xác suất khi một biến cố X nhận giá trị x<sub>0</sub>, được ký hiện là p(X = x<sub>0</sub>), đôi khi được viết tắt là p(x<sub>0</sub>). Ví dụ như nói trong hộp có 3 bi đỏ, 5 bi xanh, 4 bi vàng, 2 bi xám, thì xác suất để chọn được bi đỏ là <sup>3</sup>&frasl;<sub>14</sub>. Nói như vậy nghĩa là xác suất để biến cố chọn bi (X) trúng bi màu đỏ là <sup>3</sup>&frasl;<sub>14</sub>, p(X = bi đỏ) = <sup>3</sup>&frasl;<sub>14</sub>.</p>
+
+<p>Khái niệm thứ hai tổng quát hơn: phân phối xác suất (<strong>probability distribution</strong>) trên biến cố X, được ký hiện là p(X). Ta đi tìm xác suất cho mọi giá trị mà biến cố X có thể có, rồi tính xác suất cho từng giá trị đó, thì sẽ có được một phân phối xác suất. Trong ví dụ trên, tính thêm các xác suất p(X = bi xanh), p(X = bi vàng), p(X = bi xám),  thì ta sẽ có được phân phối xác suất cho biến X (biến cố X).</p>
+
+<p>Có 2 loại biến ngẫu nhiên: biến ngẫu nhiên rời rạc (<strong>dicrete variable</strong>) và biến ngẫu nhiên liên tục (<strong>continuous variable</strong>). Ở ví dụ trên, X là một biến ngẫu nhiên rời rạc. Để mô tả phân phối xác suất cho biến ngẫu nhiên rời rạc, ta lập một bảng tương tự như Bảng 1.</p>
+
+<p><strong>Bảng 1.</strong> Bảng phân phối xác suất trên biến X</p>
+
+<p><img src="/img/bang-phan-phoi-xac-suat.png" alt="Example image" /></p>
+
+<p>Bảng 1 được gọi là Bảng phân phối xác suất trên biến X. Đây là cách để mô tả phân phối xác suất đối với biến ngẫu nhiên rời rạc. Tuy nhiên, để Bảng 1 được gọi như thế, nó cần thoải hai điều kiện:</p>
+
+<ul>
+<li>Giá trị p(X = x<sub>i</sub>) &gt; 0</li>
+<li>Tổng các p(X = x<sub>i</sub>) = 1</li>
+</ul>
+
+<p><img src="/img/bieu-do-phan-bo-xac-suat.png" alt="Example image" /></p>
+
+<p><strong>Hình 1.</strong> Biểu đồ phân bố xác suất</p>
+
+<p><img src="/img/ham-mat-do-xac-suat.png" alt="Example image" /></p>
+
+<p><strong>Hình 2.</strong> Hàm mật độ xác suất</p>
+
+<p>Ngoài ra, Bảng 1 còn có thể được mô hình hóa như Hình 1. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến ngẫu nhiên liên tục. Chỉ cần chỉnh sửa Hình 1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Hình 2 là hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến ngẫu nhiên liên tục. Cũng tương tự như biến ngẫu nhiên rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:</p>
+
+<ul>
+<li>Giá trị f(x<sub>i</sub>) &gt; 0</li>
+<li>Tổng các giá trị f(x) bằng 1, trong trường hợp này X liên tục nên tích phân trên toàn miền X bằng 1</li>
+</ul>
+
+<p>Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến ngẫu nhiên rời rạc) và Hàm mật độ xác suất (cho biến ngẫu nhiên liên tục). Trong tiếng Anh, hàm mật độ xác suất được dịch là <strong>Probability Density Function</strong>, tên này được viết tắt nghe rất hay: <strong>PDF</strong>. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là <strong>Probability Density Function of X</strong>, rồi nói X là biến ngẫu nhiên rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là <strong>Probability Mass Function</strong>. &ldquo;Mass&rdquo; ý chỉ &ldquo;đống&rdquo; giá trị rời rạc.</p>
+
+<p>Ở đây, dễ có sự lẫn lộn giữa <strong>Probability Distribution</strong> với <strong>Probability Density/Mass Function</strong>. Nhớ rằng <strong>Probability Density/Mass Function</strong> là một cái riêng, cái cụ thể của <strong>Probability Distribution</strong>. Chỉ khi nào <strong>Probability Distribution</strong> thỏa 2 điều kiện  mới được gọi là <strong>Probability Density/Mass Function</strong>:</p>
+
+<ul>
+<li>Giá trị P(X=x<sub>0</sub>) lớn hơn 0</li>
+<li>Tổng P(X) trên toàn miền giá trị X bằng 1</li>
+</ul>
+
+<p>Xong, hết phần 1. Phần 2 sẽ nói xác suất trong ngữ cảnh học máy.</p>
+
+<h2 id="tham-khảo">Tham khảo</h2>
+
+<p>[1] Phan Huy Khải, Các bài toán tổ hợp. Nhà xuất bản giáo dục</p>
+
+<p>[2] Wikipedia, <a href="https://en.wikipedia.org/wiki/Frequentist_probability">https://en.wikipedia.org/wiki/Frequentist_probability</a>, phần Alternative views</p>
+
+<p>[3] Bishop, Christopher M. &ldquo;Pattern recognition.&rdquo; Machine Learning 128 (2006): 1-58.</p>
+
+<p>[4] Slide Xác suất thống kê - Trường Đại học Bách Khoa TP.HCM</p>
+
+</main>
+
+    <footer>
+      
+<script async src="//yihui.name/js/center-img.js"></script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+      
+      <hr/>
+      Open-Source | <a href="https://github.com/goodroot/hugo-classic">Github</a> | <a href="https://twitter.com/thegoodroot">Twitter</a>
+      
+    </footer>
+  </body>
+</html>
+

@@ -1,20 +1,84 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Toán on Đức Trí Nguyễn</title>
-    <link>https://ductri.github.io/categories/to%C3%A1n/index.xml</link>
-    <description>Recent content in Toán on Đức Trí Nguyễn</description>
+    <title>Toán on Classic</title>
+    <link>/categories/to%C3%A1n/index.xml</link>
+    <description>Recent content in Toán on Classic</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy;2016 younetco company</copyright>
-    <atom:link href="https://ductri.github.io/categories/to%C3%A1n/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/to%C3%A1n/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Bài toán Linear Regression từ góc nhìn xác suất</title>
+      <link>/post/2017/07/23/b%C3%A0i-to%C3%A1n-linear-regression-t%E1%BB%AB-g%C3%B3c-nh%C3%ACn-x%C3%A1c-su%E1%BA%A5t/</link>
+      <pubDate>Sun, 23 Jul 2017 16:12:58 +0700</pubDate>
+      
+      <guid>/post/2017/07/23/b%C3%A0i-to%C3%A1n-linear-regression-t%E1%BB%AB-g%C3%B3c-nh%C3%ACn-x%C3%A1c-su%E1%BA%A5t/</guid>
+      <description>
+
+&lt;hr /&gt;
+
+&lt;p&gt;Bài toán Linear Regression được phát biểu như sau:
+Cho tập data $\{d \in D| d_j = y_j, x_{j1}, x_{j2}, &amp;hellip;, x_{jn} \} $, với giả định rằng: với mỗi điểm dữ liệu $d_j$, biến phụ thuộc $y_j$ phụ thuộc tuyến tính vào n biến độc lập $x_{j1}, x_{j2}, &amp;hellip;, x_{jn}$. Mối quan hệ trên được biểu diễn bằng:
+$$y_j = \epsilon + w_1x_{j1} + w_2x_{j2} + w_3x_{j3} + &amp;hellip; +  + w_nx_{jn} = \epsilon + WX$$
+Biến $\epsilon$ có thể được coi như biến ngẫu nhiên thể hiện độ nhiễu của những giá trị quan sát được (các giá trị $x_i, y_i$).&lt;/p&gt;
+
+&lt;p&gt;Từ đây, ta xem giá trị $y$ như một biến ngẫu nhiên có hàm mật độ xác suất $p(y|X, W, \epsilon)$. Bây giờ giả sử hàm mật độ xác suất $p$ là một phân bố Gaussian với mean là WX, và thông số lỗi $\epsilon$ được thể hiện thông qua độ lệch chuẩn $\beta$.
+$$ p(y|X, W, \epsilon) = \mathcal{N}(WX, \beta)$$&lt;/p&gt;
+
+&lt;p&gt;Mô tả lại số đo 3 vòng của em nó (&lt;em&gt;Linear Regression&lt;/em&gt;): Cho trước tập data $ X=\{\mathsf{x_1}, \mathsf{x_2}, &amp;hellip;, \mathsf{x_n} \} $ có nhãn tương ứng $T=\{t_1, t_2, &amp;hellip;, t_n\}$. Tìm (dự đoán) giá trị $y$ tại điểm $\mathsf{x}$ bất kỳ với giả sử y có thể biểu diễn tuyển tính thông qua $\mathsf{x}$.&lt;/p&gt;
+
+&lt;h3 id=&#34;một-số-quy-ước&#34;&gt;&lt;em&gt;Một số quy ước&lt;/em&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;$X$: tập hợp&lt;/li&gt;
+&lt;li&gt;$x$: biến x có giá trị scala&lt;/li&gt;
+&lt;li&gt;$\mathsf{x}$: biến x là vectec&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;cách-truyền-thống-để-tán-em-nó&#34;&gt;Cách truyền thống để tán em nó&lt;/h3&gt;
+
+&lt;p&gt;Chúng ta giả sử: $$y = f(\mathsf{x}) = \mathsf{w}\mathsf{x} = w_0 + w_1x_1 + w_2x_2 + &amp;hellip; + w_nx_n$$&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ban đầu khởi tạo $\mathsf{w}=[w_0, w_1, w_2, &amp;hellip;, w_n]$ bất kỳ.&lt;/li&gt;
+&lt;li&gt;Tính hàm chi phí $L = \frac{1}{2}\sum_{i=1}^{n} t_i (t_i - y_i)^2$.&lt;/li&gt;
+&lt;li&gt;Dùng &lt;em&gt;gradient descent&lt;/em&gt; để tìm hướng mà $\mathsf{w}$ giảm, cập nhật $\mathsf{w}$ mới.&lt;/li&gt;
+&lt;li&gt;Lặp lại bước 2 cho đến khi $L$ nhỏ hơn mức mà mình cảm thấy thoải mãn.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cuối cùng ta có được $\mathsf{w}$, nghĩa là có được công thức thần thánh $y = \mathsf{w}\mathsf{x}$. Từ nay cần là thay $\mathsf{x}$ vào, ta có ngay $y$. Vậy là em nó thuộc về mình :v&lt;/p&gt;
+
+&lt;h3 id=&#34;cách-hiện-đại-để-tán-em-nó&#34;&gt;Cách hiện đại để tán em nó&lt;/h3&gt;
+
+&lt;p&gt;Cách tán truyền thống của thế hệ 0x trên khá ổn, tuy nhiên giới trẻ thích cái mới. Bọn nó thích thả thính sành điệu hơn. Vậy là bọn nhỏ dạy mình cách cách tán em nó bằng xác suất.
+Trước khi áp dụng cách tán này, chúng ta cần nhìn 3 vòng của em nó với một ánh mắt khác: Cũng cùng giả thiết như trên, nhưng yêu cầu không chỉ là tìm một giá trị $y$ tại điểm $\mathsf{x}$ bất kỳ, mà tìm phân bố xác suất của $y$ tại điểm $\mathsf{x}$ bất kỳ. Tức là thay vì đi tìm $y=f(\mathsf{x})$, ta đi tìm $p(y|\mathsf{x})$.&lt;/p&gt;
+
+&lt;p&gt;Nói là tìm phân bố xác suất, nhưng ta cần một giả sử để thu hẹp phạm vi tìm kiếm: xác suất cần tìm có phân phối tự nhiên $p(y|\mathsf{x}, \mathsf{w}) = N(y|f(\mathsf{x}), \sigma^2)$ với $f(\mathsf{x})$ chính là &lt;strong&gt;mean&lt;/strong&gt; của phân bố xác suất. Điều này có nghĩa với mỗi $\mathsf{x}$, ta xác định phân bố $N(y|f(x), \sigma^2)$, với $f(\mathsf{x})$ được xác định như cũ, $f(\mathsf{x}) = \mathsf{w}\mathsf{x} = w_0 + w_1x_1 + w_2x_2 + &amp;hellip; + w_nx_n$.&lt;/p&gt;
+
+&lt;p&gt;Với giả thiết ta có là $X$, $T$, để xác định $\mathsf{w}$ và $\sigma^2$, ta dùng &lt;em&gt;Maximum likelihood&lt;/em&gt; trên xác suất $p(T|X, \mathsf{w}, \sigma^2)$&lt;/p&gt;
+
+&lt;p&gt;Ta có:
+$$p = N(y|f(\mathsf{x}), \sigma^2)$$
+Áp dụng công thức trên cho tất cả các điểm trong tập dữ liệu huấn luyện:
+$$p_1 = N(y|f(\mathsf{x_1}), \sigma^2)$$
+$$p_2 = N(y|f(\mathsf{x_2}), \sigma^2)$$
+$$&amp;hellip;$$
+$$p_n = N(y|f(\mathsf{x_n}), \sigma^2)$$&lt;/p&gt;
+
+&lt;p&gt;Vì các xác suất trên độc lập nhau, suy ra:&lt;/p&gt;
+
+&lt;p&gt;$$p(T|X, \mathsf{w}, \sigma^2) = \prod p_i = \prod N(t_i|f(\mathsf{x}_i), \sigma^2)$$
+$$\Leftrightarrow \log_p(T|X, \mathsf{w}, \sigma^2) = $$&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Xác suất trong học máy (Phần 2)</title>
-      <link>https://ductri.github.io/post/xac-suat-trong-hoc-may-phan2/</link>
+      <link>/post/2017/03/19/x%C3%A1c-su%E1%BA%A5t-trong-h%E1%BB%8Dc-m%C3%A1y-ph%E1%BA%A7n-2/</link>
       <pubDate>Sun, 19 Mar 2017 10:19:05 +0700</pubDate>
       
-      <guid>https://ductri.github.io/post/xac-suat-trong-hoc-may-phan2/</guid>
+      <guid>/post/2017/03/19/x%C3%A1c-su%E1%BA%A5t-trong-h%E1%BB%8Dc-m%C3%A1y-ph%E1%BA%A7n-2/</guid>
       <description>
 
 &lt;p&gt;Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (được biết đến như một nhà ảo thuật toán &amp;ldquo;Mathemagician&amp;rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.&lt;/p&gt;
@@ -69,10 +133,10 @@
     
     <item>
       <title>Xác suất trong học máy (Phần 1)</title>
-      <link>https://ductri.github.io/post/xac-suat-trong-hoc-may/</link>
+      <link>/post/2017/03/18/x%C3%A1c-su%E1%BA%A5t-trong-h%E1%BB%8Dc-m%C3%A1y-ph%E1%BA%A7n-1/</link>
       <pubDate>Sat, 18 Mar 2017 00:37:24 +0700</pubDate>
       
-      <guid>https://ductri.github.io/post/xac-suat-trong-hoc-may/</guid>
+      <guid>/post/2017/03/18/x%C3%A1c-su%E1%BA%A5t-trong-h%E1%BB%8Dc-m%C3%A1y-ph%E1%BA%A7n-1/</guid>
       <description>
 
 &lt;p&gt;Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.&lt;/p&gt;
@@ -95,7 +159,7 @@
 
 &lt;p&gt;&lt;strong&gt;Bảng 1.&lt;/strong&gt; Bảng phân phối xác suất trên biến X&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/bang-phan-phoi-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/bang-phan-phoi-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Bảng 1 được gọi là Bảng phân phối xác suất trên biến X. Đây là cách để mô tả phân phối xác suất đối với biến ngẫu nhiên rời rạc. Tuy nhiên, để Bảng 1 được gọi như thế, nó cần thoải hai điều kiện:&lt;/p&gt;
 
@@ -104,11 +168,11 @@
 &lt;li&gt;Tổng các p(X = x&lt;sub&gt;i&lt;/sub&gt;) = 1&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/bieu-do-phan-bo-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/bieu-do-phan-bo-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Hình 1.&lt;/strong&gt; Biểu đồ phân bố xác suất&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://ductri.github.io/img/ham-mat-do-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/ham-mat-do-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Hình 2.&lt;/strong&gt; Hàm mật độ xác suất&lt;/p&gt;
 
