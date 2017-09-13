@@ -2,22 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>/post/2017/07/23/b%C3%A0i-to%C3%A1n-linear-regression-t%E1%BB%AB-g%C3%B3c-nh%C3%ACn-x%C3%A1c-su%E1%BA%A5t/</loc>
-    <lastmod>2017-07-23T16:12:58+07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/2017/05/28/gradient---c%C3%A1i-gi%E1%BB%91ng-kh%C3%B3-hi%E1%BB%83u-3/</loc>
+    <loc>/posts/gradient-what-the-fuck-is-this/</loc>
     <lastmod>2017-05-28T22:19:54+07:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/2017/03/19/x%C3%A1c-su%E1%BA%A5t-trong-h%E1%BB%8Dc-m%C3%A1y-ph%E1%BA%A7n-2/</loc>
+    <loc>/posts/xac-suat-trong-hoc-may-phan2/</loc>
     <lastmod>2017-03-19T10:19:05+07:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/2017/03/18/x%C3%A1c-su%E1%BA%A5t-trong-h%E1%BB%8Dc-m%C3%A1y-ph%E1%BA%A7n-1/</loc>
+    <loc>/posts/xac-suat-trong-hoc-may/</loc>
     <lastmod>2017-03-18T00:37:24+07:00</lastmod>
   </url>
   
@@ -28,19 +23,19 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2017-07-23T16:12:58+07:00</lastmod>
+    <lastmod>2017-05-28T22:19:54+07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2017-07-23T16:12:58+07:00</lastmod>
+    <loc>/posts/</loc>
+    <lastmod>2017-05-28T22:19:54+07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/to%C3%A1n/</loc>
-    <lastmod>2017-07-23T16:12:58+07:00</lastmod>
+    <lastmod>2017-03-19T10:19:05+07:00</lastmod>
     <priority>0</priority>
   </url>
   
