@@ -11,6 +11,7 @@
   
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
   <script>hljs.initHighlightingOnLoad();</script>
   <nav>
     <ul>
@@ -143,14 +144,17 @@ Vì $f( C)&lt;f(D)$ (trong trường hợp này), cho nên tử dương, $\vec{C
 <script async src="//yihui.name/js/center-img.js"></script>
 
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-});
-</script>
 <script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML">
 </script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {
+  	inlineMath: [['$','$'], ['\\(','\\)']],
+  	displayMath: [['$$','$$'], ['\\[','\\]']],
+  	processEscapes: true
+  }});
+</script>
+
       
       <hr/>
       Blog | <a href="https://github.com/ductri">Github</a> | <a href="https://www.facebook.com/ductrivn">Facebook</a>

@@ -6,8 +6,156 @@
     <description>Recent content in Posts on Machine learning - The way human teach machine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Sun, 28 May 2017 22:19:54 +0700</lastBuildDate>
+    <lastBuildDate>Sat, 23 Sep 2017 22:33:18 +0700</lastBuildDate>
     <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Bias và Variance trong học máy, cụ thể là gì ? (P1)</title>
+      <link>/posts/bias-variance/</link>
+      <pubDate>Sat, 23 Sep 2017 22:33:18 +0700</pubDate>
+      
+      <guid>/posts/bias-variance/</guid>
+      <description>
+
+&lt;p&gt;Chữ &lt;em&gt;bias&lt;/em&gt; này xuất hiện khá nhiều khi nói về machine learning, một ví dụ gần đây là status trên FB của lão &lt;a href=&#34;https://www.facebook.com/yann.lecun/posts/10154777754622143&#34;&gt;Yann LeCun&lt;/a&gt;. Ngày xưa gặp chữ &lt;em&gt;bias&lt;/em&gt; trước, nghe dịch là &amp;ldquo;lệch&amp;rdquo;, hoặc &amp;ldquo;chệch&amp;rdquo;, đáng sợ hơn nữa là &amp;ldquo;thiên vị&amp;rdquo;. Lúc học ML, thầy cứ nói các giải thuật học máy phải có &lt;em&gt;bias&lt;/em&gt;, không có là nó không &amp;ldquo;học&amp;rdquo; được. Nghe cứ như triết học, ko hiểu chút gì.&lt;/p&gt;
+
+&lt;p&gt;Trước khi đi vào định nghĩa cho từng cái, mình dùng chung các thông tin sau như ngữ cảnh mặc định:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cho trước tập dữ liệu $D={x^{(1)}, x^{(2)}, &amp;hellip;, x^{(n)}}$. Các $x^{(i)}$ đều có &lt;em&gt;indepedent identically distribution (i.i.d)&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;Tập dữ liệu $D$ chỉ là một sampling may mắn có được từ không gian data $G$. Bản chất của không gian data $G$ có thể được mô tả thông ra một tập các tham số $\theta$, ví dụ như mean, max, min, &amp;hellip;&lt;/li&gt;
+&lt;li&gt;Một &lt;em&gt;Estimator&lt;/em&gt; (ước lượng) $\hat{\theta}$ được hiểu là một hàm bất kỳ, với đầu vào là tập dữ liệu $D$, đầu ra cố gắng trả về các tham số $\theta$ mô tả $G$. Với định nghĩa trên, ta có thể xem mọi model &lt;em&gt;supervised learning&lt;/em&gt; trong học máy đều có thể coi là &lt;em&gt;estimator&lt;/em&gt;, vì đường nào lúc training ta cũng nhận vào tất cả data từ $D$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;1-bias&#34;&gt;1. Bias&lt;/h2&gt;
+
+&lt;p&gt;Cho ví dụ, mean thực tế của $G$ là $5.5$, nghĩa là $\theta=5.5$ nhưng chúng ta không đời nào biết được điều này bởi vì chúng ta không bao giờ có được $G$. Nhiệm vụ của chúng ta là cố gắng đoán ra giá trị này thông qua &lt;em&gt;estimator&lt;/em&gt; $\hat{\theta}$, mà thằng này $\hat{\theta}$ lại dựa vào data $D$. Mong muốn là nó sẽ càng gần $5.5$ càng tốt. Người ta dựa trên cái gọi là &amp;ldquo;gần&amp;rdquo; đó để đánh giá xem &lt;em&gt;estimator&lt;/em&gt; của thằng nào tốt hơn. Và chữ &amp;ldquo;&lt;em&gt;bias&lt;/em&gt;&amp;rdquo; ra đời từ đó.&lt;/p&gt;
+
+&lt;h3 id=&#34;1-1-định-nghĩa-toán-học&#34;&gt;1.1 Định nghĩa toán học:&lt;/h3&gt;
+
+&lt;p&gt;$$\text{bias}(\hat{\theta})= \mathbb{E}(\hat{\theta}) - \theta \tag{1} \label{bias}$$&lt;/p&gt;
+
+&lt;p&gt;Nhìn công thức trên mới hiểu cái nghĩa &amp;ldquo;lệch/chệch&amp;rdquo; của từ &lt;em&gt;bias&lt;/em&gt;. Nếu $\text{bias}(\hat{\theta}) \neq 0$ thì ta gọi &lt;em&gt;estimator&lt;/em&gt; bị &lt;em&gt;bias&lt;/em&gt; (&lt;em&gt;bias estimator&lt;/em&gt;), còn $\text{bias}(\hat{\theta}) = 0$ thì ta gọi là &lt;em&gt;unbias estimator&lt;/em&gt;. Rất tự nhiên là cái &lt;em&gt;unbias estimator&lt;/em&gt; tốt hơn &lt;em&gt;bias estimator&lt;/em&gt;, vì cái mình ước đoán nó đúng y chang cái thiệt luôn. Giờ thử tính vài cái xem khi nào &lt;em&gt;bias&lt;/em&gt; dương, khi nào bằng $0$.&lt;/p&gt;
+
+&lt;h4 id=&#34;ví-dụ-1&#34;&gt;Ví dụ 1:&lt;/h4&gt;
+
+&lt;p&gt;Cho $G$ được mô tả bởi hàm phân phối xác suất Bernoulli, hàm này rất đơn giản, chỉ cần 1 tham số mean, gọi nó là $\theta$ luôn cho giống ở trên. Trong trường hợp này, $\theta$ là một số thực R, nằm trong khoảng $(0;1)$. Tập data sample $D={x^{(1)}, x^{(2)}, &amp;hellip;, x^{(n)}}$ được chọn ra từ $G$.&lt;/p&gt;
+
+&lt;p&gt;Rồi, giờ chúng ta đi mò mẫm tìm $\theta$ dựa trên những gì đã biết (là $D$). Con tim ta mách bảo: lấy mean của $D$ đi, có vẻ nó sẽ khá gần với mean thiệt của $G$ luôn đó. Nghe theo tiếng gọi con tim, ta không ngần ngại chọn estimator $\hat\theta$ như sau:
+$$\hat\theta = \frac{1}{n} \sum_{i=1}^{n} x^{(i)}$$
+Nhưng lý trí không tin mù quáng như vậy được. Bây giờ &lt;a href=&#34;https://youtu.be/BkBqYlLjIeA?t=86&#34;&gt;chọn con tim hay là nghe lý trí&lt;/a&gt;, lý trí đòi đánh giá &lt;em&gt;estimator&lt;/em&gt; $\hat{\theta}$ bằng công thức $(\ref{bias})$.&lt;/p&gt;
+
+&lt;p&gt;$$
+\begin{aligned}
+\text{bias}(\hat\theta) &amp;amp;= \mathbb{E}(\hat{\theta}) - \theta \\&lt;br /&gt;
+&amp;amp;= \mathbb{E}(\frac{1}{n} \sum_{i=1}^{n} x^{(i)}) - \theta \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n} \sum_{i=1}^{n} \mathbb{E}(x^{(i)}) - \theta \text{ (Tính chất của } \mathbb{E})\\&lt;br /&gt;
+&amp;amp;= \frac{1}{n} \sum_{i=1}^{n} \theta - \theta \text{ (Tính chất của phân phối Bernoulli } \mathbb{E}(x^{(i)})=\theta )\\&lt;br /&gt;
+&amp;amp;= 0
+\end{aligned}
+$$
+Quá đẹp, vậy estimator $\hat{\theta}$ không bị &lt;em&gt;bias&lt;/em&gt;, con tim không cần suy nghĩ cũng đúng.&lt;/p&gt;
+
+&lt;h4 id=&#34;ví-dụ-2&#34;&gt;Ví dụ 2:&lt;/h4&gt;
+
+&lt;p&gt;Cho $G$ được mô tả bởi hàm phân phối xác suất Gaussian $\mathcal{N}(\mu, \sigma^2)$. Tập data sample $D={x^{(1)}, x^{(2)}, &amp;hellip;, x^{(n)}}$ được chọn ra từ $G$.
+Yêu câu giờ là đi tìm $\sigma^2$ từ $D$.&lt;/p&gt;
+
+&lt;p&gt;Cũng là con tim mách bảo: vì $\sigma^2$ là hệ số Variance của Gaussian, nên như ví dụ 1, mình cũng đi tìm Variance của $D$ là cho kết quả đúng thôi.
+Gọi $\hat{\sigma}^2$ là &lt;em&gt;estimator&lt;/em&gt; của chúng ta, tức là:
+$$\hat{\sigma}^2 = \text{Var} (D)$$
+Check lại &lt;em&gt;bias&lt;/em&gt;:
+\begin{align}
+\text{bias}(\hat{\sigma}^2) &amp;amp;= \mathbb{E}(\hat{\sigma}^2) - \sigma^2 \\&lt;br /&gt;
+&amp;amp;= \mathbb{E}[\text{Var}(D)] - \sigma^2 \\&lt;br /&gt;
+\mathbb{E}[\text{Var}(D)] &amp;amp;= \mathbb{E}\{\mathbb{E}[(x^{(i)} - \hat{\mu})^2]\}  \text{ (Định nghĩa của Var, với } \hat{\mu} = \frac{1}{n}\sum_{i=1}^{n}x^{(i)}) \\&lt;br /&gt;
+&amp;amp;= \mathbb{E}[\frac{1}{n}\sum_{i=1}^{n}(x^{(i)} - \hat{\mu})^2]  \text{ (Định nghĩa của } \mathbb{E}) \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n}\mathbb{E}[\sum_{i=1}^{n}(x^{(i)} - \frac{1}{n}\sum_{j=1}^{n}x^{(j)})^2]  \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n}\mathbb{E}[\sum_{i=1}^{n}\frac{((n-1)x^{(i)} - \sum_{j=1, j\neq i}^{n}x^{(j)})^2}{n^2}]  \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n}\mathbb{E}[\sum_{i=1}^{n}\frac{(n-1)^2x^{(i)2} - 2 \times (n-1)x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)} + (\sum_{j=1, j\neq i}^{n}x^{(j)})^2 }{n^2}]  \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n}\sum_{i=1}^{n}\frac{(n-1)^2\mathbb{E}[x^{2}] - 2 \times (n-1)\mathbb{E}[x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)}] + \mathbb{E}[(\sum_{j=1, j\neq i}^{n}x^{(j)})^2] }{n^2}]  \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2\mathbb{E}[x^{2}] - 2 \times (n-1)\mathbb{E}[x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)}] + \mathbb{E}[(\sum_{j=1, j\neq i}^{n}x^{(j)})^2]] \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2A - 2 \times (n-1)B + C]  \tag{2.1} \label{2.1} \\&lt;br /&gt;
+\end{align}
+Căng dữ, tính từng cái $A, B, C$ cho đỡ nhức đầu:
+\begin{align}
+A &amp;amp;= \mathbb{E}[x^{2}] \tag{2.2} \label{2.2} \\&lt;br /&gt;
+B &amp;amp;= \mathbb{E}[x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)}]\\&lt;br /&gt;
+&amp;amp;= \mathbb{E}[x^{(i)}] \times \mathbb{E}[\sum_{j=1, j\neq i}^{n}x^{(j)}] \text{ (} x^{(i)} \text{độc lập với} \sum_{j=1, j\neq i}^{n}x^{(j)}) \\&lt;br /&gt;
+&amp;amp;= \mathbb{E}[x] \times \sum_{j=1, j\neq i}^{n}\mathbb{E}[x] \\&lt;br /&gt;
+&amp;amp;= \mathbb{E}[x] \times (n-1)\mathbb{E}[x] \\&lt;br /&gt;
+&amp;amp;= (n-1)(\mathbb{E}[x])^2\\\ \tag{2.3} \label{2.3}
+\end{align}
+Để tính $C$, không mất tính tổng quá, chọn $i=1$
+\begin{align}
+C &amp;amp;= \mathbb{E}[(\sum_{j=1, j\neq i}^{n}x^{(j)})^2] \\&lt;br /&gt;
+C &amp;amp;= \mathbb{E}[(x^{(2)} + x^{(3)} + &amp;hellip; + x^{(n)})^2] \\&lt;br /&gt;
+&amp;amp;= \mathbb{E}[(x^{(2)} + x^{(3)} + &amp;hellip; + x^{(n)}) \times (x^{(2)} + x^{(3)} + &amp;hellip; + x^{(n)})] \\&lt;br /&gt;
+&amp;amp;= \begin{aligned}[t]
+\mathbb{E}[
+&amp;amp;x^{(2)2} + x^{(2)}x^{(3)} + &amp;hellip; + x^{(2)}x^{(n)} + \\&lt;br /&gt;
+&amp;amp;x^{(3)}x^{(2)} + x^{(3)2} + &amp;hellip; + x^{(3)}x^{(n)} + \\&lt;br /&gt;
+&amp;amp;x^{(4)}x^{(2)} + x^{(4)}x^{(3)} + &amp;hellip; + x^{(4)}x^{(n)} + \\&lt;br /&gt;
+&amp;amp;x^{(n)}x^{(2)} + x^{(n)}x^{(3)} + &amp;hellip; + x^{(n)2}]
+\end{aligned} \\&lt;br /&gt;
+&amp;amp;= \begin{aligned}[t]
+[
+&amp;amp;\mathbb{E}(x^{(2)2}) + \mathbb{E}(x^{(2)}x^{(3)}) + &amp;hellip; + \mathbb{E}(x^{(2)}x^{(n)}) + \\&lt;br /&gt;
+&amp;amp;\mathbb{E}(x^{(3)}x^{(2)}) + \mathbb{E}(x^{(3)2}) + &amp;hellip; + \mathbb{E}(x^{(3)}x^{(n)}) + \\&lt;br /&gt;
+&amp;amp;\mathbb{E}(x^{(4)}x^{(2)}) + \mathbb{E}(x^{(4)}x^{(3)}) + &amp;hellip; + \mathbb{E}(x^{(4)}x^{(n)}) + \\&lt;br /&gt;
+&amp;amp;\mathbb{E}(x^{(n)}x^{(2)}) + \mathbb{E}(x^{(n)}x^{(3)}) + &amp;hellip; + \mathbb{E}(x^{(n)2})]
+\end{aligned} \\&lt;br /&gt;
+&amp;amp;=(n-1)\mathbb{E}[x^2] + (n-1)(n-2)(\mathbb{E}[x])^2 \tag{2.4} \label{2.4} \\&lt;br /&gt;
+\end{align}&lt;/p&gt;
+
+&lt;p&gt;Thay hết \ref{2.2}, \ref{2.3}, \ref{2.4} vào \ref{2.1}, ta có:
+\begin{align}
+\mathbb{E}[\text{Var}(D)] &amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2A - 2 \times (n-1)B + C] \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2\mathbb{E}[x^{2}] - 2 \times (n-1)^2(\mathbb{E}[x])^2 + (n-1)\mathbb{E}[x^2] + (n-1)(n-2)(\mathbb{E}[x])^2] \\&lt;br /&gt;
+&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[n(n-1)\mathbb{E}[x^{2}] - n(n-1)(\mathbb{E}[x])^2 ] \\&lt;br /&gt;
+&amp;amp;= \frac{n-1}{n^2}\sum_{i=1}^{n}[\mathbb{E}[x^{2}] - (\mathbb{E}[x])^2 ] \\&lt;br /&gt;
+&amp;amp;= \frac{n-1}{n^2}\sum_{i=1}^{n}\text{Var}(x) \text{ (Định nghĩa của Var, tham khảo [3])} \\&lt;br /&gt;
+&amp;amp;= \frac{n-1}{n}\text{Var}(x) \\&lt;br /&gt;
+&amp;amp;= \frac{n-1}{n}\sigma^2 \\&lt;br /&gt;
+\end{align}&lt;/p&gt;
+
+&lt;p&gt;Từ đó:
+\begin{align}
+\text{bias}(\hat{\sigma}^2) &amp;amp;= \mathbb{E}(\hat{\sigma}^2) - \sigma^2 \\&lt;br /&gt;
+&amp;amp;= \frac{n-1}{n}\sigma^2 - \sigma^2 \\&lt;br /&gt;
+&amp;amp;= \frac{-1}{n}\sigma^2 \neq 0 \\&lt;br /&gt;
+\end{align}
+Sau chặng đường dài, lần này lý trí thắng, &lt;em&gt;estimator&lt;/em&gt; này bị &lt;em&gt;bias&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;1-2-kết-lại&#34;&gt;1.2 Kết lại&lt;/h3&gt;
+
+&lt;p&gt;Hai cái ví dụ, một mớ tính toán chỉ là phần kỹ thuật, cốt lõi là để thấy rằng những cảm nhận ban đầu tưởng như đúng (như $\mathbb{E}$ của $D$ thì may mắn đúng bằng $\mathbb{E}$ của $G$ luôn), nhưng nhiều trường hợp lại sai khác ($\text{Var}$ của $G$ với phân phối Gaussian không bằng $\text{Var}$ của $D$).&lt;/p&gt;
+
+&lt;p&gt;Về phần tính toán, ví dụ 1 thì đơn giản, tham khảo theo sách [1], ví dụ 2 căng hơn xíu, cái cách trên là mình tự làm (có phần bỏ sức trâu bò), có cách chứng minh tinh tế hơn, tham khảo số tại &lt;a href=&#34;https://stats.stackexchange.com/questions/136673/how-to-understand-that-mle-of-variance-is-*bias*ed-in-a-gaussian-distribution/136703#136703?s=908df983477d41b1b3ed0e34a316166e&#34;&gt;đây&lt;/a&gt;. Ví dụ 2 này cũng được nhắc đến trong sách số [2], tác giả dùng để đưa đến khái niệm &lt;em&gt;bias&lt;/em&gt;, nhưng chỉ lước qua.&lt;/p&gt;
+
+&lt;p&gt;Toàn bộ nội dung chính của bài viết này lấy từ 5.4.2 sách [1] (trừ phần chứng minh của ví dụ 2, sách không thèm làm).&lt;/p&gt;
+
+&lt;p&gt;Câu hỏi đặt ra là:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Việc một estimator bị &lt;em&gt;bias&lt;/em&gt; thì ảnh hưởng như thế nào đến quá trình training ?&lt;/li&gt;
+&lt;li&gt;Như phần đầu có nói, trực giác thì thấy rằng &lt;em&gt;unbias estimator&lt;/em&gt; thì tốt hơn &lt;em&gt;bias estimator&lt;/em&gt;, tuy nhiên có phải luôn luôn như vậy ? Có phải trong thực tế chọn &lt;em&gt;estimator&lt;/em&gt; không &lt;em&gt;bias&lt;/em&gt; luôn luôn là tốt nhất ?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;2-variance&#34;&gt;2. Variance&lt;/h2&gt;
+
+&lt;p&gt;Đuối &amp;hellip;&lt;/p&gt;
+
+&lt;h2 id=&#34;tham-khảo&#34;&gt;Tham khảo&lt;/h2&gt;
+
+&lt;p&gt;[1] Bishop, Christopher M. &amp;ldquo;Pattern recognition.&amp;rdquo; Machine Learning 128 (2006): 1-58.&lt;/p&gt;
+
+&lt;p&gt;[2] I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning, vol. 13, no. 1. 2015.&lt;/p&gt;
+
+&lt;p&gt;[3] Probability and Statistics
+Cookbook: &lt;a href=&#34;http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf&#34;&gt;http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Gradient - Cái giống khó hiểu :3</title>
