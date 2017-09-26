@@ -35,7 +35,7 @@
 
 &lt;p&gt;$$\text{bias}(\hat{\theta})= \mathbb{E}(\hat{\theta}) - \theta \tag{1} \label{bias}$$&lt;/p&gt;
 
-&lt;p&gt;Nhìn công thức trên mới hiểu cái nghĩa &amp;ldquo;lệch/chệch&amp;rdquo; của từ &lt;em&gt;bias&lt;/em&gt;. Nếu $\text{bias}(\hat{\theta}) \neq 0$ thì ta gọi &lt;em&gt;estimator&lt;/em&gt; bị &lt;em&gt;bias&lt;/em&gt; (&lt;em&gt;bias estimator&lt;/em&gt;), còn $\text{bias}(\hat{\theta}) = 0$ thì ta gọi là &lt;em&gt;unbias estimator&lt;/em&gt;. Rất tự nhiên là cái &lt;em&gt;unbias estimator&lt;/em&gt; tốt hơn &lt;em&gt;bias estimator&lt;/em&gt;, vì cái mình ước đoán nó đúng y chang cái thiệt luôn. Giờ thử tính vài cái xem khi nào &lt;em&gt;bias&lt;/em&gt; dương, khi nào bằng $0$.&lt;/p&gt;
+&lt;p&gt;Nhìn công thức trên mới hiểu cái nghĩa &amp;ldquo;lệch/chệch&amp;rdquo; của từ &lt;em&gt;bias&lt;/em&gt;. Nếu $\text{bias}(\hat{\theta}) \neq 0$ thì ta gọi &lt;em&gt;estimator&lt;/em&gt; bị &lt;em&gt;biased&lt;/em&gt; (&lt;em&gt;biased estimator&lt;/em&gt;), còn $\text{bias}(\hat{\theta}) = 0$ thì ta gọi là &lt;em&gt;unbiased estimator&lt;/em&gt;. Rất tự nhiên là cái &lt;em&gt;unbiased estimator&lt;/em&gt; tốt hơn &lt;em&gt;biased estimator&lt;/em&gt;, vì cái mình ước đoán nó đúng y chang cái thiệt luôn. Giờ thử tính vài cái xem khi nào &lt;em&gt;bias&lt;/em&gt; khác $0$, khi nào bằng $0$.&lt;/p&gt;
 
 &lt;h4 id=&#34;ví-dụ-1&#34;&gt;Ví dụ 1:&lt;/h4&gt;
 
@@ -139,7 +139,7 @@ Sau chặng đường dài, lần này lý trí thắng, &lt;em&gt;estimator&lt;
 
 &lt;ul&gt;
 &lt;li&gt;Việc một estimator bị &lt;em&gt;bias&lt;/em&gt; thì ảnh hưởng như thế nào đến quá trình training ?&lt;/li&gt;
-&lt;li&gt;Như phần đầu có nói, trực giác thì thấy rằng &lt;em&gt;unbias estimator&lt;/em&gt; thì tốt hơn &lt;em&gt;bias estimator&lt;/em&gt;, tuy nhiên có phải luôn luôn như vậy ? Có phải trong thực tế chọn &lt;em&gt;estimator&lt;/em&gt; không &lt;em&gt;bias&lt;/em&gt; luôn luôn là tốt nhất ?&lt;/li&gt;
+&lt;li&gt;Như phần đầu có nói, trực giác thì thấy rằng &lt;em&gt;unbiased estimator&lt;/em&gt; thì tốt hơn &lt;em&gt;biased estimator&lt;/em&gt;, tuy nhiên có phải luôn luôn như vậy ? Có phải trong thực tế chọn &lt;em&gt;estimator&lt;/em&gt; không &lt;em&gt;bias&lt;/em&gt; luôn luôn là tốt nhất ?&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&#34;2-variance&#34;&gt;2. Variance&lt;/h2&gt;
@@ -148,9 +148,9 @@ Sau chặng đường dài, lần này lý trí thắng, &lt;em&gt;estimator&lt;
 
 &lt;h2 id=&#34;tham-khảo&#34;&gt;Tham khảo&lt;/h2&gt;
 
-&lt;p&gt;[1] Bishop, Christopher M. &amp;ldquo;Pattern recognition.&amp;rdquo; Machine Learning 128 (2006): 1-58.&lt;/p&gt;
+&lt;p&gt;[1] I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning, vol. 13, no. 1. 2015.&lt;/p&gt;
 
-&lt;p&gt;[2] I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning, vol. 13, no. 1. 2015.&lt;/p&gt;
+&lt;p&gt;[2] Bishop, Christopher M. &amp;ldquo;Pattern recognition.&amp;rdquo; Machine Learning 128 (2006): 1-58.&lt;/p&gt;
 
 &lt;p&gt;[3] Probability and Statistics
 Cookbook: &lt;a href=&#34;http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf&#34;&gt;http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf&lt;/a&gt;&lt;/p&gt;

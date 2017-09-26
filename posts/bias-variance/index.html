@@ -89,7 +89,7 @@
 
 <p>$$\text{bias}(\hat{\theta})= \mathbb{E}(\hat{\theta}) - \theta \tag{1} \label{bias}$$</p>
 
-<p>Nhìn công thức trên mới hiểu cái nghĩa &ldquo;lệch/chệch&rdquo; của từ <em>bias</em>. Nếu $\text{bias}(\hat{\theta}) \neq 0$ thì ta gọi <em>estimator</em> bị <em>bias</em> (<em>bias estimator</em>), còn $\text{bias}(\hat{\theta}) = 0$ thì ta gọi là <em>unbias estimator</em>. Rất tự nhiên là cái <em>unbias estimator</em> tốt hơn <em>bias estimator</em>, vì cái mình ước đoán nó đúng y chang cái thiệt luôn. Giờ thử tính vài cái xem khi nào <em>bias</em> dương, khi nào bằng $0$.</p>
+<p>Nhìn công thức trên mới hiểu cái nghĩa &ldquo;lệch/chệch&rdquo; của từ <em>bias</em>. Nếu $\text{bias}(\hat{\theta}) \neq 0$ thì ta gọi <em>estimator</em> bị <em>biased</em> (<em>biased estimator</em>), còn $\text{bias}(\hat{\theta}) = 0$ thì ta gọi là <em>unbiased estimator</em>. Rất tự nhiên là cái <em>unbiased estimator</em> tốt hơn <em>biased estimator</em>, vì cái mình ước đoán nó đúng y chang cái thiệt luôn. Giờ thử tính vài cái xem khi nào <em>bias</em> khác $0$, khi nào bằng $0$.</p>
 
 <h4 id="ví-dụ-1">Ví dụ 1:</h4>
 
@@ -193,7 +193,7 @@ Sau chặng đường dài, lần này lý trí thắng, <em>estimator</em> này
 
 <ul>
 <li>Việc một estimator bị <em>bias</em> thì ảnh hưởng như thế nào đến quá trình training ?</li>
-<li>Như phần đầu có nói, trực giác thì thấy rằng <em>unbias estimator</em> thì tốt hơn <em>bias estimator</em>, tuy nhiên có phải luôn luôn như vậy ? Có phải trong thực tế chọn <em>estimator</em> không <em>bias</em> luôn luôn là tốt nhất ?</li>
+<li>Như phần đầu có nói, trực giác thì thấy rằng <em>unbiased estimator</em> thì tốt hơn <em>biased estimator</em>, tuy nhiên có phải luôn luôn như vậy ? Có phải trong thực tế chọn <em>estimator</em> không <em>bias</em> luôn luôn là tốt nhất ?</li>
 </ul>
 
 <h2 id="2-variance">2. Variance</h2>
@@ -202,9 +202,9 @@ Sau chặng đường dài, lần này lý trí thắng, <em>estimator</em> này
 
 <h2 id="tham-khảo">Tham khảo</h2>
 
-<p>[1] Bishop, Christopher M. &ldquo;Pattern recognition.&rdquo; Machine Learning 128 (2006): 1-58.</p>
+<p>[1] I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning, vol. 13, no. 1. 2015.</p>
 
-<p>[2] I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning, vol. 13, no. 1. 2015.</p>
+<p>[2] Bishop, Christopher M. &ldquo;Pattern recognition.&rdquo; Machine Learning 128 (2006): 1-58.</p>
 
 <p>[3] Probability and Statistics
 Cookbook: <a href="http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf">http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf</a></p>
