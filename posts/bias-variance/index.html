@@ -71,7 +71,17 @@
 <main>
 
 
+<blockquote>
 <p>Chữ <em>bias</em> này xuất hiện khá nhiều khi nói về machine learning, một ví dụ gần đây là status trên FB của lão <a href="https://www.facebook.com/yann.lecun/posts/10154777754622143">Yann LeCun</a>. Ngày xưa gặp chữ <em>bias</em> trước, nghe dịch là &ldquo;lệch&rdquo;, hoặc &ldquo;chệch&rdquo;, đáng sợ hơn nữa là &ldquo;thiên vị&rdquo;. Lúc học ML, thầy cứ nói các giải thuật học máy phải có <em>bias</em>, không có là nó không &ldquo;học&rdquo; được. Nghe cứ như triết học, ko hiểu chút gì.</p>
+</blockquote>
+
+<p>Đoạn giới thiệu ở trên không hẳn sai, mà nó dễ gây nhầm lẫn, tại bản thân mình lúc viết đoạn intro trên cũng bị nhầm lẫn. Nhờ 1 chị xinh đẹp góp ý, mới nhận ra chữ &ldquo;<em>bias</em>&rdquo; có những ý nghĩa khác nhau trong những ngữ cảnh khác nhau, sơ bộ có 3 trường hợp chính:</p>
+
+<ol>
+<li><em>bias</em> được dùng trong Neuron Network, Regression, &hellip; thường mang ý chỉ hệ số <em>bias</em> ($b$) trong công thức $y=ax + b$. Có thể ngày trước thầy nói không có bias thì giải thuật không thể học được là ý chỉ chữ <em>bias</em> này.</li>
+<li><em>bias</em> trong cái post <a href="https://www.facebook.com/yann.lecun/posts/10154777754622143">Yann LeCun</a> &ldquo;hình như&rdquo; ý chỉ tới <em>inductive bias</em>.</li>
+<li><em>bias</em> nói trong bài là <em>bias of an estimator</em>, đây là khái niệm đến từ xác suất thống kê. Từ chỗ này đến hết bài, chữ <em>bias</em> được hiểu thuộc loại thứ 3 này nghe :D.</li>
+</ol>
 
 <p>Trước khi đi vào định nghĩa cho từng cái, mình dùng chung các thông tin sau như ngữ cảnh mặc định:</p>
 
@@ -185,7 +195,7 @@ Sau chặng đường dài, lần này lý trí thắng, <em>estimator</em> này
 
 <p>Hai cái ví dụ, một mớ tính toán chỉ là phần kỹ thuật, cốt lõi là để thấy rằng những cảm nhận ban đầu tưởng như đúng (như $\mathbb{E}$ của $D$ thì may mắn đúng bằng $\mathbb{E}$ của $G$ luôn), nhưng nhiều trường hợp lại sai khác ($\text{Var}$ của $G$ với phân phối Gaussian không bằng $\text{Var}$ của $D$).</p>
 
-<p>Về phần tính toán, ví dụ 1 thì đơn giản, tham khảo theo sách [1], ví dụ 2 căng hơn xíu, cái cách trên là mình tự làm (có phần bỏ sức trâu bò), có cách chứng minh tinh tế hơn, tham khảo số tại <a href="https://stats.stackexchange.com/questions/136673/how-to-understand-that-mle-of-variance-is-*bias*ed-in-a-gaussian-distribution/136703#136703?s=908df983477d41b1b3ed0e34a316166e">đây</a>. Ví dụ 2 này cũng được nhắc đến trong sách số [2], tác giả dùng để đưa đến khái niệm <em>bias</em>, nhưng chỉ lước qua.</p>
+<p>Về phần tính toán, ví dụ 1 thì đơn giản, tham khảo theo sách [1], ví dụ 2 căng hơn xíu, cái cách trên là mình tự làm (có phần bỏ sức trâu bò), có cách chứng minh tinh tế hơn, tham khảo số tại <a href="https://stats.stackexchange.com/questions/136673/how-to-understand-that-mle-of-variance-is-*bias*ed-in-a-gaussian-distribution/136703#136703?s=908df983477d41b1b3ed0e34a316166e">đây</a>. Ví dụ 2 này cũng được nhắc đến trong sách số [2], tác giả dùng để đưa đến khái niệm <em>bias</em>, nhưng chỉ <del>lước</del> lướt qua.</p>
 
 <p>Toàn bộ nội dung chính của bài viết này lấy từ 5.4.2 sách [1] (trừ phần chứng minh của ví dụ 2, sách không thèm làm).</p>
 
