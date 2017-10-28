@@ -6,8 +6,40 @@
     <description>Recent content on Machine learning - The way human is teaching machine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Sat, 23 Sep 2017 22:33:18 +0700</lastBuildDate>
+    <lastBuildDate>Sat, 28 Oct 2017 10:14:29 +0700</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Tản mạn về chuyện học học máy</title>
+      <link>/posts/tan-man-ve-chuyen-hoc-hoc-may/</link>
+      <pubDate>Sat, 28 Oct 2017 10:14:29 +0700</pubDate>
+      
+      <guid>/posts/tan-man-ve-chuyen-hoc-hoc-may/</guid>
+      <description>&lt;p&gt;Ngày xưa học toán, điều quan trọng nhất khi đọc 1 lời giải là làm sao hiểu được cái ẩn ý khốn nạn được giấu trong cách giải. Hiểu được cái đó mới hy vọng áp dụng cho các bài khác.&lt;/p&gt;
+
+&lt;p&gt;Có bữa nghe một thầy chia sẻ, hiểu làm sao giải thuật chạy được là tốt, nhưng cốt cán hơn là hiểu được &amp;ldquo;the idea behind the algorithm&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Và mấy cái ẩn ý nó thường trừu tượng và có gì đó hơi tiết lý. Vậy là về cơ bản, ta đi từ chi tiết kỹ thuật dần phát triển lên và hiểu triết lý đằng sau đó.&lt;/p&gt;
+
+&lt;p&gt;Đến lượt deep learning thì trời, thứ tự hiểu của mình sao đi ngược lại quá. Đầy những bài viết nói triết lý của deep learning, toàn những cách hiểu trừu tượng kiểu con người nói với nhau:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Giải thích về filters trong CNN: filter giúp model học được những cạnh, góc, rồi filter nhận dạng những feature bậc thấp được những filter bậc cao hơn tổng hợp lại, rồi những góc, cạnh dần hợp lại giúp model hiểu những khái niệm abstract hơn, rồi cuối cùng qua một cái FC để tổng hợp hết lại, cho ra cái prediciton &amp;hellip;&lt;/li&gt;
+&lt;li&gt;Giải thích về ảnh hưởng của mất cân bằng dữ liệu: khi nhãn A quá nhiều so với nhãn B, model chỉ cần học mỗi nhãn A là làm cái loss giảm nhiều lắm rồi, từ đó model cứ predict ra mỗi nhãn A cũng đủ tốt (đối với nó)&lt;/li&gt;
+&lt;li&gt;Giải thích về weighted loss: Nhãn B ít quá, mà sai nhãn B thì rất không tốt (so với sai nhãn A), vậy ta muốn khi model predict sai nhãn B, nó phải bị trừng phạt nặng hơn, để nhớ đời mà sau này ít predict sai nhãn B hơn, nên ta hệ số cho nhãn B trong hàm loss cao lên, hy vọng &amp;hellip; :v&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Đây có phải bản chất của deep learning, hay chỉ là cách ta cố tình gán ghép, liên tưởng nó với cách hiểu của con người. Có phải mấy cha nghĩ ra các khái niệm trên xuất phát từ quan niệm, ý tưởng kiểu triết lý như vậy rồi mới đi vào kỹ thuật, hay họ làm ngược lại ?&lt;/p&gt;
+
+&lt;p&gt;Cá nhân mình thấy, hiểu theo kiểu triết lý này chỉ tốt sau khi hiểu kỹ thuật trước, còn không thì nó chỉ giúp mình 2 thứ:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Chém gió tốt&lt;/li&gt;
+&lt;li&gt;Đưa ra các suy đoán dựa trên cảm tính, dần dà đưa ta đến việc dùng deep learning giống như việc đi mò mẫm một cách vô định.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Bias và Variance trong học máy, cụ thể là gì ? (P1)</title>

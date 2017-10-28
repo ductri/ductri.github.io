@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tản mạn về chuyện học học máy | Machine learning - The way human is teaching machine</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <header>
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  <script>hljs.initHighlightingOnLoad();</script>
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">/home/machine learning - the way human is teaching machine</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/home</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/categories/">~/categories</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/subscribe</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Tản mạn về chuyện học học máy</span></h1>
+
+<h2 class="date">2017/10/28</h2>
+<p class="terms">
+  
+  
+  
+  
+  
+</p>
+</div>
+
+
+
+<main>
+<p>Ngày xưa học toán, điều quan trọng nhất khi đọc 1 lời giải là làm sao hiểu được cái ẩn ý khốn nạn được giấu trong cách giải. Hiểu được cái đó mới hy vọng áp dụng cho các bài khác.</p>
+
+<p>Có bữa nghe một thầy chia sẻ, hiểu làm sao giải thuật chạy được là tốt, nhưng cốt cán hơn là hiểu được &ldquo;the idea behind the algorithm&rdquo;.</p>
+
+<p>Và mấy cái ẩn ý nó thường trừu tượng và có gì đó hơi tiết lý. Vậy là về cơ bản, ta đi từ chi tiết kỹ thuật dần phát triển lên và hiểu triết lý đằng sau đó.</p>
+
+<p>Đến lượt deep learning thì trời, thứ tự hiểu của mình sao đi ngược lại quá. Đầy những bài viết nói triết lý của deep learning, toàn những cách hiểu trừu tượng kiểu con người nói với nhau:</p>
+
+<ul>
+<li>Giải thích về filters trong CNN: filter giúp model học được những cạnh, góc, rồi filter nhận dạng những feature bậc thấp được những filter bậc cao hơn tổng hợp lại, rồi những góc, cạnh dần hợp lại giúp model hiểu những khái niệm abstract hơn, rồi cuối cùng qua một cái FC để tổng hợp hết lại, cho ra cái prediciton &hellip;</li>
+<li>Giải thích về ảnh hưởng của mất cân bằng dữ liệu: khi nhãn A quá nhiều so với nhãn B, model chỉ cần học mỗi nhãn A là làm cái loss giảm nhiều lắm rồi, từ đó model cứ predict ra mỗi nhãn A cũng đủ tốt (đối với nó)</li>
+<li>Giải thích về weighted loss: Nhãn B ít quá, mà sai nhãn B thì rất không tốt (so với sai nhãn A), vậy ta muốn khi model predict sai nhãn B, nó phải bị trừng phạt nặng hơn, để nhớ đời mà sau này ít predict sai nhãn B hơn, nên ta hệ số cho nhãn B trong hàm loss cao lên, hy vọng &hellip; :v</li>
+<li>&hellip;</li>
+</ul>
+
+<p>Đây có phải bản chất của deep learning, hay chỉ là cách ta cố tình gán ghép, liên tưởng nó với cách hiểu của con người. Có phải mấy cha nghĩ ra các khái niệm trên xuất phát từ quan niệm, ý tưởng kiểu triết lý như vậy rồi mới đi vào kỹ thuật, hay họ làm ngược lại ?</p>
+
+<p>Cá nhân mình thấy, hiểu theo kiểu triết lý này chỉ tốt sau khi hiểu kỹ thuật trước, còn không thì nó chỉ giúp mình 2 thứ:</p>
+
+<ul>
+<li>Chém gió tốt</li>
+<li>Đưa ra các suy đoán dựa trên cảm tính, dần dà đưa ta đến việc dùng deep learning giống như việc đi mò mẫm một cách vô định.</li>
+</ul>
+
+</main>
+
+    <footer>
+      
+<script async src="//yihui.name/js/center-img.js"></script>
+
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {
+  	inlineMath: [['$','$'], ['\\(','\\)']],
+  	displayMath: [['$$','$$'], ['\\[','\\]']],
+  	processEscapes: true
+  }});
+</script>
+
+      
+      <hr/>
+      Blog | <a href="https://github.com/ductri">Github</a> | <a href="https://www.facebook.com/ductrivn">Facebook</a>
+      
+    </footer>
+  </body>
+</html>
+
