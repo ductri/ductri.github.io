@@ -6,20 +6,117 @@
     <description>Recent content on Machine learning - The way human is teaching machine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Mon, 13 Nov 2017 00:47:21 +0700</lastBuildDate>
+    <lastBuildDate>Sun, 21 Jan 2018 13:03:43 +0700</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Fucking nó buồn</title>
-      <link>/posts/fucking-no-buon/</link>
-      <pubDate>Mon, 13 Nov 2017 00:47:21 +0700</pubDate>
+      <title>[Suy nghĩ tào lao] Static computational graph của Tensorflow</title>
+      <link>/posts/static-vs-dynamic-graph/</link>
+      <pubDate>Sun, 21 Jan 2018 13:03:43 +0700</pubDate>
       
-      <guid>/posts/fucking-no-buon/</guid>
-      <description>&lt;p&gt;Cà phê với bia đều đem lại cảm giác phấn khích. Tuy nhiên bia thì phấn khích kiêu funny, uống bia dô đách biết buồn là gì nữa, gặp chuyện gì cũng cười được :v. Thường thì cuối giai đoạn phấn khích của bia là mình đi ngủ rồi, nên không có giai đoạn hậu phấn khích.&lt;/p&gt;
+      <guid>/posts/static-vs-dynamic-graph/</guid>
+      <description>
 
-&lt;p&gt;Còn cà phê, ban đầu cũng đem lại cảm giác phấn khích nhưng mà kiểu phấn khích đó đến từ việc gia tăng tốc độ suy nghĩ, nhìn chung nó cảm giảm nhẹ cảm giác buồn chán. Nhưng cà phê luôn phải kèm theo giai đoạn hậu phấn khích, rơi vào ban đêm càng đau khổ. Hết sức, não tê liệt, mất ngủ, mọi thứ còn lại trống rỗng, trống đến khốn nạn, trống muốn hét lên cho bớt trống đi, mà chẳng thể.&lt;/p&gt;
+&lt;p&gt;Từ nay, mấy bài có tag [Suy nghĩ tào lao] là mấy bài viết xàm xàm, không có dựa trên lý thuyết, sách vở gì cả.&lt;/p&gt;
 
-&lt;p&gt;Từ nay phải xem xét lại cái trade-off của việc uống thứ nước đắng ngắt này. Chán quá uống bia đỡ hơn :3&lt;/p&gt;
+&lt;h1 id=&#34;đặt-vấn-đề&#34;&gt;Đặt vấn đề&lt;/h1&gt;
+
+&lt;p&gt;Gần đây, một em tên là Pytorch, bước chân vào giới showbiz với mục tiêu cạnh tranh ngang ngữa đàn anh đã có tiếng Tensorflow. Tất nhiên để cạnh tranh được thì em Pytorch, ngoài việc có phải có chất giọng riêng, kèm với &amp;ldquo;đội ngũ quản lý&amp;rdquo; chuyên nghiệp (Twitter, NVIDIA, SalesForce, ParisTech, CMU, Digital Reasoning, INRIA, ENS) đứng sau chống đỡ, làm marketing, &amp;hellip;, thì bản thân ẻm cũng phải có biệt tài đặc biệt gì đó. Và cái điều làm nên sự khác biệt đó là kỹ năng vũ đạo &amp;ldquo;so sexy&amp;rdquo; Dynamic computational graph.&lt;/p&gt;
+
+&lt;p&gt;Tài năng này của em Pytorch không phải mới lạ gì, ngày xưa, dàn sao thế hệ 13x (2013) có Torch, tiếc là em này diễn trên dòng nhạc kén người nghe quá (Lua), trong khi nhạc thị trường ngày đó (và cho đến bây giờ) là Python. Sau này một số em khôn hơn, biết chạy theo thị trường như Dynet (2015), Chainer(2015), đều có thể biểu diễn trên dòng nhạc Python cả, nhưng không hiểu vì sao không gây ra được đột biến gì nhiều. Chắc do đội ngũ phía sau chưa đủ mạnh để PR. Với Tensorflow lại, cũng ra đời trong khoảng thời gian đó, với Google phía sau thì em này đảm bảo đầy đủ cả chuyên môn, ngoại hình, vũ đạo, PR, marketing &amp;hellip; Cho nên em TF dễ dàng một phát lên mây.&lt;/p&gt;
+
+&lt;p&gt;Đến thế hệ 16x, em Pytorch nổi lên như một hiện tượng, mặc dù cũng chỉ là kỹ năng vũ đạo Dynamic computational graph (như đàn anh Torch, Chainer, Dynet) kèm với sự đáp ứng đúng thị hiếu người nghe trên thị trường. Và sự nổi lên của em này khiến cho đàn anh đang hót Tensorflow, phải lo sợ, liền kiếm 1 khóa training để học ngay kỹ năng vũ đạo Dynamic computational graph (Tensorflow version Fold).&lt;/p&gt;
+
+&lt;p&gt;Vậy, cái vũ đạo Dynamic computational graph có gì hay ho mà khiến Tensorflow, đã có kỹ năng thượng thừa về Static computational graph phải đua đòi theo như vậy ?&lt;/p&gt;
+
+&lt;h1 id=&#34;giờ-tới-phần-nghiêm-túc-v&#34;&gt;Giờ tới phần nghiêm túc :v&lt;/h1&gt;
+
+&lt;p&gt;Đây là các luồng suy nghĩ, rất lộn xộn, không phải bài viết kiểu nghĩ rõ ràng rồi mới viết.
+Mục tiêu của bài viết này cũng không rõ ràng, nói chung là xem xét Dynamic computational graph khác gì Static computational graph ? Và liệu Static computational graph có thể làm những thứ Dynamic computational graph làm được không ?&lt;/p&gt;
+
+&lt;h2 id=&#34;hướng-suy-nghĩ-1&#34;&gt;Hướng suy nghĩ 1&lt;/h2&gt;
+
+&lt;p&gt;Static graph của Tensorflow so với Dynamic graph của Pytorch giống như chạy kiểu biên dịch C++ so với chạy kiểu thông dịch của Python. Trong Python, máy sẽ dịch 1 dòng, rồi chạy dòng đó, rồi lặp lại như vậy với các dòng tiếp theo. Trong C++ thì máy sẽ dịch hết nguyên source code của mã máy rồi mới lấy mã máy đó để chạy.&lt;/p&gt;
+
+&lt;p&gt;Với static graph, Tensorflow cho phép người dùng dịch nguyên cái source code (cái kiến trúc mạng của mình) ra cái mã máy (graph) trước, rồi mới dùng nguyên cái mã máy đó (graph đó) để chạy. Cái flow trong graph sẽ luôn luôn cố định.&lt;/p&gt;
+
+&lt;p&gt;Nếu nhìn như vậy, thì Dynamic graph nghĩa là gì ? Chữ dynamic hiểu trong hướng này là nó cho phép mình thay đổi một phần của graph trong lúc nó chạy, tùy thuộc input. Nghe vẫn còn mơ hồ.&lt;/p&gt;
+
+&lt;h2 id=&#34;hướng-suy-nghĩ-2&#34;&gt;Hướng suy nghĩ 2&lt;/h2&gt;
+
+&lt;p&gt;Cái chữ static vs dynamic nghĩa là gì ?&lt;/p&gt;
+
+&lt;p&gt;Cái static graph cụ thể là nó cố định trước cái gì ? Đoán là số lượng operation, tất nhiên là tính trên đơn vị là matrix. Nghĩa là matrix A $\times$ matrix B thì được đếm là 1 operation, mặc dù kích thước A, B thay đổi thì số lượng phép nhân, phép cộng đối với các số scala thay đổi theo.&lt;/p&gt;
+
+&lt;p&gt;Oke, vậy với dynamic graph thì số lượng operation này có thể thay đổi được, tất nhiên sự thay đổi này phải phụ thuộc vào input.&lt;/p&gt;
+
+&lt;p&gt;Vậy cái hạn chế của static vs dynamic graph là với thèn đầu tiên, nhập bất cứ cái gì vô thì số lượng các bước tính toán đều phải cố định. Tại sao nó lại bị ràng buộc như thế nhỉ ?&lt;/p&gt;
+
+&lt;p&gt;Nghĩ về trình biên dịch xem, nó cũng dịch nguyên source code ra mã máy rồi mới chạy mã máy. TF cũng chỉ là dịch toàn bộ source code ra mã máy (computational graph) rồi mới chạy (mới thực sự tính toán). Nhưng các ngôn ngữ biên dịch vẫn chạy dynamic được mà, cụ thể là số lượng các bước tính toán của chương trình vẫn có thể thay đổi tùy theo input ?&lt;/p&gt;
+
+&lt;p&gt;Như vòng lặp for đi:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	- input n
+	- for i in range(n):
+		do_something(i)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Như trên thì số bước lặp phụ thuộc vào input người dùng, dẫn đến số lượng instructions khi chạy thiệt sẽ là dynamic, mặc dù cái mã máy đã được sinh ra trước khi chạy và nó không hề bị thay đổi ? Vậy nên chắc cũng có cơ chế nào đó để, cái Computational graph của TF được build từ trước (một cách static) mà vẫn có thể thay đổi số lượng operations phụ thuộc input chớ !!!&lt;/p&gt;
+
+&lt;h2 id=&#34;hướng-suy-nghĩ-3&#34;&gt;Hướng suy nghĩ 3&lt;/h2&gt;
+
+&lt;p&gt;Nhưng nhìn lại cách so sánh tương ứng của mình đang có một điểm sai: số lượng operations trong graph, không hề tương ứng với số instructions trong mã máy, bởi vì một điểm mấu chốt là một trong các instructions của mã máy cho phép move back một instruction trước đó đã thực thi. Điều này khiến cho việc thực thi thực sự không đơn giản là đi thẳng từ trên xuống dưới, mà có thể chạy tùm lum. WOW.&lt;/p&gt;
+
+&lt;p&gt;Vậy là cái computational graph thiếu đi phép toán này thôi đúng không ? Không phải, không đúng. Xem lại coi, với chương trình máy tính:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mã nguồn -&amp;gt; mã máy -&amp;gt; thực thi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3 step lận, trong đó 2 step đầu là cố định. Còn với Tensorflow, ta mới có 2 steps, từ&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mã nguồn -&amp;gt; thực thi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;thành ra nó không để dynamic được, nó cần 1 layer ở giữa nữa.&lt;/p&gt;
+
+&lt;p&gt;Wow, điều này có thể hiểu như chuyện con người lập trình đệ quy vậy, như bài toán tháp hà nội, cách giải quyết đơn giản nhất là làm đệ quy. Mà đệ quy nghĩa là con người vắt kiệt sức máy tính nhờ nó tìm lời giả chớ con người không tự tìm lời giải rồi chỉ dẫn từng step cho nó giải được. Thành ra con người nói với máy là:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&amp;ldquo;Ê máy, mày cứ chạy đi, quy luật chạy là như vầy nề, tao cũng không biết phải chạy bao lâu mới tới đích nhưng mà tao chắc chắn là mày cứ làm theo hướng dẫn của tao thì sẽ tới đích được.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Thèn biên dịch viên sẽ dịch y chang ngữ nghĩa của đoạn văn trên thành mã máy, nên mã máy lúc này vẫn là static. Tới lúc máy nó chạy mới là dynamic. Cái cách nó chạy (bằng stack) chính là cái cách giải thực sự mà con người mong muốn. Tensorflow thì không có trình biên dịch riêng của nó, nên con người phải chỉ chính xác cách giải luôn.&lt;/p&gt;
+
+&lt;p&gt;Trong một nhánh suy nghĩ khác, có thể coi như việc thực thi của TF chỉ là step by step, không rẻ nhánh, không lặp. Đưa cho nó 1 chuỗi instructions, nó sẽ thực thi đúng chuỗi đó theo thứ tự, xong, kết thúc.&lt;/p&gt;
+
+&lt;p&gt;Oke, cách nghĩ này rõ hơn xíu rồi, nhưng vẫn còn nhập nhằng gì đó chỗ mã máy.&lt;/p&gt;
+
+&lt;h2 id=&#34;hướng-suy-nghĩ-4-phát-triển-từ-cái-số-3&#34;&gt;Hướng suy nghĩ 4 (phát triển từ cái số 3)&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;mã nguồn -&amp;gt; mã máy -&amp;gt; thực thi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Cái Static Computational Graph chính là các steps trong phần &lt;code&gt;thực thi&lt;/code&gt;, vậy nên cái hạn chế của Tensorflow là cung cấp cho con người một interface quá gần với máy.&lt;/p&gt;
+
+&lt;p&gt;Với ngôn ngữ lập trình, nó đưa cho người dùng một interface tổng quát hơn, nên mới cần tới 3 steps. Và ăn nhau là cái chỗ chuyển từ &lt;code&gt;mã máy -&amp;gt; thực thi&lt;/code&gt;, chính chỗ này giúp cho con người &lt;strong&gt;&lt;em&gt;viết ít mà diễn ta được nhiều&lt;/em&gt;&lt;/strong&gt;, kiểu như dùng 1 dòng &lt;code&gt;for&lt;/code&gt; là có thể sai khiến máy chạy 1000 lần. Còn Tensorflow với Static Computational Graph của nó thì con người viết 1, máy hiểu 1.&lt;/p&gt;
+
+&lt;p&gt;Vậy giải pháp (hướng suy nghĩ này) để hiện thực Dynamic Computational Graph là cần định nghĩa là 1 interface/layer có tính abstract cao cái hiện có, để chen vào giữa suy nghĩ con người và cách máy thực hiện, thỏa mãn:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Con người viết ít mà diễn ta được nhiều. Diễn tả nhiều ở đây có thể dựa trên logic của các vòng lặp, logic của rẻ nhánh, &amp;hellip;&lt;/li&gt;
+&lt;li&gt;Máy đọc dô, hiểu và tự build flow để thực hiện được.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;nghĩ-tiếp-xíu-nữa&#34;&gt;Nghĩ tiếp xíu nữa&lt;/h2&gt;
+
+&lt;p&gt;Vậy, nếu vẫn chấp nhận Tensorflow, câu hỏi là nó có thể giúp mình giải quyết mọi thứ không ? Mọi thứ ý là những gì Dynamic computational graph làm được. Hay câu hỏi là nếu vẫn bất chấp dùng Tensorflow với Static Computational Graph, con người có thể hiện thực những thứ tương đương khi dùng Dynamic computational graph ?&lt;/p&gt;
+
+&lt;p&gt;Được, mà sẽ phải đau đầu hơn nhiều. Kiểu như con người vẫn có thể lập trình để giải bài tháp hà nội, nhưng không được dùng đệ quy nữa, con người phải tự giải ra các bước đi trước, sau đó chỉ đơn thuần là translate list các bước đi đó sang ngôn ngữ của máy (Tensorflow) thôi.&lt;/p&gt;
+
+&lt;h1 id=&#34;tham-khảo&#34;&gt;Tham khảo&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Phần giới thiệu lấy vài thông tin từ &lt;a href=&#34;https://medium.com/intuitionmachine/pytorch-dynamic-computational-graphs-and-modular-deep-learning-7e7f89f18d1&#34;&gt;https://medium.com/intuitionmachine/pytorch-dynamic-computational-graphs-and-modular-deep-learning-7e7f89f18d1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Phần ngày ra đời của mấy framework được lấy từ field created_at của github repository.&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
