@@ -2,12 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Machine learning - The way human is teaching machine</title>
-    <link>/posts/index.xml</link>
+    <link>/posts/</link>
     <description>Recent content in Posts on Machine learning - The way human is teaching machine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Sun, 21 Jan 2018 13:03:43 +0700</lastBuildDate>
-    <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 May 2018 12:24:58 +0700</lastBuildDate>
+    
+	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Làm sao máy hiểu được hình số 1</title>
+      <link>/posts/my-view-about-ml/</link>
+      <pubDate>Sat, 26 May 2018 12:24:58 +0700</pubDate>
+      
+      <guid>/posts/my-view-about-ml/</guid>
+      <description>Một cái hình 10*10 có thể được ánh xạ thành 1 vector 100 chiều. Coi như máy nhìn cái hình như là nó đang được input vào 1 vector 100 chiều. Hình số 1 có thể có rất nhiều biến thể: đổi 1 pixel từ trắng sang đen, dịch sang trái 1 pixel, xoay cái hình 1 độ, &amp;hellip; những thay đổi này với con người là cực nhỏ, con người vẫn hiểu đây là hình chứa số 1.</description>
+    </item>
     
     <item>
       <title>[Suy nghĩ tào lao] Static computational graph của Tensorflow</title>
@@ -15,109 +26,8 @@
       <pubDate>Sun, 21 Jan 2018 13:03:43 +0700</pubDate>
       
       <guid>/posts/static-vs-dynamic-graph/</guid>
-      <description>
-
-&lt;p&gt;Từ nay, mấy bài có tag [Suy nghĩ tào lao] là mấy bài viết xàm xàm, không có dựa trên lý thuyết, sách vở gì cả.&lt;/p&gt;
-
-&lt;h1 id=&#34;đặt-vấn-đề&#34;&gt;Đặt vấn đề&lt;/h1&gt;
-
-&lt;p&gt;Gần đây, một em tên là Pytorch, bước chân vào giới showbiz với mục tiêu cạnh tranh ngang ngữa đàn anh đã có tiếng Tensorflow. Tất nhiên để cạnh tranh được thì em Pytorch, ngoài việc có phải có chất giọng riêng, kèm với &amp;ldquo;đội ngũ quản lý&amp;rdquo; chuyên nghiệp (Twitter, NVIDIA, SalesForce, ParisTech, CMU, Digital Reasoning, INRIA, ENS) đứng sau chống đỡ, làm marketing, &amp;hellip;, thì bản thân ẻm cũng phải có biệt tài đặc biệt gì đó. Và cái điều làm nên sự khác biệt đó là kỹ năng vũ đạo &amp;ldquo;so sexy&amp;rdquo; Dynamic computational graph.&lt;/p&gt;
-
-&lt;p&gt;Tài năng này của em Pytorch không phải mới lạ gì, ngày xưa, dàn sao thế hệ 13x (2013) có Torch, tiếc là em này diễn trên dòng nhạc kén người nghe quá (Lua), trong khi nhạc thị trường ngày đó (và cho đến bây giờ) là Python. Sau này một số em khôn hơn, biết chạy theo thị trường như Dynet (2015), Chainer(2015), đều có thể biểu diễn trên dòng nhạc Python cả, nhưng không hiểu vì sao không gây ra được đột biến gì nhiều. Chắc do đội ngũ phía sau chưa đủ mạnh để PR. Với Tensorflow lại, cũng ra đời trong khoảng thời gian đó, với Google phía sau thì em này đảm bảo đầy đủ cả chuyên môn, ngoại hình, vũ đạo, PR, marketing &amp;hellip; Cho nên em TF dễ dàng một phát lên mây.&lt;/p&gt;
-
-&lt;p&gt;Đến thế hệ 16x, em Pytorch nổi lên như một hiện tượng, mặc dù cũng chỉ là kỹ năng vũ đạo Dynamic computational graph (như đàn anh Torch, Chainer, Dynet) kèm với sự đáp ứng đúng thị hiếu người nghe trên thị trường. Và sự nổi lên của em này khiến cho đàn anh đang hót Tensorflow, phải lo sợ, liền kiếm 1 khóa training để học ngay kỹ năng vũ đạo Dynamic computational graph (Tensorflow version Fold).&lt;/p&gt;
-
-&lt;p&gt;Vậy, cái vũ đạo Dynamic computational graph có gì hay ho mà khiến Tensorflow, đã có kỹ năng thượng thừa về Static computational graph phải đua đòi theo như vậy ?&lt;/p&gt;
-
-&lt;h1 id=&#34;giờ-tới-phần-nghiêm-túc-v&#34;&gt;Giờ tới phần nghiêm túc :v&lt;/h1&gt;
-
-&lt;p&gt;Đây là các luồng suy nghĩ, rất lộn xộn, không phải bài viết kiểu nghĩ rõ ràng rồi mới viết.
-Mục tiêu của bài viết này cũng không rõ ràng, nói chung là xem xét Dynamic computational graph khác gì Static computational graph ? Và liệu Static computational graph có thể làm những thứ Dynamic computational graph làm được không ?&lt;/p&gt;
-
-&lt;h2 id=&#34;hướng-suy-nghĩ-1&#34;&gt;Hướng suy nghĩ 1&lt;/h2&gt;
-
-&lt;p&gt;Static graph của Tensorflow so với Dynamic graph của Pytorch giống như chạy kiểu biên dịch C++ so với chạy kiểu thông dịch của Python. Trong Python, máy sẽ dịch 1 dòng, rồi chạy dòng đó, rồi lặp lại như vậy với các dòng tiếp theo. Trong C++ thì máy sẽ dịch hết nguyên source code của mã máy rồi mới lấy mã máy đó để chạy.&lt;/p&gt;
-
-&lt;p&gt;Với static graph, Tensorflow cho phép người dùng dịch nguyên cái source code (cái kiến trúc mạng của mình) ra cái mã máy (graph) trước, rồi mới dùng nguyên cái mã máy đó (graph đó) để chạy. Cái flow trong graph sẽ luôn luôn cố định.&lt;/p&gt;
-
-&lt;p&gt;Nếu nhìn như vậy, thì Dynamic graph nghĩa là gì ? Chữ dynamic hiểu trong hướng này là nó cho phép mình thay đổi một phần của graph trong lúc nó chạy, tùy thuộc input. Nghe vẫn còn mơ hồ.&lt;/p&gt;
-
-&lt;h2 id=&#34;hướng-suy-nghĩ-2&#34;&gt;Hướng suy nghĩ 2&lt;/h2&gt;
-
-&lt;p&gt;Cái chữ static vs dynamic nghĩa là gì ?&lt;/p&gt;
-
-&lt;p&gt;Cái static graph cụ thể là nó cố định trước cái gì ? Đoán là số lượng operation, tất nhiên là tính trên đơn vị là matrix. Nghĩa là matrix A $\times$ matrix B thì được đếm là 1 operation, mặc dù kích thước A, B thay đổi thì số lượng phép nhân, phép cộng đối với các số scala thay đổi theo.&lt;/p&gt;
-
-&lt;p&gt;Oke, vậy với dynamic graph thì số lượng operation này có thể thay đổi được, tất nhiên sự thay đổi này phải phụ thuộc vào input.&lt;/p&gt;
-
-&lt;p&gt;Vậy cái hạn chế của static vs dynamic graph là với thèn đầu tiên, nhập bất cứ cái gì vô thì số lượng các bước tính toán đều phải cố định. Tại sao nó lại bị ràng buộc như thế nhỉ ?&lt;/p&gt;
-
-&lt;p&gt;Nghĩ về trình biên dịch xem, nó cũng dịch nguyên source code ra mã máy rồi mới chạy mã máy. TF cũng chỉ là dịch toàn bộ source code ra mã máy (computational graph) rồi mới chạy (mới thực sự tính toán). Nhưng các ngôn ngữ biên dịch vẫn chạy dynamic được mà, cụ thể là số lượng các bước tính toán của chương trình vẫn có thể thay đổi tùy theo input ?&lt;/p&gt;
-
-&lt;p&gt;Như vòng lặp for đi:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;	- input n
-	- for i in range(n):
-		do_something(i)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Như trên thì số bước lặp phụ thuộc vào input người dùng, dẫn đến số lượng instructions khi chạy thiệt sẽ là dynamic, mặc dù cái mã máy đã được sinh ra trước khi chạy và nó không hề bị thay đổi ? Vậy nên chắc cũng có cơ chế nào đó để, cái Computational graph của TF được build từ trước (một cách static) mà vẫn có thể thay đổi số lượng operations phụ thuộc input chớ !!!&lt;/p&gt;
-
-&lt;h2 id=&#34;hướng-suy-nghĩ-3&#34;&gt;Hướng suy nghĩ 3&lt;/h2&gt;
-
-&lt;p&gt;Nhưng nhìn lại cách so sánh tương ứng của mình đang có một điểm sai: số lượng operations trong graph, không hề tương ứng với số instructions trong mã máy, bởi vì một điểm mấu chốt là một trong các instructions của mã máy cho phép move back một instruction trước đó đã thực thi. Điều này khiến cho việc thực thi thực sự không đơn giản là đi thẳng từ trên xuống dưới, mà có thể chạy tùm lum. WOW.&lt;/p&gt;
-
-&lt;p&gt;Vậy là cái computational graph thiếu đi phép toán này thôi đúng không ? Không phải, không đúng. Xem lại coi, với chương trình máy tính:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;mã nguồn -&amp;gt; mã máy -&amp;gt; thực thi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;3 step lận, trong đó 2 step đầu là cố định. Còn với Tensorflow, ta mới có 2 steps, từ&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;mã nguồn -&amp;gt; thực thi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;thành ra nó không để dynamic được, nó cần 1 layer ở giữa nữa.&lt;/p&gt;
-
-&lt;p&gt;Wow, điều này có thể hiểu như chuyện con người lập trình đệ quy vậy, như bài toán tháp hà nội, cách giải quyết đơn giản nhất là làm đệ quy. Mà đệ quy nghĩa là con người vắt kiệt sức máy tính nhờ nó tìm lời giả chớ con người không tự tìm lời giải rồi chỉ dẫn từng step cho nó giải được. Thành ra con người nói với máy là:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;&amp;ldquo;Ê máy, mày cứ chạy đi, quy luật chạy là như vầy nề, tao cũng không biết phải chạy bao lâu mới tới đích nhưng mà tao chắc chắn là mày cứ làm theo hướng dẫn của tao thì sẽ tới đích được.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Thèn biên dịch viên sẽ dịch y chang ngữ nghĩa của đoạn văn trên thành mã máy, nên mã máy lúc này vẫn là static. Tới lúc máy nó chạy mới là dynamic. Cái cách nó chạy (bằng stack) chính là cái cách giải thực sự mà con người mong muốn. Tensorflow thì không có trình biên dịch riêng của nó, nên con người phải chỉ chính xác cách giải luôn.&lt;/p&gt;
-
-&lt;p&gt;Trong một nhánh suy nghĩ khác, có thể coi như việc thực thi của TF chỉ là step by step, không rẻ nhánh, không lặp. Đưa cho nó 1 chuỗi instructions, nó sẽ thực thi đúng chuỗi đó theo thứ tự, xong, kết thúc.&lt;/p&gt;
-
-&lt;p&gt;Oke, cách nghĩ này rõ hơn xíu rồi, nhưng vẫn còn nhập nhằng gì đó chỗ mã máy.&lt;/p&gt;
-
-&lt;h2 id=&#34;hướng-suy-nghĩ-4-phát-triển-từ-cái-số-3&#34;&gt;Hướng suy nghĩ 4 (phát triển từ cái số 3)&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;mã nguồn -&amp;gt; mã máy -&amp;gt; thực thi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Cái Static Computational Graph chính là các steps trong phần &lt;code&gt;thực thi&lt;/code&gt;, vậy nên cái hạn chế của Tensorflow là cung cấp cho con người một interface quá gần với máy.&lt;/p&gt;
-
-&lt;p&gt;Với ngôn ngữ lập trình, nó đưa cho người dùng một interface tổng quát hơn, nên mới cần tới 3 steps. Và ăn nhau là cái chỗ chuyển từ &lt;code&gt;mã máy -&amp;gt; thực thi&lt;/code&gt;, chính chỗ này giúp cho con người &lt;strong&gt;&lt;em&gt;viết ít mà diễn ta được nhiều&lt;/em&gt;&lt;/strong&gt;, kiểu như dùng 1 dòng &lt;code&gt;for&lt;/code&gt; là có thể sai khiến máy chạy 1000 lần. Còn Tensorflow với Static Computational Graph của nó thì con người viết 1, máy hiểu 1.&lt;/p&gt;
-
-&lt;p&gt;Vậy giải pháp (hướng suy nghĩ này) để hiện thực Dynamic Computational Graph là cần định nghĩa là 1 interface/layer có tính abstract cao cái hiện có, để chen vào giữa suy nghĩ con người và cách máy thực hiện, thỏa mãn:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Con người viết ít mà diễn ta được nhiều. Diễn tả nhiều ở đây có thể dựa trên logic của các vòng lặp, logic của rẻ nhánh, &amp;hellip;&lt;/li&gt;
-&lt;li&gt;Máy đọc dô, hiểu và tự build flow để thực hiện được.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;nghĩ-tiếp-xíu-nữa&#34;&gt;Nghĩ tiếp xíu nữa&lt;/h2&gt;
-
-&lt;p&gt;Vậy, nếu vẫn chấp nhận Tensorflow, câu hỏi là nó có thể giúp mình giải quyết mọi thứ không ? Mọi thứ ý là những gì Dynamic computational graph làm được. Hay câu hỏi là nếu vẫn bất chấp dùng Tensorflow với Static Computational Graph, con người có thể hiện thực những thứ tương đương khi dùng Dynamic computational graph ?&lt;/p&gt;
-
-&lt;p&gt;Được, mà sẽ phải đau đầu hơn nhiều. Kiểu như con người vẫn có thể lập trình để giải bài tháp hà nội, nhưng không được dùng đệ quy nữa, con người phải tự giải ra các bước đi trước, sau đó chỉ đơn thuần là translate list các bước đi đó sang ngôn ngữ của máy (Tensorflow) thôi.&lt;/p&gt;
-
-&lt;h1 id=&#34;tham-khảo&#34;&gt;Tham khảo&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Phần giới thiệu lấy vài thông tin từ &lt;a href=&#34;https://medium.com/intuitionmachine/pytorch-dynamic-computational-graphs-and-modular-deep-learning-7e7f89f18d1&#34;&gt;https://medium.com/intuitionmachine/pytorch-dynamic-computational-graphs-and-modular-deep-learning-7e7f89f18d1&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Phần ngày ra đời của mấy framework được lấy từ field created_at của github repository.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Từ nay, mấy bài có tag [Suy nghĩ tào lao] là mấy bài viết xàm xàm, không có dựa trên lý thuyết, sách vở gì cả.
+Đặt vấn đề Gần đây, một em tên là Pytorch, bước chân vào giới showbiz với mục tiêu cạnh tranh ngang ngữa đàn anh đã có tiếng Tensorflow. Tất nhiên để cạnh tranh được thì em Pytorch, ngoài việc có phải có chất giọng riêng, kèm với &amp;ldquo;đội ngũ quản lý&amp;rdquo; chuyên nghiệp (Twitter, NVIDIA, SalesForce, ParisTech, CMU, Digital Reasoning, INRIA, ENS) đứng sau chống đỡ, làm marketing, &amp;hellip;, thì bản thân ẻm cũng phải có biệt tài đặc biệt gì đó.</description>
     </item>
     
     <item>
@@ -126,30 +36,9 @@ Mục tiêu của bài viết này cũng không rõ ràng, nói chung là xem x�
       <pubDate>Sat, 28 Oct 2017 10:14:29 +0700</pubDate>
       
       <guid>/posts/tan-man-ve-chuyen-hoc-hoc-may/</guid>
-      <description>&lt;p&gt;Ngày xưa học toán, điều quan trọng nhất khi đọc 1 lời giải là làm sao hiểu được cái ẩn ý khốn nạn được giấu trong cách giải. Hiểu được cái đó mới hy vọng áp dụng cho các bài khác.&lt;/p&gt;
-
-&lt;p&gt;Có bữa nghe một thầy chia sẻ, hiểu làm sao giải thuật chạy được là tốt, nhưng cốt cán hơn là hiểu được &amp;ldquo;the idea behind the algorithm&amp;rdquo;.&lt;/p&gt;
-
-&lt;p&gt;Và mấy cái ẩn ý nó thường trừu tượng và có gì đó hơi tiết lý. Vậy là về cơ bản, ta đi từ chi tiết kỹ thuật dần phát triển lên và hiểu triết lý đằng sau đó.&lt;/p&gt;
-
-&lt;p&gt;Đến lượt deep learning thì trời, thứ tự hiểu của mình sao đi ngược lại quá. Đầy những bài viết nói triết lý của deep learning, toàn những cách hiểu trừu tượng kiểu con người nói với nhau:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Giải thích về filters trong CNN: filter giúp model học được những cạnh, góc, rồi filter nhận dạng những feature bậc thấp được những filter bậc cao hơn tổng hợp lại, rồi những góc, cạnh dần hợp lại giúp model hiểu những khái niệm abstract hơn, rồi cuối cùng qua một cái FC để tổng hợp hết lại, cho ra cái prediciton &amp;hellip;&lt;/li&gt;
-&lt;li&gt;Giải thích về ảnh hưởng của mất cân bằng dữ liệu: khi nhãn A quá nhiều so với nhãn B, model chỉ cần học mỗi nhãn A là làm cái loss giảm nhiều lắm rồi, từ đó model cứ predict ra mỗi nhãn A cũng đủ tốt (đối với nó)&lt;/li&gt;
-&lt;li&gt;Giải thích về weighted loss: Nhãn B ít quá, mà sai nhãn B thì rất không tốt (so với sai nhãn A), vậy ta muốn khi model predict sai nhãn B, nó phải bị trừng phạt nặng hơn, để nhớ đời mà sau này ít predict sai nhãn B hơn, nên ta hệ số cho nhãn B trong hàm loss cao lên, hy vọng &amp;hellip; :v&lt;/li&gt;
-&lt;li&gt;&amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Đây có phải bản chất của deep learning, hay chỉ là cách ta cố tình gán ghép, liên tưởng nó với cách hiểu của con người. Có phải mấy cha nghĩ ra các khái niệm trên xuất phát từ quan niệm, ý tưởng kiểu triết lý như vậy rồi mới đi vào kỹ thuật, hay họ làm ngược lại ?&lt;/p&gt;
-
-&lt;p&gt;Cá nhân mình thấy, hiểu theo kiểu triết lý này chỉ tốt sau khi hiểu kỹ thuật trước, còn không thì nó chỉ giúp mình 2 thứ:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Chém gió tốt&lt;/li&gt;
-&lt;li&gt;Đưa ra các suy đoán dựa trên cảm tính, dần dà đưa ta đến việc dùng deep learning giống như việc đi mò mẫm một cách vô định.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+      <description>Ngày xưa học toán, điều quan trọng nhất khi đọc 1 lời giải là làm sao hiểu được cái ẩn ý khốn nạn được giấu trong cách giải. Hiểu được cái đó mới hy vọng áp dụng cho các bài khác.
+Có bữa nghe một thầy chia sẻ, hiểu làm sao giải thuật chạy được là tốt, nhưng cốt cán hơn là hiểu được &amp;ldquo;the idea behind the algorithm&amp;rdquo;.
+Và mấy cái ẩn ý nó thường trừu tượng và có gì đó hơi tiết lý.</description>
     </item>
     
     <item>
@@ -158,156 +47,7 @@ Mục tiêu của bài viết này cũng không rõ ràng, nói chung là xem x�
       <pubDate>Sat, 23 Sep 2017 22:33:18 +0700</pubDate>
       
       <guid>/posts/bias-variance/</guid>
-      <description>
-
-&lt;blockquote&gt;
-&lt;p&gt;Chữ &lt;em&gt;bias&lt;/em&gt; này xuất hiện khá nhiều khi nói về machine learning, một ví dụ gần đây là status trên FB của lão &lt;a href=&#34;https://www.facebook.com/yann.lecun/posts/10154777754622143&#34;&gt;Yann LeCun&lt;/a&gt;. Ngày xưa gặp chữ &lt;em&gt;bias&lt;/em&gt; trước, nghe dịch là &amp;ldquo;lệch&amp;rdquo;, hoặc &amp;ldquo;chệch&amp;rdquo;, đáng sợ hơn nữa là &amp;ldquo;thiên vị&amp;rdquo;. Lúc học ML, thầy cứ nói các giải thuật học máy phải có &lt;em&gt;bias&lt;/em&gt;, không có là nó không &amp;ldquo;học&amp;rdquo; được. Nghe cứ như triết học, ko hiểu chút gì.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Đoạn giới thiệu ở trên không hẳn sai, mà nó dễ gây nhầm lẫn, tại bản thân mình lúc viết đoạn intro trên cũng bị nhầm lẫn. Nhờ 1 chị xinh đẹp góp ý, mới nhận ra chữ &amp;ldquo;&lt;em&gt;bias&lt;/em&gt;&amp;rdquo; có những ý nghĩa khác nhau trong những ngữ cảnh khác nhau, sơ bộ có 3 trường hợp chính:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;em&gt;bias&lt;/em&gt; được dùng trong Neuron Network, Regression, &amp;hellip; thường mang ý chỉ hệ số &lt;em&gt;bias&lt;/em&gt; ($b$) trong công thức $y=ax + b$. Có thể ngày trước thầy nói không có bias thì giải thuật không thể học được là ý chỉ chữ &lt;em&gt;bias&lt;/em&gt; này.&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;bias&lt;/em&gt; trong cái post &lt;a href=&#34;https://www.facebook.com/yann.lecun/posts/10154777754622143&#34;&gt;Yann LeCun&lt;/a&gt; &amp;ldquo;hình như&amp;rdquo; ý chỉ tới &lt;em&gt;inductive bias&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;bias&lt;/em&gt; nói trong bài là &lt;em&gt;bias of an estimator&lt;/em&gt;, đây là khái niệm đến từ xác suất thống kê. Từ chỗ này đến hết bài, chữ &lt;em&gt;bias&lt;/em&gt; được hiểu thuộc loại thứ 3 này nghe :D.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Trước khi đi vào định nghĩa cho từng cái, mình dùng chung các thông tin sau như ngữ cảnh mặc định:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Cho trước tập dữ liệu $D={x^{(1)}, x^{(2)}, &amp;hellip;, x^{(n)}}$. Các $x^{(i)}$ đều có &lt;em&gt;indepedent identically distribution (i.i.d)&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;Tập dữ liệu $D$ chỉ là một sampling may mắn có được từ không gian data $G$. Bản chất của không gian data $G$ có thể được mô tả thông ra một tập các tham số $\theta$, ví dụ như mean, max, min, &amp;hellip;&lt;/li&gt;
-&lt;li&gt;Một &lt;em&gt;Estimator&lt;/em&gt; (ước lượng) $\hat{\theta}$ được hiểu là một hàm bất kỳ, với đầu vào là tập dữ liệu $D$, đầu ra cố gắng trả về các tham số $\theta$ mô tả $G$. Với định nghĩa trên, ta có thể xem mọi model &lt;em&gt;supervised learning&lt;/em&gt; trong học máy đều có thể coi là &lt;em&gt;estimator&lt;/em&gt;, vì đường nào lúc training ta cũng nhận vào tất cả data từ $D$&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;1-bias&#34;&gt;1. Bias&lt;/h2&gt;
-
-&lt;p&gt;Cho ví dụ, mean thực tế của $G$ là $5.5$, nghĩa là $\theta=5.5$ nhưng chúng ta không đời nào biết được điều này bởi vì chúng ta không bao giờ có được $G$. Nhiệm vụ của chúng ta là cố gắng đoán ra giá trị này thông qua &lt;em&gt;estimator&lt;/em&gt; $\hat{\theta}$, mà thằng này $\hat{\theta}$ lại dựa vào data $D$. Mong muốn là nó sẽ càng gần $5.5$ càng tốt. Người ta dựa trên cái gọi là &amp;ldquo;gần&amp;rdquo; đó để đánh giá xem &lt;em&gt;estimator&lt;/em&gt; của thằng nào tốt hơn. Và chữ &amp;ldquo;&lt;em&gt;bias&lt;/em&gt;&amp;rdquo; ra đời từ đó.&lt;/p&gt;
-
-&lt;h3 id=&#34;1-1-định-nghĩa-toán-học&#34;&gt;1.1 Định nghĩa toán học:&lt;/h3&gt;
-
-&lt;p&gt;$$\text{bias}(\hat{\theta})= \mathbb{E}(\hat{\theta}) - \theta \tag{1} \label{bias}$$&lt;/p&gt;
-
-&lt;p&gt;Nhìn công thức trên mới hiểu cái nghĩa &amp;ldquo;lệch/chệch&amp;rdquo; của từ &lt;em&gt;bias&lt;/em&gt;. Nếu $\text{bias}(\hat{\theta}) \neq 0$ thì ta gọi &lt;em&gt;estimator&lt;/em&gt; bị &lt;em&gt;biased&lt;/em&gt; (&lt;em&gt;biased estimator&lt;/em&gt;), còn $\text{bias}(\hat{\theta}) = 0$ thì ta gọi là &lt;em&gt;unbiased estimator&lt;/em&gt;. Rất tự nhiên là cái &lt;em&gt;unbiased estimator&lt;/em&gt; tốt hơn &lt;em&gt;biased estimator&lt;/em&gt;, vì cái mình ước đoán nó đúng y chang cái thiệt luôn. Giờ thử tính vài cái xem khi nào &lt;em&gt;bias&lt;/em&gt; khác $0$, khi nào bằng $0$.&lt;/p&gt;
-
-&lt;h4 id=&#34;ví-dụ-1&#34;&gt;Ví dụ 1:&lt;/h4&gt;
-
-&lt;p&gt;Cho $G$ được mô tả bởi hàm phân phối xác suất Bernoulli, hàm này rất đơn giản, chỉ cần 1 tham số mean, gọi nó là $\theta$ luôn cho giống ở trên. Trong trường hợp này, $\theta$ là một số thực R, nằm trong khoảng $(0;1)$. Tập data sample $D={x^{(1)}, x^{(2)}, &amp;hellip;, x^{(n)}}$ được chọn ra từ $G$.&lt;/p&gt;
-
-&lt;p&gt;Rồi, giờ chúng ta đi mò mẫm tìm $\theta$ dựa trên những gì đã biết (là $D$). Con tim ta mách bảo: lấy trung bình mẫu của $D$ đi, có vẻ nó sẽ khá gần với mean thiệt của $G$ luôn đó. Nghe theo tiếng gọi con tim, ta không ngần ngại chọn estimator $\hat\theta$ như sau:
-$$\hat\theta = \frac{1}{n} \sum_{i=1}^{n} x^{(i)}$$
-Nhưng lý trí không tin mù quáng như vậy được. Bây giờ &lt;a href=&#34;https://youtu.be/BkBqYlLjIeA?t=86&#34;&gt;chọn con tim hay là nghe lý trí&lt;/a&gt;, lý trí đòi đánh giá &lt;em&gt;estimator&lt;/em&gt; $\hat{\theta}$ bằng công thức $(\ref{bias})$.&lt;/p&gt;
-
-&lt;p&gt;$$
-\begin{aligned}
-\text{bias}(\hat\theta) &amp;amp;= \mathbb{E}(\hat{\theta}) - \theta \\&lt;br /&gt;
-&amp;amp;= \mathbb{E}(\frac{1}{n} \sum_{i=1}^{n} x^{(i)}) - \theta \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n} \sum_{i=1}^{n} \mathbb{E}(x^{(i)}) - \theta \text{ (Tính chất của } \mathbb{E})\\&lt;br /&gt;
-&amp;amp;= \frac{1}{n} \sum_{i=1}^{n} \theta - \theta \text{ (Tính chất của phân phối Bernoulli } \mathbb{E}(x^{(i)})=\theta )\\&lt;br /&gt;
-&amp;amp;= 0
-\end{aligned}
-$$
-Quá đẹp, vậy estimator $\hat{\theta}$ không bị &lt;em&gt;bias&lt;/em&gt;, con tim không cần suy nghĩ cũng đúng.&lt;/p&gt;
-
-&lt;h4 id=&#34;ví-dụ-2&#34;&gt;Ví dụ 2:&lt;/h4&gt;
-
-&lt;p&gt;Cho $G$ được mô tả bởi hàm phân phối xác suất Gaussian $\mathcal{N}(\mu, \sigma^2)$. Tập data sample $D={x^{(1)}, x^{(2)}, &amp;hellip;, x^{(n)}}$ được chọn ra từ $G$.
-Yêu câu giờ là đi tìm $\sigma^2$ từ $D$.&lt;/p&gt;
-
-&lt;p&gt;Cũng là con tim mách bảo: vì $\sigma^2$ là hệ số Variance của Gaussian, nên như ví dụ 1, mình cũng đi tìm Variance của $D$ là cho kết quả đúng thôi.
-Gọi $\hat{\sigma}^2$ là &lt;em&gt;estimator&lt;/em&gt; của chúng ta, tức là:
-$$\hat{\sigma}^2 = \text{Var} (D)$$
-Check lại &lt;em&gt;bias&lt;/em&gt;:
-\begin{align}
-\text{bias}(\hat{\sigma}^2) &amp;amp;= \mathbb{E}(\hat{\sigma}^2) - \sigma^2 \\&lt;br /&gt;
-&amp;amp;= \mathbb{E}[\text{Var}(D)] - \sigma^2 \\&lt;br /&gt;
-\mathbb{E}[\text{Var}(D)] &amp;amp;= \mathbb{E}\{\mathbb{E}[(x^{(i)} - \hat{\mu})^2]\}  \text{ (Định nghĩa của Var, với } \hat{\mu} = \frac{1}{n}\sum_{i=1}^{n}x^{(i)}) \\&lt;br /&gt;
-&amp;amp;= \mathbb{E}[\frac{1}{n}\sum_{i=1}^{n}(x^{(i)} - \hat{\mu})^2]  \text{ (Định nghĩa của } \mathbb{E}) \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n}\mathbb{E}[\sum_{i=1}^{n}(x^{(i)} - \frac{1}{n}\sum_{j=1}^{n}x^{(j)})^2]  \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n}\mathbb{E}[\sum_{i=1}^{n}\frac{((n-1)x^{(i)} - \sum_{j=1, j\neq i}^{n}x^{(j)})^2}{n^2}]  \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n}\mathbb{E}[\sum_{i=1}^{n}\frac{(n-1)^2x^{(i)2} - 2 \times (n-1)x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)} + (\sum_{j=1, j\neq i}^{n}x^{(j)})^2 }{n^2}]  \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n}\sum_{i=1}^{n}\frac{(n-1)^2\mathbb{E}[x^{2}] - 2 \times (n-1)\mathbb{E}[x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)}] + \mathbb{E}[(\sum_{j=1, j\neq i}^{n}x^{(j)})^2] }{n^2}]  \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2\mathbb{E}[x^{2}] - 2 \times (n-1)\mathbb{E}[x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)}] + \mathbb{E}[(\sum_{j=1, j\neq i}^{n}x^{(j)})^2]] \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2A - 2 \times (n-1)B + C]  \tag{2.1} \label{2.1} \\&lt;br /&gt;
-\end{align}
-Căng dữ, tính từng cái $A, B, C$ cho đỡ nhức đầu:
-\begin{align}
-A &amp;amp;= \mathbb{E}[x^{2}] \tag{2.2} \label{2.2} \\&lt;br /&gt;
-B &amp;amp;= \mathbb{E}[x^{(i)} \times \sum_{j=1, j\neq i}^{n}x^{(j)}]\\&lt;br /&gt;
-&amp;amp;= \mathbb{E}[x^{(i)}] \times \mathbb{E}[\sum_{j=1, j\neq i}^{n}x^{(j)}] \text{ (} x^{(i)} \text{độc lập với} \sum_{j=1, j\neq i}^{n}x^{(j)}) \\&lt;br /&gt;
-&amp;amp;= \mathbb{E}[x] \times \sum_{j=1, j\neq i}^{n}\mathbb{E}[x] \\&lt;br /&gt;
-&amp;amp;= \mathbb{E}[x] \times (n-1)\mathbb{E}[x] \\&lt;br /&gt;
-&amp;amp;= (n-1)(\mathbb{E}[x])^2\\\ \tag{2.3} \label{2.3}
-\end{align}
-Để tính $C$, không mất tính tổng quá, chọn $i=1$
-\begin{align}
-C &amp;amp;= \mathbb{E}[(\sum_{j=1, j\neq i}^{n}x^{(j)})^2] \\&lt;br /&gt;
-C &amp;amp;= \mathbb{E}[(x^{(2)} + x^{(3)} + &amp;hellip; + x^{(n)})^2] \\&lt;br /&gt;
-&amp;amp;= \mathbb{E}[(x^{(2)} + x^{(3)} + &amp;hellip; + x^{(n)}) \times (x^{(2)} + x^{(3)} + &amp;hellip; + x^{(n)})] \\&lt;br /&gt;
-&amp;amp;= \begin{aligned}[t]
-\mathbb{E}[
-&amp;amp;x^{(2)2} + x^{(2)}x^{(3)} + &amp;hellip; + x^{(2)}x^{(n)} + \\&lt;br /&gt;
-&amp;amp;x^{(3)}x^{(2)} + x^{(3)2} + &amp;hellip; + x^{(3)}x^{(n)} + \\&lt;br /&gt;
-&amp;amp;x^{(4)}x^{(2)} + x^{(4)}x^{(3)} + &amp;hellip; + x^{(4)}x^{(n)} + \\&lt;br /&gt;
-&amp;amp;x^{(n)}x^{(2)} + x^{(n)}x^{(3)} + &amp;hellip; + x^{(n)2}]
-\end{aligned} \\&lt;br /&gt;
-&amp;amp;= \begin{aligned}[t]
-[
-&amp;amp;\mathbb{E}(x^{(2)2}) + \mathbb{E}(x^{(2)}x^{(3)}) + &amp;hellip; + \mathbb{E}(x^{(2)}x^{(n)}) + \\&lt;br /&gt;
-&amp;amp;\mathbb{E}(x^{(3)}x^{(2)}) + \mathbb{E}(x^{(3)2}) + &amp;hellip; + \mathbb{E}(x^{(3)}x^{(n)}) + \\&lt;br /&gt;
-&amp;amp;\mathbb{E}(x^{(4)}x^{(2)}) + \mathbb{E}(x^{(4)}x^{(3)}) + &amp;hellip; + \mathbb{E}(x^{(4)}x^{(n)}) + \\&lt;br /&gt;
-&amp;amp;\mathbb{E}(x^{(n)}x^{(2)}) + \mathbb{E}(x^{(n)}x^{(3)}) + &amp;hellip; + \mathbb{E}(x^{(n)2})]
-\end{aligned} \\&lt;br /&gt;
-&amp;amp;=(n-1)\mathbb{E}[x^2] + (n-1)(n-2)(\mathbb{E}[x])^2 \tag{2.4} \label{2.4} \\&lt;br /&gt;
-\end{align}&lt;/p&gt;
-
-&lt;p&gt;Thay hết \ref{2.2}, \ref{2.3}, \ref{2.4} vào \ref{2.1}, ta có:
-\begin{align}
-\mathbb{E}[\text{Var}(D)] &amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2A - 2 \times (n-1)B + C] \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[(n-1)^2\mathbb{E}[x^{2}] - 2 \times (n-1)^2(\mathbb{E}[x])^2 + (n-1)\mathbb{E}[x^2] + (n-1)(n-2)(\mathbb{E}[x])^2] \\&lt;br /&gt;
-&amp;amp;= \frac{1}{n^3}\sum_{i=1}^{n}[n(n-1)\mathbb{E}[x^{2}] - n(n-1)(\mathbb{E}[x])^2 ] \\&lt;br /&gt;
-&amp;amp;= \frac{n-1}{n^2}\sum_{i=1}^{n}[\mathbb{E}[x^{2}] - (\mathbb{E}[x])^2 ] \\&lt;br /&gt;
-&amp;amp;= \frac{n-1}{n^2}\sum_{i=1}^{n}\text{Var}(x) \text{ (Định nghĩa của Var, tham khảo [3])} \\&lt;br /&gt;
-&amp;amp;= \frac{n-1}{n}\text{Var}(x) \\&lt;br /&gt;
-&amp;amp;= \frac{n-1}{n}\sigma^2 \\&lt;br /&gt;
-\end{align}&lt;/p&gt;
-
-&lt;p&gt;Từ đó:
-\begin{align}
-\text{bias}(\hat{\sigma}^2) &amp;amp;= \mathbb{E}(\hat{\sigma}^2) - \sigma^2 \\&lt;br /&gt;
-&amp;amp;= \frac{n-1}{n}\sigma^2 - \sigma^2 \\&lt;br /&gt;
-&amp;amp;= \frac{-1}{n}\sigma^2 \neq 0 \\&lt;br /&gt;
-\end{align}
-Sau chặng đường dài, lần này lý trí thắng, &lt;em&gt;estimator&lt;/em&gt; này bị &lt;em&gt;bias&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;1-2-kết-lại&#34;&gt;1.2 Kết lại&lt;/h3&gt;
-
-&lt;p&gt;Hai cái ví dụ, một mớ tính toán chỉ là phần kỹ thuật, cốt lõi là để thấy rằng những cảm nhận ban đầu tưởng như đúng (như $\mathbb{E}$ của $D$ thì may mắn đúng bằng $\mathbb{E}$ của $G$ luôn), nhưng nhiều trường hợp lại sai khác ($\text{Var}$ của $G$ với phân phối Gaussian không bằng $\text{Var}$ của $D$).&lt;/p&gt;
-
-&lt;p&gt;Về phần tính toán, ví dụ 1 thì đơn giản, tham khảo theo sách [1], ví dụ 2 căng hơn xíu, cái cách trên là mình tự làm (có phần bỏ sức trâu bò), có cách chứng minh tinh tế hơn, tham khảo số tại &lt;a href=&#34;https://stats.stackexchange.com/questions/136673/how-to-understand-that-mle-of-variance-is-*bias*ed-in-a-gaussian-distribution/136703#136703?s=908df983477d41b1b3ed0e34a316166e&#34;&gt;đây&lt;/a&gt;. Ví dụ 2 này cũng được nhắc đến trong sách số [2], tác giả dùng để đưa đến khái niệm &lt;em&gt;bias&lt;/em&gt;, nhưng chỉ &lt;del&gt;lước&lt;/del&gt; lướt qua.&lt;/p&gt;
-
-&lt;p&gt;Toàn bộ nội dung chính của bài viết này lấy từ 5.4.2 sách [1] (trừ phần chứng minh của ví dụ 2, sách không thèm làm).&lt;/p&gt;
-
-&lt;p&gt;Câu hỏi đặt ra là:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Việc một estimator bị &lt;em&gt;bias&lt;/em&gt; thì ảnh hưởng như thế nào đến quá trình training ?&lt;/li&gt;
-&lt;li&gt;Như phần đầu có nói, trực giác thì thấy rằng &lt;em&gt;unbiased estimator&lt;/em&gt; thì tốt hơn &lt;em&gt;biased estimator&lt;/em&gt;, tuy nhiên có phải luôn luôn như vậy ? Có phải trong thực tế chọn &lt;em&gt;estimator&lt;/em&gt; không &lt;em&gt;bias&lt;/em&gt; luôn luôn là tốt nhất ?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;2-variance&#34;&gt;2. Variance&lt;/h2&gt;
-
-&lt;p&gt;Đuối &amp;hellip;&lt;/p&gt;
-
-&lt;h2 id=&#34;tham-khảo&#34;&gt;Tham khảo&lt;/h2&gt;
-
-&lt;p&gt;[1] I. Goodfellow, Y. Bengio, and A. Courville, Deep Learning, vol. 13, no. 1. 2015.&lt;/p&gt;
-
-&lt;p&gt;[2] Bishop, Christopher M. &amp;ldquo;Pattern recognition.&amp;rdquo; Machine Learning 128 (2006): 1-58.&lt;/p&gt;
-
-&lt;p&gt;[3] Probability and Statistics
-Cookbook: &lt;a href=&#34;http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf&#34;&gt;http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf&lt;/a&gt;&lt;/p&gt;
-</description>
+      <description>Chữ bias này xuất hiện khá nhiều khi nói về machine learning, một ví dụ gần đây là status trên FB của lão Yann LeCun. Ngày xưa gặp chữ bias trước, nghe dịch là &amp;ldquo;lệch&amp;rdquo;, hoặc &amp;ldquo;chệch&amp;rdquo;, đáng sợ hơn nữa là &amp;ldquo;thiên vị&amp;rdquo;. Lúc học ML, thầy cứ nói các giải thuật học máy phải có bias, không có là nó không &amp;ldquo;học&amp;rdquo; được. Nghe cứ như triết học, ko hiểu chút gì.</description>
     </item>
     
     <item>
@@ -316,74 +56,8 @@ Cookbook: &lt;a href=&#34;http://pages.cs.wisc.edu/~tdw/files/cookbook-en.pdf&#3
       <pubDate>Sun, 28 May 2017 22:19:54 +0700</pubDate>
       
       <guid>/posts/gradient-what-the-fuck-is-this/</guid>
-      <description>
-
-&lt;p&gt;&lt;em&gt;Gradient Descent&lt;/em&gt; là cụm từ được nghe rất nhiều khi học về MLP, Neuron Network, hay CNN. Quen em nó nhau lâu rồi, nhìn mặt nhau miết, tưởng mình đã hiểu nhau, mà tới nay mới vẽ lẽ vừa không hiểu và vừa hiểu sai em nó quá trời&amp;hellip; Nay nhờ hoàn cảnh đưa đẩy mà mình hiểu thêm được em nó chút xíu.&lt;/p&gt;
-
-&lt;h3 id=&#34;gradient-em-nó-là-ai&#34;&gt;Gradient - em nó là ai ?&lt;/h3&gt;
-
-&lt;p&gt;&lt;em&gt;Gradient&lt;/em&gt; của một hàm $f(x_1, x_2, &amp;hellip;, x_n)$, được ký hiệu $\nabla f$ là một vector $n$ chiều, mà mỗi thành phần trong vector đó là một đạo hàm riêng phần (&lt;em&gt;partial derivative&lt;/em&gt;) theo từng biến của hàm đó:
-$$
-\bbox[20px,border:1px solid black] {
-\nabla f=(\frac{df}{dx_1}, \frac{df}{dx_1}, &amp;hellip;, \frac{df}{dx_n})
-}
-$$&lt;/p&gt;
-
-&lt;p&gt;Sau đây là 2 điều mình mới hiểu ra:&lt;/p&gt;
-
-&lt;h3 id=&#34;1-vector-gradient-tại-một-điểm-cho-mình-biết-từ-điểm-đó-hướng-nào-làm-tăng-giá-trị-f-nhiều-nhất-có-thể-tại-sao-lại-là-tăng&#34;&gt;&lt;strong&gt;1. Vector gradient tại một điểm cho mình biết từ điểm đó, hướng nào làm tăng giá trị $f$ nhiều nhất có thể. Tại sao lại là tăng ?&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;Chấp nhận điều này lâu rồi, tự nhiên hôm qua mới ngớ ra: Tại sao lại là hướng tăng (Hình 1) mà không phải là hướng giảm ?&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;/img/gradient-what-the-fuck-is-this/myth1.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Hình 1.&lt;/strong&gt; Hướng của vector &lt;em&gt;gradient&lt;/em&gt; luôn chỉ về phía cao hơn&lt;/p&gt;
-
-&lt;p&gt;Wow wow, là vì do ông nào định nghĩa nó như vậy :v. Mỗi thành phần của vector &lt;em&gt;gradient&lt;/em&gt; là một đạo hàm riêng phần, giờ thử xét $\frac{df}{dx}$.
-Định nghĩa đạo hàm theo [1]:
-$$\frac{df}{dx} = \frac{f(x+\epsilon)-f(x)}{\epsilon}$$
-với $\epsilon&amp;gt;0$ và đủ nhỏ. Mấu chốt đều nằm ở ông $\epsilon$, vì $ \epsilon&amp;gt;0$, nên chiều của $\frac{df}{dx}$ chỉ còn phụ thuộc vào tử số.&lt;/p&gt;
-
-&lt;p&gt;Từ đó ta xét 2 trường hợp $\vec{AB}$ và $\vec{CD}$ sẽ hiểu:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Vector AB: $$\frac{df}{dx}=\frac{f(A) - f(B)}{x_A - x_B}$$
-Vì $f(A)&amp;lt;f(B)$ (trong trường hợp này), cho nên tử âm, $\vec{AB}$ chỉ về hướng âm, cũng là hướng của $f$ tăng.&lt;/li&gt;
-&lt;li&gt;Vector CD: $$\frac{df}{dx}=\frac{f(D) - f( C)}{x_D - x_C}$$
-Vì $f( C)&amp;lt;f(D)$ (trong trường hợp này), cho nên tử dương, $\vec{CD}$ chỉ về hướng dương, cũng là hướng của $f$ tăng.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Vì vậy mà $\frac{df}{dx}$ luôn chỉ về hướng $f$ tăng.&lt;/p&gt;
-
-&lt;h3 id=&#34;2-vector-gradient-trực-giao-perpendicular-với-contour-line-của-hàm&#34;&gt;&lt;strong&gt;2. Vector &lt;em&gt;gradient&lt;/em&gt; trực giao (&lt;em&gt;perpendicular&lt;/em&gt;) với &lt;em&gt;contour line&lt;/em&gt; của hàm&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;Điều này nghe bực mình + rối rắm kinh khủng khi cứ nhớ lớp 12, được học đạo hàm của hàm $y = f(x)$ tại $x_0$ chính là pháp tuyến của $f(x)$ tại $x_0$. Rà lại, đọc về đạo hàm (&lt;em&gt;derivative&lt;/em&gt;) thấy đâu đâu cũng vẽ hình tiếp tuyến [1], cái khỉ gì giờ lại là trực giao ? Với vừa nãy ở trên mới nói là hướng làm tăng $f$, sao giờ lại có chuyện trực giao ở đây ?&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;/img/gradient-what-the-fuck-is-this/myth2a.png&#34; alt=&#34;Example image&#34; /&gt;
-&lt;img src=&#34;/img/gradient-what-the-fuck-is-this/myth2b.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;strong&gt;Hình 2.&lt;/strong&gt; Vector trong hình 2.a hay 2.b mới đúng là vector &lt;em&gt;gradient&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;Mấu chốt nằm ở khái niệm &lt;em&gt;contour line&lt;/em&gt;. Nó có vài tên khác nhau: contour line, level set, level curve. Định nghĩa ở đây cả [2]. Đại khái một contour line là tập hợp những điểm làm cho hàm có cùng một giá trị $y_0$ nào đó. Hàm có miền vô hạn thì cũng có nghĩa là có vô số contour line.&lt;/p&gt;
-
-&lt;p&gt;Vậy là Hình 2.a và 2.b đang biểu diễn hai đường khác nhau: đường màu đen trong hình 2.a là đồ thị biểu diễn sự phụ thuộc $y$ theo $x$ qua hàm $y=f(x)$, đường màu xanh trong hình 2.b là một đường &lt;em&gt;contour line&lt;/em&gt; biểu diễn của hàm $g(x)=0$. Mình bị nhầm lẫn bởi vì lâu nay học các hàm $y=f(x)$, đa số đều là hàm đơn biến, biểu diễn đồ thị của nó bằng tọa độ 2 chiều. Nhưng với các hàm đa biến (từ 2 biến trở lên), người ta khó biểu diễn đồ thị của hàm trên tọa độ 2 chiều nữa, nên người ta nghĩ ra cái &lt;em&gt;contour line&lt;/em&gt; dễ biểu diễn hơn.&lt;/p&gt;
-
-&lt;p&gt;Khi học về Linear Regression, $y=WX + b$, người ta thường lấy ví dụ $W$ và $X$ có 2 chiều, cụ thể $y=w_1x_1 + w_2x_2 + w_0$, điều này khiến mình liên tưởng đến hàm $y=ax + b$ hồi xưa có học, chỉ là chuyển vế qua thì $x$, $y$ tương ứng $w_1$, $w_2$. Điều này sai hoàn toàn, SAI ÁC LIỆT LUÔN. Chính từ đây dẫn tới những nhầm lẫn khi đọc đến vector &lt;em&gt;gradient&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Nói chính xác thì $y=ax+b$ chỉ là một phần tử trong tập &lt;em&gt;contour line&lt;/em&gt; của $y=w_1x_1 + w_2x_2 + w_0$. Và nhiệm vụ của Linear Regression là đi tìm một &lt;em&gt;contour line&lt;/em&gt; trong tập các &lt;em&gt;contour line&lt;/em&gt; ở trên.&lt;/p&gt;
-
-&lt;p&gt;Về chuyện ngày lớp 12 được dạy rằng đạo hàm của hàm $y=f(x)$ là một vector có phương tiếp tuyến với đồ thị $f(x)$. Điều này được giải thích như sau: Hàm $y=f(x)$ là hàm một biến. Nếu vẽ theo kiểu &lt;em&gt;contour line&lt;/em&gt;, mỗi &lt;em&gt;contour line&lt;/em&gt; sẽ là 1 điểm (hoặc một vài điểm). Vì vậy mà đương nhiên nó thoải điều kiện vector &lt;em&gt;gradient&lt;/em&gt; trực giao với đường &lt;em&gt;contour line&lt;/em&gt;. Không có mâu thuẫn gì ở đây cả.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;P.s: Viết ra mới thấy, tuy đã hiểu, đã nắm được cái bản chất, mà muốn thể hiện nó ra vẫn khó thiệt. Bài này quá lủng cũng.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;tham-khảo&#34;&gt;&lt;strong&gt;Tham khảo&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;[1] &lt;a href=&#34;https://en.wikipedia.org/wiki/Derivative&#34;&gt;https://en.wikipedia.org/wiki/Derivative&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[2] &lt;a href=&#34;https://en.wikipedia.org/wiki/Level_set&#34;&gt;https://en.wikipedia.org/wiki/Level_set&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;[3] Anzai, Yuichiro. Pattern recognition and machine learning. Elsevier, 2012.&lt;/p&gt;
-</description>
+      <description>Gradient Descent là cụm từ được nghe rất nhiều khi học về MLP, Neuron Network, hay CNN. Quen em nó nhau lâu rồi, nhìn mặt nhau miết, tưởng mình đã hiểu nhau, mà tới nay mới vẽ lẽ vừa không hiểu và vừa hiểu sai em nó quá trời&amp;hellip; Nay nhờ hoàn cảnh đưa đẩy mà mình hiểu thêm được em nó chút xíu.
+Gradient - em nó là ai ?</description>
     </item>
     
     <item>
@@ -392,56 +66,8 @@ Vì $f( C)&amp;lt;f(D)$ (trong trường hợp này), cho nên tử dương, $\v
       <pubDate>Sun, 19 Mar 2017 10:19:05 +0700</pubDate>
       
       <guid>/posts/xac-suat-trong-hoc-may-phan2/</guid>
-      <description>
-
-&lt;p&gt;Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (được biết đến như một nhà ảo thuật toán &amp;ldquo;Mathemagician&amp;rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.&lt;/p&gt;
-
-&lt;p&gt;Trong lĩnh vực IA, nhiều giải thuật có liên quan đến lý thuyết xác suất như: Hidden Markov Model, Bayesian Network, chứng minh ưu điểm của Random Forrest,&amp;hellip; Việc hiểu căn bản lý thuyết xác suất, đặc biệt là hiểu các định nghĩa hay dùng là rất cần thiết cho việc hiểu bản chất vấn đề và cách giải quyết trong các giải thuật học máy.&lt;/p&gt;
-
-&lt;p&gt;Tiếp theo &lt;a href=&#34;https://ductri.github.io/post/xac-suat-trong-hoc-may/&#34;&gt;&lt;em&gt;phần 1&lt;/em&gt;&lt;/a&gt;, trong bài viết này mình sẽ nói chi tiết về các thuật ngữ xác suất hay gặp trong các giải thuật học máy. Xác suất trong học máy thường xuất hiện các khái niệm: xác suất tiên nghiệm (&lt;em&gt;prior probability&lt;/em&gt;), xác suất hậu nghiệm (&lt;em&gt;posterial probability&lt;/em&gt;), hàm &lt;em&gt;likelihood&lt;/em&gt;, xác suất có điều kiện (&lt;em&gt;conditional probability&lt;/em&gt;). Vấn đề cốt lõi các của bài toán học máy là tìm tham số w, sao cho mô hình (model) f khi nhận vào một giá trị x, cùng với tham số w, cho ra kết quả giống với thực tế nhất. Để hỗ trợ cho việc tìm w, ta thường có tập dữ liệu D cho trước. Tất nhiên w, x có thể là giá trị scala, cũng có thể có nhiều chiều. Nhưng để đơn giản, cứ tạm thời xem chúng là giá trị scala.&lt;/p&gt;
-
-&lt;h1 id=&#34;1-xác-suất-tiên-nghiệm&#34;&gt;1. Xác suất tiên nghiệm&lt;/h1&gt;
-
-&lt;p&gt;Cách đơn giản, ngây thơ (vô số tội) là cho ngẫu nhiên w. Khi đó ta đụng đến khái niệm đầu tiên: p(w) được gọi là xác suất tiên nghiệm (&lt;em&gt;prior probability&lt;/em&gt;). p(w) là phân phối xác suất trên w, lưu ý là phân phối xác suất, chứ ko phải là xác suất. Phân phối này hoặc là Mass, hoặc là Density. Điều này có nghĩa tổng xác suất lấy trên toàn miền giá trị w bằng 1. p(w) phản ánh sự chủ quan đối với biến w, bởi vì đơn thuần dựa trên trực giác, ta gán cho w một phân phối xác suất.&lt;/p&gt;
-
-&lt;h1 id=&#34;2-xác-suất-hậu-nghiệm&#34;&gt;2. Xác suất hậu nghiệm&lt;/h1&gt;
-
-&lt;p&gt;Tiếp theo, ta sử dụng đến giả thiết đã có D. Đến lược p(w|D) xuất hiện. Đây là một xác suất có điều kiện (&lt;em&gt;conditional probability&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;Xác suất có điều kiện là xác suất với kết quả của một biến cố đã được biết trước. Lưu ý điều này không có nghĩa là biến cố đó phải xảy ra trước. Một bài toán đơn giản để mô tả về xác suất có điều kiện như sau: Có 2 hộp trắng và 1 hộp đen. Trong mỗi hộp trắng có 3 bi đỏ, 7 bi xanh. Trong mỗi hộp đen có 4 bi đỏ, 6 bi xanh. Chọn một hộp bất kỳ, sau đó lấy ngẫu nhiên 1 viên bi. Tìm xác suất để hộp được chọn là hộp trắng khi đã biết viên bi chọn ra có màu xanh. Đây là một xác suất có điều kiện, với điều kiện là một biến cố (chọn viên bi) xảy ra sau biến cố (chọn hộp) cần tìm xác suất.&lt;/p&gt;
-
-&lt;p&gt;Quay trở lại p(w|D). Nhớ rằng p(w|D) là một hàm trên biến w. p(w|D) phản ánh sự ước lượng cho w khi đã biết D. Xác suất này được gọi là xác suất hậu nghiệm (&lt;em&gt;posterial probability&lt;/em&gt;), bởi vì chúng ta đang ước lượng cho w sau khi đã biết thông tin về D. Xác suất này tương ứng với việc tìm xác suất để chọn được bi xanh sau khi đã chọn hộp màu trắng. Tương tự như p(w), đây cũng là một Mass hoặc Density (tùy loại biến), cho nên tổng xác suất có điều kiện (D) trên toàn miền giá trị w cũng bằng 1.&lt;/p&gt;
-
-&lt;h1 id=&#34;3-hàm-likelihood&#34;&gt;3. Hàm likelihood&lt;/h1&gt;
-
-&lt;p&gt;Xác suất cuối cùng, và mình thấy hay nhất là hàm &lt;em&gt;likelihood&lt;/em&gt;: p(D|w). Nếu đã cảm thấy p(w|D) khá tự nhiên thì đến xác suất này tạo cảm giác khó hiểu lạ thường. Nhớ rằng D là cái mình đã có, w là cái mình cần tìm. Nghĩa là p(D|w) vẫn là hàm trên w như p(w|D), nhưng khác biệt là tổng xác suất trên toàn miền giá trị w không bằng 1, vì về mặt xác suất thì p(D|w) là phân bố xác suất có điều kiện trên D. Về bản chất thì rõ ràng nó là xác suất, nhưng người ta chỉ nói làm hàm likelihood chứ không gọi là xác suất likelihood. Theo mình thì người ta gọi như vậy để phân biệt với p(w) và p(w|D). Hai xác suất này là 2 phân bố xác suất thuộc &lt;em&gt;mass/density probability distribution&lt;/em&gt; trên biến w, tức là xét trên toàn miền giá trị w thì tổng giá trị xác suất luôn bằng 1. Còn p(D|w) tuy cũng là &lt;em&gt;mass/density probability distribution&lt;/em&gt; nhưng lại đối với biến D, nên tổng xác suất trên miền giá trị w không nhất thiết bằng 1.&lt;/p&gt;
-
-&lt;p&gt;Ý nghĩa xác suất p(D|w) là thể hiện độ phù hợp của D đối với những giá trị w khác nhau. Mục đính chính của học máy thể hiện ở đây: Ta mong muốn tìm w để đạt được giá trị tối đa của p(D|w), nghĩa là tìm w sao cho phù hợp nhất với tập D đã có.&lt;/p&gt;
-
-&lt;p&gt;Cuộc sống nhiều chuyện vượt quá tầm tay ta, D là một trong những cái đó. Trong khi đó, cách ta bước tiếp, cách ta đáp ứng với cái D đó (w), ta có thể kiểm soát được. Vậy nên thôi đừng hỏi vì sao D xảy ra, đừng mong chờ D sẽ thay đổi (dữ liệu training có sẳn rồi, cố định bà nó rồi), hãy điều chỉnh w sao cho phù hợp với D nhất, tìm w để tối ưu hóa p(D|w), đó mới là điều cần boăn khoăn, cần suy nghĩ. Nhưng cụ thể làm sao thì là chuyện riêng của mỗi bác giải thuật học máy, ở đây mình không bàn.&lt;/p&gt;
-
-&lt;h1 id=&#34;4-quan-hệ-giữa-ba-xác-suất-trên&#34;&gt;4. Quan hệ giữa ba xác suất trên&lt;/h1&gt;
-
-&lt;p&gt;Chốt chỗ này cái. Ta có ba xác suất: xác suất tiền nghiệm, xác suất hậu nghiệm và hàm likelihood. Quan hệ của ba xác suất suất thể hiện qua công thức xác suất Bayesian:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;p(w|D) = p(D|w) x p(w) / p(D)&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Vì D là cái đã có và cố định, ta xem p(D) như hằng số. Khi đó:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;p(w|D) ~ p(D|w) x p(w)&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;posterial probability ~ likelihood probability x prior probability&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Công thức trên là nền tảng cơ bản cho các giải thuật học máy, cho ta một cái nhìn về bản chất về vấn đề cần giải quyết trong học máy.&lt;/p&gt;
-
-&lt;h1 id=&#34;tham-khảo&#34;&gt;Tham khảo&lt;/h1&gt;
-
-&lt;p&gt;Bishop, Christopher M. &amp;ldquo;Pattern recognition.&amp;rdquo; Machine Learning 128 (2006).&lt;/p&gt;
-</description>
+      <description>Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (được biết đến như một nhà ảo thuật toán &amp;ldquo;Mathemagician&amp;rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.
+Trong lĩnh vực IA, nhiều giải thuật có liên quan đến lý thuyết xác suất như: Hidden Markov Model, Bayesian Network, chứng minh ưu điểm của Random Forrest,&amp;hellip; Việc hiểu căn bản lý thuyết xác suất, đặc biệt là hiểu các định nghĩa hay dùng là rất cần thiết cho việc hiểu bản chất vấn đề và cách giải quyết trong các giải thuật học máy.</description>
     </item>
     
     <item>
@@ -450,73 +76,8 @@ Vì $f( C)&amp;lt;f(D)$ (trong trường hợp này), cho nên tử dương, $\v
       <pubDate>Sat, 18 Mar 2017 00:37:24 +0700</pubDate>
       
       <guid>/posts/xac-suat-trong-hoc-may/</guid>
-      <description>
-
-&lt;p&gt;Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.&lt;/p&gt;
-
-&lt;p&gt;Cá nhân mình thấy mình có &amp;ldquo;hơi&amp;rdquo; nắm được lý thuyết xác suất. Nhưng xưa giờ toàn học trên tiếng Việt, nên khi đọc sách tiếng Anh lòi ra kha khá khái niệm mới mẻ, hay ho, giờ viết ra để tự hệ thống lại. Vì dài quá nên mình chia làm 2 bài. Nội dung trong bài đầu này giới thiệu sơ lược lại về xác suất, cung cấp cái nhìn tổng quát trên góc nhìn toán học, chưa liên quan gì học máy ở đây cả&amp;hellip; Bài sau sẽ mô tả chi tiết các thuật ngữ hay gặp: prior probability, likelihood probability, posterial probability, conditional probability.&lt;/p&gt;
-
-&lt;h1 id=&#34;1-các-cách-hiểu-về-xác-suất&#34;&gt;1. Các cách hiểu về xác suất&lt;/h1&gt;
-
-&lt;p&gt;Hiện nay có hơn một cách hiểu về xác suất ([1], [2], [3], [4]). Vì chúng ta chỉ quan tâm trong ngữ cảnh học máy, nên mình tham khảo theo Bishop[3], ông cho rằng có 2 hướng tiếp cận: &lt;strong&gt;Frenqtist Interpretation Probability&lt;/strong&gt; (gọi tắt trong bài là FIP) và &lt;strong&gt;Bayesian Probability&lt;/strong&gt; (gọi tắt trong bài là BP). Hướng FIP hiểu xác suất như tỉ lệ số lần thử nghiệm thành công, chia số lần thử nghiệm; hoặc số mẫu phù hợp chia cho kích thước không gian mẫu. Cách tiếp cận này mang hơi hướng của thống kê. Cách tiếp cận này dễ hiểu.&lt;/p&gt;
-
-&lt;p&gt;Cách tiếp cận thứ hai BP tổng quát hơn, cũng có phần tự nhiên hơn. Ví dụ với các phát biểu như: khả năng trái đất sẽ bị hủy diệt trong 100 năm tới, khả năng chiến tranh thế giới thứ 3 nổ ra, &amp;hellip; Các sự kiện trên rất hiếm khi xảy ra, hoặc chưa bao giờ xảy ra, nên không thể tiến hành các thử nghiệm để tính xác suất theo cách hiểu FIP. Hướng tiếp cận BP có tính tổng quát hơn. Xác suất được hiểu như một độ đo về mức độ tin tưởng. Từ đó, chúng ta có thể gán xác suất cho cả các sự kiện chưa bao giờ xảy ra.&lt;/p&gt;
-
-&lt;h1 id=&#34;2-xác-suất-trên-biến-ngẫu-nhiên-rời-rạc-và-liên-tục&#34;&gt;2. Xác suất trên biến ngẫu nhiên rời rạc và liên tục&lt;/h1&gt;
-
-&lt;p&gt;Khi nói đến xác suất, người ta ngầm định là đang nói đến xác suất trên một/nhiều biến (biến cố). Ta thường bị nhầm lẫn giữa hai khái niệm. Khái niệm thường mặc định được hiểu là xác suất khi một biến cố X nhận giá trị x&lt;sub&gt;0&lt;/sub&gt;, được ký hiện là p(X = x&lt;sub&gt;0&lt;/sub&gt;), đôi khi được viết tắt là p(x&lt;sub&gt;0&lt;/sub&gt;). Ví dụ như nói trong hộp có 3 bi đỏ, 5 bi xanh, 4 bi vàng, 2 bi xám, thì xác suất để chọn được bi đỏ là &lt;sup&gt;3&lt;/sup&gt;&amp;frasl;&lt;sub&gt;14&lt;/sub&gt;. Nói như vậy nghĩa là xác suất để biến cố chọn bi (X) trúng bi màu đỏ là &lt;sup&gt;3&lt;/sup&gt;&amp;frasl;&lt;sub&gt;14&lt;/sub&gt;, p(X = bi đỏ) = &lt;sup&gt;3&lt;/sup&gt;&amp;frasl;&lt;sub&gt;14&lt;/sub&gt;.&lt;/p&gt;
-
-&lt;p&gt;Khái niệm thứ hai tổng quát hơn: phân phối xác suất (&lt;strong&gt;probability distribution&lt;/strong&gt;) trên biến cố X, được ký hiện là p(X). Ta đi tìm xác suất cho mọi giá trị mà biến cố X có thể có, rồi tính xác suất cho từng giá trị đó, thì sẽ có được một phân phối xác suất. Trong ví dụ trên, tính thêm các xác suất p(X = bi xanh), p(X = bi vàng), p(X = bi xám),  thì ta sẽ có được phân phối xác suất cho biến X (biến cố X).&lt;/p&gt;
-
-&lt;p&gt;Có 2 loại biến ngẫu nhiên: biến ngẫu nhiên rời rạc (&lt;strong&gt;dicrete variable&lt;/strong&gt;) và biến ngẫu nhiên liên tục (&lt;strong&gt;continuous variable&lt;/strong&gt;). Ở ví dụ trên, X là một biến ngẫu nhiên rời rạc. Để mô tả phân phối xác suất cho biến ngẫu nhiên rời rạc, ta lập một bảng tương tự như Bảng 1.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Bảng 1.&lt;/strong&gt; Bảng phân phối xác suất trên biến X&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;/img/bang-phan-phoi-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Bảng 1 được gọi là Bảng phân phối xác suất trên biến X. Đây là cách để mô tả phân phối xác suất đối với biến ngẫu nhiên rời rạc. Tuy nhiên, để Bảng 1 được gọi như thế, nó cần thoải hai điều kiện:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Giá trị p(X = x&lt;sub&gt;i&lt;/sub&gt;) &amp;gt; 0&lt;/li&gt;
-&lt;li&gt;Tổng các p(X = x&lt;sub&gt;i&lt;/sub&gt;) = 1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&#34;/img/bieu-do-phan-bo-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Hình 1.&lt;/strong&gt; Biểu đồ phân bố xác suất&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;/img/ham-mat-do-xac-suat.png&#34; alt=&#34;Example image&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Hình 2.&lt;/strong&gt; Hàm mật độ xác suất&lt;/p&gt;
-
-&lt;p&gt;Ngoài ra, Bảng 1 còn có thể được mô hình hóa như Hình 1. Nếu số lượng các cột đủ nhiều, tiến dần đến vô cùng, ta sẽ dần có được cách biểu diễn xác suất cho biến ngẫu nhiên liên tục. Chỉ cần chỉnh sửa Hình 1 một chút, xóa hết các cột đi, làm mịn các đường nối lại, ta được Hình 2 là hàm mật độ xác suất trên biến X. Đây là cách biểu diễn phân phối xác suất cho biến ngẫu nhiên liên tục. Cũng tương tự như biến ngẫu nhiên rời rạc, để hàm trên được gọi tên nghe kêu như thế, nó cần thoải hai điều kiện:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Giá trị f(x&lt;sub&gt;i&lt;/sub&gt;) &amp;gt; 0&lt;/li&gt;
-&lt;li&gt;Tổng các giá trị f(x) bằng 1, trong trường hợp này X liên tục nên tích phân trên toàn miền X bằng 1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Tới đây ta có được hai cách mô tả về xác suất: Bảng phân phối xác suất (cho biến ngẫu nhiên rời rạc) và Hàm mật độ xác suất (cho biến ngẫu nhiên liên tục). Trong tiếng Anh, hàm mật độ xác suất được dịch là &lt;strong&gt;Probability Density Function&lt;/strong&gt;, tên này được viết tắt nghe rất hay: &lt;strong&gt;PDF&lt;/strong&gt;. Còn Bảng phân phối xác suất thì mình ít thấy người ta dịch thuần qua tiếng Anh là Table of Probability Distribution (mặc dù search google vẫn ra). Người ta hay gọi hoặch toẹt luôn là &lt;strong&gt;Probability Density Function of X&lt;/strong&gt;, rồi nói X là biến ngẫu nhiên rời rạc. Một cách gọi khác ngắn hơn cũng thường dùng là &lt;strong&gt;Probability Mass Function&lt;/strong&gt;. &amp;ldquo;Mass&amp;rdquo; ý chỉ &amp;ldquo;đống&amp;rdquo; giá trị rời rạc.&lt;/p&gt;
-
-&lt;p&gt;Ở đây, dễ có sự lẫn lộn giữa &lt;strong&gt;Probability Distribution&lt;/strong&gt; với &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt;. Nhớ rằng &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt; là một cái riêng, cái cụ thể của &lt;strong&gt;Probability Distribution&lt;/strong&gt;. Chỉ khi nào &lt;strong&gt;Probability Distribution&lt;/strong&gt; thỏa 2 điều kiện  mới được gọi là &lt;strong&gt;Probability Density/Mass Function&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Giá trị P(X=x&lt;sub&gt;0&lt;/sub&gt;) lớn hơn 0&lt;/li&gt;
-&lt;li&gt;Tổng P(X) trên toàn miền giá trị X bằng 1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Xong, hết phần 1. Phần 2 sẽ nói xác suất trong ngữ cảnh học máy.&lt;/p&gt;
-
-&lt;h2 id=&#34;tham-khảo&#34;&gt;Tham khảo&lt;/h2&gt;
-
-&lt;p&gt;[1] Phan Huy Khải, Các bài toán tổ hợp. Nhà xuất bản giáo dục&lt;/p&gt;
-
-&lt;p&gt;[2] Wikipedia, &lt;a href=&#34;https://en.wikipedia.org/wiki/Frequentist_probability&#34;&gt;https://en.wikipedia.org/wiki/Frequentist_probability&lt;/a&gt;, phần Alternative views&lt;/p&gt;
-
-&lt;p&gt;[3] Bishop, Christopher M. &amp;ldquo;Pattern recognition.&amp;rdquo; Machine Learning 128 (2006): 1-58.&lt;/p&gt;
-
-&lt;p&gt;[4] Slide Xác suất thống kê - Trường Đại học Bách Khoa TP.HCM&lt;/p&gt;
-</description>
+      <description>Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.
+Cá nhân mình thấy mình có &amp;ldquo;hơi&amp;rdquo; nắm được lý thuyết xác suất.</description>
     </item>
     
   </channel>

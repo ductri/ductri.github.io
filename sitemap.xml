@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/posts/my-view-about-ml/</loc>
+    <lastmod>2018-05-26T12:24:58+07:00</lastmod>
+  </url>
   
   <url>
     <loc>/posts/static-vs-dynamic-graph/</loc>
@@ -38,19 +44,24 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-01-21T13:03:43+07:00</lastmod>
+    <lastmod>2018-05-26T12:24:58+07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/posts/</loc>
-    <lastmod>2018-01-21T13:03:43+07:00</lastmod>
+    <lastmod>2018-05-26T12:24:58+07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/categories/to%C3%A1n/</loc>
-    <lastmod>2017-03-19T10:19:05+07:00</lastmod>
+    <lastmod>2018-05-26T12:24:58+07:00</lastmod>
     <priority>0</priority>
   </url>
   
