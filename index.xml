@@ -6,10 +6,20 @@
     <description>Recent content on Machine learning - The way human is teaching machine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Sat, 26 May 2018 12:24:58 +0700</lastBuildDate>
+    <lastBuildDate>Fri, 12 Oct 2018 21:04:00 +0700</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Expectation Maximization</title>
+      <link>/posts/expectation-maximization/</link>
+      <pubDate>Fri, 12 Oct 2018 21:04:00 +0700</pubDate>
+      
+      <guid>/posts/expectation-maximization/</guid>
+      <description>Khi ta có crush :))).
+Một ngày nọ, khi bạn nhận ra là bạn have a crush on someone. Bạn bắt đầu tương tư, mơ tưởng về ngày crush nhận ra và đáp lại tấm chưng tình của bạn. Bạn mất ăn mất ngủ vì crush. Cảm xúc đó, một cách tự nhiên, sẽ thôi thúc bạn, bằng mọi cách tiếp cận crush của mình. Bạn bắt chuyện, tán dóc, nói nhảm, chọc cười, làm đủ mọi trò, cố gắng có mặt ở những nơi có crush xuất hiện, &amp;hellip; Tất cả chỉ bởi vì một mục đích: bạn đang âm thầm thu thập thông tin từ crush (observed data), để trả lời cho câu hỏi lớn nhất mà bao người có crush như bạn cũng thắc mắc: Liệu crush có thích bạn không ?</description>
+    </item>
     
     <item>
       <title>Làm sao máy hiểu được hình số 1</title>
