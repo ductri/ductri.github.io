@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Machine learning - The way human is teaching machine</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Fri, 12 Oct 2018 21:04:00 +0700</lastBuildDate>
+    <lastBuildDate>Wed, 27 Mar 2019 20:50:00 +0700</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cách vượt qua một cuộc tình đổ vỡ</title>
+      <link>/posts/tf-vs-pytorch/</link>
+      <pubDate>Wed, 27 Mar 2019 20:50:00 +0700</pubDate>
+      
+      <guid>/posts/tf-vs-pytorch/</guid>
+      <description>Mình với em gắn bó được đâu đó hơn 1 năm. Yêu đương thì cũng có lúc lục đục, mình cũng đã cố gắng nhẫn nhịn nhiều, nhưng em cứ ko chịu thay đổi. Đến lúc chịu thay đổi thì thay đổi quá tệ. Thôi thì đành chia tay, dù cũng xót lắm, yêu được hơn 1 năm lận mà, bao nhiêu kỷ niệm với nhau :(. Cũng suy sụp lắm chớ, nhưng mà giờ thì ổn rồi, nên nay mình viết bài chia sẽ trải nghiệm của mình trên chặng đường hồi phục sau mối tình đổ vở.</description>
+    </item>
     
     <item>
       <title>Expectation Maximization</title>

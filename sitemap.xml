@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/posts/tf-vs-pytorch/</loc>
+    <lastmod>2019-03-27T20:50:00+07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/posts/expectation-maximization/</loc>
     <lastmod>2018-10-12T21:04:00+07:00</lastmod>
   </url>
@@ -49,13 +54,13 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-10-12T21:04:00+07:00</lastmod>
+    <lastmod>2019-03-27T20:50:00+07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/posts/</loc>
-    <lastmod>2018-10-12T21:04:00+07:00</lastmod>
+    <lastmod>2019-03-27T20:50:00+07:00</lastmod>
     <priority>0</priority>
   </url>
   
