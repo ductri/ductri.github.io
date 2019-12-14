@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tokenize | Machine learning</title>
+    <title>Bug sharing | Machine learning</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
     <header>
@@ -63,21 +63,50 @@
   <body>
     <br/>
 
+<div class="article-meta">
+<h1><span class="title">Bug sharing</span></h1>
 
-
-<h1>Tokenize</h1>
-
-
-
-
-<ul>
+<h2 class="date">2019/12/14</h2>
+<p class="terms">
   
-  <li>
-    <span class="date">2019/06/08</span>
-    <a href="/posts/trap_everywhere/">Cuộc sống đầy cạm bẫy</a>
-  </li>
   
-</ul>
+  
+  
+  Tags: <a href="/tags/pandas">pandas</a> 
+  
+  
+</p>
+</div>
+
+
+
+<main>
+
+
+<h2 id="1-use-pandas-series-as-a-list">1. Use <code>pandas.series</code> as a list</h2>
+
+<pre><code class="language-python">x = pd.Series(range(10))
+y = list(range(10))
+del x[5]
+del y[5]
+y[5] → 6
+x[5] → raise  Key Error exception
+</code></pre>
+
+<h2 id="2-use-pandas-read-csv-and-pandas-to-csv">2. Use <code>pandas.read_csv</code> and <code>pandas.to_csv</code></h2>
+
+<p>Sometimes, after <code>to_csv</code>, you reload the file with <code>read_csv</code>, it raises exception:</p>
+
+<pre><code>ParserError: Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.
+</code></pre>
+
+<p>This occurs because there is a text column which contains endline characters. To use this pair of functions properly, explicitly indicate <code>line_terminator</code> by endline character, as follow:</p>
+
+<pre><code class="language-python">to_csv(lineterminator='\n')
+read_csv(line_terminator='\n')
+</code></pre>
+
+</main>
 
     <footer>
       
