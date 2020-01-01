@@ -6,10 +6,22 @@
     <description>Recent content on Machine learning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Sat, 14 Dec 2019 16:36:00 +0700</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jan 2020 20:37:00 +0700</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Note: Why Entropy involves logarithm</title>
+      <link>/posts/why_entropy_log/</link>
+      <pubDate>Wed, 01 Jan 2020 20:37:00 +0700</pubDate>
+      
+      <guid>/posts/why_entropy_log/</guid>
+      <description>Entropy of a random variable $X$ with pdf $P(x)$ is given by: $H(x) = -\mathbb{E}_{x \sim P}[\log P(x)]$
+Why the $log$ function but any other decreasing functions, $\frac{1}{x}$ for instance?
+If we have two independent random variable $x$ and $y$, then the information gained from observing both of them should be the sum of that gained from each of them separately. Therefore:
+$$H(x,y) = H(x) + H(y)$$ where $$p(x, y) = p(x)p(y)$$</description>
+    </item>
     
     <item>
       <title>Bug sharing</title>
