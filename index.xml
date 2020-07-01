@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Machine learning</title>
@@ -6,21 +6,19 @@
     <description>Recent content on Machine learning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Wed, 01 Jan 2020 20:37:00 +0700</lastBuildDate>
+    <lastBuildDate>Tue, 30 Jun 2020 20:15:24 -0700</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Note: Why Entropy involves logarithm</title>
-      <link>/posts/why_entropy_log/</link>
-      <pubDate>Wed, 01 Jan 2020 20:37:00 +0700</pubDate>
+      <title>Tensor Decomposition in Graph Clustering</title>
+      <link>/posts/tensor-decomposition-in-graph-clustering/</link>
+      <pubDate>Tue, 30 Jun 2020 20:15:24 -0700</pubDate>
       
-      <guid>/posts/why_entropy_log/</guid>
-      <description>Entropy of a random variable $X$ with pdf $P(x)$ is given by: $H(x) = -\mathbb{E}_{x \sim P}[\log P(x)]$
-Why the $log$ function but any other decreasing functions, $\frac{1}{x}$ for instance?
-If we have two independent random variable $x$ and $y$, then the information gained from observing both of them should be the sum of that gained from each of them separately. Therefore:
-$$H(x,y) = H(x) + H(y)$$ where $$p(x, y) = p(x)p(y)$$</description>
+      <guid>/posts/tensor-decomposition-in-graph-clustering/</guid>
+      <description>This is my very first technical report at Oregon State University. It was the final project report of course Matrix Analysis. This version has been undergone minor amendments after grading 90/100.
+Abstract  Tensor decomposition has been propular for decades because of its distinctive characteristics compared to matrix. There are many works dedicated to exploiting tensor potential through various areas, particularly in graph clustering. However, there is a lack of a clear connection between traditional clustering and tensor-based methods.</description>
     </item>
     
     <item>
@@ -29,8 +27,8 @@ $$H(x,y) = H(x) + H(y)$$ where $$p(x, y) = p(x)p(y)$$</description>
       <pubDate>Sat, 14 Dec 2019 16:36:00 +0700</pubDate>
       
       <guid>/posts/bugs-sharing/</guid>
-      <description>1. Use pandas.series as a list x = pd.Series(range(10)) y = list(range(10)) del x[5] del y[5] y[5] → 6 x[5] → raise Key Error exception  2. Use pandas.read_csv and pandas.to_csv Sometimes, after to_csv, you reload the file with read_csv, it raises exception:
-ParserError: Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.  This occurs because there is a text column which contains endline characters.</description>
+      <description>1. Use pandas.series as a list x = pd.Series(range(10)) y = list(range(10)) del x[5] del y[5] y[5] → 6 x[5] → raise Key Error exception 2. Use pandas.read_csv and pandas.to_csv Sometimes, after to_csv, you reload the file with read_csv, it raises exception:
+ParserError: Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.This occurs because there is a text column which contains endline characters. To use this pair of functions properly, explicitly indicate line_terminator by endline character, as follow:</description>
     </item>
     
     <item>
@@ -108,8 +106,7 @@ Và mấy cái ẩn ý nó thường trừu tượng và có gì đó hơi tiế
       <pubDate>Sun, 28 May 2017 22:19:54 +0700</pubDate>
       
       <guid>/posts/gradient-what-the-fuck-is-this/</guid>
-      <description>Gradient Descent là cụm từ được nghe rất nhiều khi học về MLP, Neuron Network, hay CNN. Quen em nó nhau lâu rồi, nhìn mặt nhau miết, tưởng mình đã hiểu nhau, mà tới nay mới vẽ lẽ vừa không hiểu và vừa hiểu sai em nó quá trời&amp;hellip; Nay nhờ hoàn cảnh đưa đẩy mà mình hiểu thêm được em nó chút xíu.
-Gradient - em nó là ai ?</description>
+      <description>Sai, sai, sai, quá sai rồi</description>
     </item>
     
     <item>
@@ -118,8 +115,7 @@ Gradient - em nó là ai ?</description>
       <pubDate>Sun, 19 Mar 2017 10:19:05 +0700</pubDate>
       
       <guid>/posts/xac-suat-trong-hoc-may-phan2/</guid>
-      <description>Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (được biết đến như một nhà ảo thuật toán &amp;ldquo;Mathemagician&amp;rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.
-Trong lĩnh vực IA, nhiều giải thuật có liên quan đến lý thuyết xác suất như: Hidden Markov Model, Bayesian Network, chứng minh ưu điểm của Random Forrest,&amp;hellip; Việc hiểu căn bản lý thuyết xác suất, đặc biệt là hiểu các định nghĩa hay dùng là rất cần thiết cho việc hiểu bản chất vấn đề và cách giải quyết trong các giải thuật học máy.</description>
+      <description>Cuộc sống nhiều chuyện vượt quá tầm tay ta, D là một trong những cái đó. Trong khi đó, cách ta bước tiếp, cách ta đáp ứng với cái D đó (w), ta có thể kiểm soát được. Vậy nên thôi đừng hỏi vì sao D xảy ra, đừng mong chờ D sẽ thay đổi (dữ liệu training có sẳn rồi, cố định bà nó rồi), hãy điều chỉnh w sao cho phù hợp với D nhất, tìm w để tối ưu hóa p(D|w), đó mới là điều cần boăn khoăn, cần suy nghĩ.</description>
     </item>
     
     <item>
@@ -128,8 +124,7 @@ Trong lĩnh vực IA, nhiều giải thuật có liên quan đến lý thuyết 
       <pubDate>Sat, 18 Mar 2017 00:37:24 +0700</pubDate>
       
       <guid>/posts/xac-suat-trong-hoc-may/</guid>
-      <description>Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.
-Cá nhân mình thấy mình có &amp;ldquo;hơi&amp;rdquo; nắm được lý thuyết xác suất.</description>
+      <description>Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy.</description>
     </item>
     
   </channel>

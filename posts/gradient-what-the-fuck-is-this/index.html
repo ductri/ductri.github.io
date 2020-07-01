@@ -79,72 +79,45 @@
 
 
 <main>
-
-
 <p><em>Gradient Descent</em> là cụm từ được nghe rất nhiều khi học về MLP, Neuron Network, hay CNN. Quen em nó nhau lâu rồi, nhìn mặt nhau miết, tưởng mình đã hiểu nhau, mà tới nay mới vẽ lẽ vừa không hiểu và vừa hiểu sai em nó quá trời&hellip; Nay nhờ hoàn cảnh đưa đẩy mà mình hiểu thêm được em nó chút xíu.</p>
-
-<h3 id="gradient-em-nó-là-ai">Gradient - em nó là ai ?</h3>
-
+<h3 id="gradient---em-nó-là-ai-">Gradient - em nó là ai ?</h3>
 <p><em>Gradient</em> của một hàm $f(x_1, x_2, &hellip;, x_n)$, được ký hiệu $\nabla f$ là một vector $n$ chiều, mà mỗi thành phần trong vector đó là một đạo hàm riêng phần (<em>partial derivative</em>) theo từng biến của hàm đó:
 $$
 \bbox[20px,border:1px solid black] {
 \nabla f=(\frac{df}{dx_1}, \frac{df}{dx_1}, &hellip;, \frac{df}{dx_n})
 }
 $$</p>
-
 <p>Sau đây là 2 điều mình mới hiểu ra:</p>
-
-<h3 id="1-vector-gradient-tại-một-điểm-cho-mình-biết-từ-điểm-đó-hướng-nào-làm-tăng-giá-trị-f-nhiều-nhất-có-thể-tại-sao-lại-là-tăng"><strong>1. Vector gradient tại một điểm cho mình biết từ điểm đó, hướng nào làm tăng giá trị $f$ nhiều nhất có thể. Tại sao lại là tăng ?</strong></h3>
-
+<h3 id="1-vector-gradient-tại-một-điểm-cho-mình-biết-từ-điểm-đó-hướng-nào-làm-tăng-giá-trị-f-nhiều-nhất-có-thể-tại-sao-lại-là-tăng-"><strong>1. Vector gradient tại một điểm cho mình biết từ điểm đó, hướng nào làm tăng giá trị $f$ nhiều nhất có thể. Tại sao lại là tăng ?</strong></h3>
 <p>Chấp nhận điều này lâu rồi, tự nhiên hôm qua mới ngớ ra: Tại sao lại là hướng tăng (Hình 1) mà không phải là hướng giảm ?</p>
-
-<p><img src="/img/gradient-what-the-fuck-is-this/myth1.png" alt="Example image" /></p>
-
+<p><img src="/img/gradient-what-the-fuck-is-this/myth1.png" alt="Example image"></p>
 <p><strong>Hình 1.</strong> Hướng của vector <em>gradient</em> luôn chỉ về phía cao hơn</p>
-
 <p>Wow wow, là vì do ông nào định nghĩa nó như vậy :v. Mỗi thành phần của vector <em>gradient</em> là một đạo hàm riêng phần, giờ thử xét $\frac{df}{dx}$.
 Định nghĩa đạo hàm theo [1]:
 $$\frac{df}{dx} = \frac{f(x+\epsilon)-f(x)}{\epsilon}$$
 với $\epsilon&gt;0$ và đủ nhỏ. Mấu chốt đều nằm ở ông $\epsilon$, vì $ \epsilon&gt;0$, nên chiều của $\frac{df}{dx}$ chỉ còn phụ thuộc vào tử số.</p>
-
 <p>Từ đó ta xét 2 trường hợp $\vec{AB}$ và $\vec{CD}$ sẽ hiểu:</p>
-
 <ul>
 <li>Vector AB: $$\frac{df}{dx}=\frac{f(A) - f(B)}{x_A - x_B}$$
 Vì $f(A)&lt;f(B)$ (trong trường hợp này), cho nên tử âm, $\vec{AB}$ chỉ về hướng âm, cũng là hướng của $f$ tăng.</li>
 <li>Vector CD: $$\frac{df}{dx}=\frac{f(D) - f( C)}{x_D - x_C}$$
 Vì $f( C)&lt;f(D)$ (trong trường hợp này), cho nên tử dương, $\vec{CD}$ chỉ về hướng dương, cũng là hướng của $f$ tăng.</li>
 </ul>
-
 <p>Vì vậy mà $\frac{df}{dx}$ luôn chỉ về hướng $f$ tăng.</p>
-
 <h3 id="2-vector-gradient-trực-giao-perpendicular-với-contour-line-của-hàm"><strong>2. Vector <em>gradient</em> trực giao (<em>perpendicular</em>) với <em>contour line</em> của hàm</strong></h3>
-
 <p>Điều này nghe bực mình + rối rắm kinh khủng khi cứ nhớ lớp 12, được học đạo hàm của hàm $y = f(x)$ tại $x_0$ chính là pháp tuyến của $f(x)$ tại $x_0$. Rà lại, đọc về đạo hàm (<em>derivative</em>) thấy đâu đâu cũng vẽ hình tiếp tuyến [1], cái khỉ gì giờ lại là trực giao ? Với vừa nãy ở trên mới nói là hướng làm tăng $f$, sao giờ lại có chuyện trực giao ở đây ?</p>
-
-<p><img src="/img/gradient-what-the-fuck-is-this/myth2a.png" alt="Example image" />
-<img src="/img/gradient-what-the-fuck-is-this/myth2b.png" alt="Example image" /></p>
-
-<p><center><strong>Hình 2.</strong> Vector trong hình 2.a hay 2.b mới đúng là vector <em>gradient</em></center></p>
-
+<p><img src="/img/gradient-what-the-fuck-is-this/myth2a.png" alt="Example image">
+<img src="/img/gradient-what-the-fuck-is-this/myth2b.png" alt="Example image"></p>
+<!-- raw HTML omitted -->
 <p>Mấu chốt nằm ở khái niệm <em>contour line</em>. Nó có vài tên khác nhau: contour line, level set, level curve. Định nghĩa ở đây cả [2]. Đại khái một contour line là tập hợp những điểm làm cho hàm có cùng một giá trị $y_0$ nào đó. Hàm có miền vô hạn thì cũng có nghĩa là có vô số contour line.</p>
-
 <p>Vậy là Hình 2.a và 2.b đang biểu diễn hai đường khác nhau: đường màu đen trong hình 2.a là đồ thị biểu diễn sự phụ thuộc $y$ theo $x$ qua hàm $y=f(x)$, đường màu xanh trong hình 2.b là một đường <em>contour line</em> biểu diễn của hàm $g(x)=0$. Mình bị nhầm lẫn bởi vì lâu nay học các hàm $y=f(x)$, đa số đều là hàm đơn biến, biểu diễn đồ thị của nó bằng tọa độ 2 chiều. Nhưng với các hàm đa biến (từ 2 biến trở lên), người ta khó biểu diễn đồ thị của hàm trên tọa độ 2 chiều nữa, nên người ta nghĩ ra cái <em>contour line</em> dễ biểu diễn hơn.</p>
-
 <p>Khi học về Linear Regression, $y=WX + b$, người ta thường lấy ví dụ $W$ và $X$ có 2 chiều, cụ thể $y=w_1x_1 + w_2x_2 + w_0$, điều này khiến mình liên tưởng đến hàm $y=ax + b$ hồi xưa có học, chỉ là chuyển vế qua thì $x$, $y$ tương ứng $w_1$, $w_2$. Điều này sai hoàn toàn, SAI ÁC LIỆT LUÔN. Chính từ đây dẫn tới những nhầm lẫn khi đọc đến vector <em>gradient</em>.</p>
-
 <p>Nói chính xác thì $y=ax+b$ chỉ là một phần tử trong tập <em>contour line</em> của $y=w_1x_1 + w_2x_2 + w_0$. Và nhiệm vụ của Linear Regression là đi tìm một <em>contour line</em> trong tập các <em>contour line</em> ở trên.</p>
-
 <p>Về chuyện ngày lớp 12 được dạy rằng đạo hàm của hàm $y=f(x)$ là một vector có phương tiếp tuyến với đồ thị $f(x)$. Điều này được giải thích như sau: Hàm $y=f(x)$ là hàm một biến. Nếu vẽ theo kiểu <em>contour line</em>, mỗi <em>contour line</em> sẽ là 1 điểm (hoặc một vài điểm). Vì vậy mà đương nhiên nó thoải điều kiện vector <em>gradient</em> trực giao với đường <em>contour line</em>. Không có mâu thuẫn gì ở đây cả.</p>
-
 <p><em>P.s: Viết ra mới thấy, tuy đã hiểu, đã nắm được cái bản chất, mà muốn thể hiện nó ra vẫn khó thiệt. Bài này quá lủng cũng.</em></p>
-
 <h3 id="tham-khảo"><strong>Tham khảo</strong></h3>
-
 <p>[1] <a href="https://en.wikipedia.org/wiki/Derivative">https://en.wikipedia.org/wiki/Derivative</a></p>
-
 <p>[2] <a href="https://en.wikipedia.org/wiki/Level_set">https://en.wikipedia.org/wiki/Level_set</a></p>
-
 <p>[3] Anzai, Yuichiro. Pattern recognition and machine learning. Elsevier, 2012.</p>
 
 </main>

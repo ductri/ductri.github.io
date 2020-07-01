@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Toán on Machine learning</title>
@@ -26,8 +26,7 @@
       <pubDate>Sun, 19 Mar 2017 10:19:05 +0700</pubDate>
       
       <guid>/posts/xac-suat-trong-hoc-may-phan2/</guid>
-      <description>Xác suất là một phân ngành trong toán học, mà theo giáo sư toán Arthur Benjamin (được biết đến như một nhà ảo thuật toán &amp;ldquo;Mathemagician&amp;rdquo;) đề nghị trong bài TED talk của ông: mọi người nên học xác suất và thống kê trước khi học giải tích.
-Trong lĩnh vực IA, nhiều giải thuật có liên quan đến lý thuyết xác suất như: Hidden Markov Model, Bayesian Network, chứng minh ưu điểm của Random Forrest,&amp;hellip; Việc hiểu căn bản lý thuyết xác suất, đặc biệt là hiểu các định nghĩa hay dùng là rất cần thiết cho việc hiểu bản chất vấn đề và cách giải quyết trong các giải thuật học máy.</description>
+      <description>Cuộc sống nhiều chuyện vượt quá tầm tay ta, D là một trong những cái đó. Trong khi đó, cách ta bước tiếp, cách ta đáp ứng với cái D đó (w), ta có thể kiểm soát được. Vậy nên thôi đừng hỏi vì sao D xảy ra, đừng mong chờ D sẽ thay đổi (dữ liệu training có sẳn rồi, cố định bà nó rồi), hãy điều chỉnh w sao cho phù hợp với D nhất, tìm w để tối ưu hóa p(D|w), đó mới là điều cần boăn khoăn, cần suy nghĩ.</description>
     </item>
     
     <item>
@@ -36,8 +35,7 @@ Trong lĩnh vực IA, nhiều giải thuật có liên quan đến lý thuyết 
       <pubDate>Sat, 18 Mar 2017 00:37:24 +0700</pubDate>
       
       <guid>/posts/xac-suat-trong-hoc-may/</guid>
-      <description>Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy. Mình viết hoàn toàn tiếng việt, chỗ nào chen dô tiếng anh chỉ là thuật ngữ, để ai đọc sách tiếng anh dễ nhận biết.
-Cá nhân mình thấy mình có &amp;ldquo;hơi&amp;rdquo; nắm được lý thuyết xác suất.</description>
+      <description>Trong bài này, mình sẽ tổng hợp lại các khái niệm cơ bản trong xác suất, các hướng tiếp cận xác suất. Đặc biệt, mình sẽ giải thích tên gọi một số loại xác suất hay được nhắc tới trong học máy.</description>
     </item>
     
   </channel>

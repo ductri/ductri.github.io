@@ -79,57 +79,51 @@
 
 
 <main>
-
-
 <p>Mình với em gắn bó được đâu đó hơn 1 năm. Yêu đương thì cũng có lúc lục đục, mình cũng đã cố gắng nhẫn nhịn nhiều, nhưng em cứ ko chịu thay đổi. Đến lúc chịu thay đổi thì thay đổi quá tệ. Thôi thì đành chia tay, dù cũng xót lắm, yêu được hơn 1 năm lận mà, bao nhiêu kỷ niệm với nhau :(. Cũng suy sụp lắm chớ, nhưng mà giờ thì ổn rồi, nên nay mình viết bài chia sẽ trải nghiệm của mình trên chặng đường hồi phục sau mối tình đổ vở.</p>
-
 <p>À, cụ thể hơn, trong số nhiều mối tình đổ vỡ, bài này tập trung nói về mối tình sâu đậm nhất, với em Tensorflow.</p>
-
 <h1 id="bối-cảnh-sơ-bộ">Bối cảnh sơ bộ</h1>
-
 <p>Dùng em nó từ thời mới ra trường tới giờ, cũng kha khá lần căng thẳng, cũng kha khá người xì xào về chuyện 2 đứa, kha khá người khuyên nên bỏ em đó sớm đi. Nhưng mình vẫn kiên trì bám đuổi, có 1 chút chịu đựng, có 1 chút tự hào vì cưa đc em mà thiên hạ đồn rằng tán em rất khó, learning curve của em cực cao :v. Sau 1 thời gian thì mình bắt đầu thấy chán, kiểu cơm nhà ko ngon bằng phở quán, với ko chịu đựng nổi nữa nên mình quyết chia tay. Đau buồn, nhưng mình đã vực dậy được, bằng 2 bước đơn giản sau :v</p>
-
 <h1 id="bước-1-tự-chấn-an-bản-thân-rằng-chia-tay-là-đúng">Bước 1: Tự chấn an bản thân rằng chia tay là đúng</h1>
-
 <p>Tìm cho bản thân một/một vài lý do ủng hộ quyết định của mình, ví dụ như cố gắng lục lại ký ức, lục kỹ vào, soi kỹ vào, và chép ra mọi điểm xấu em ấy !!!</p>
-
 <ol>
-<li><p>Em TF luôn tự hào với static graph, giúp dễ dàng tối ưu để chạy nhanh hơn với ít memory hơn. Ờ, nhưng mà code kiểu static graph đem lại cảm giác như code với compiler vậy, cái static graph như cái thèn vô duyên đứng giữa mình (thèn coder) với cái code thực sự lúc chạy. Mà code kiểu đó thì chèn các logic rẽ nhánh hay vòng lặp cực mệt mỏi.</p></li>
-
-<li><p>Em TF có quá nhiều interface. Vô vàn, vô số kể, lạc lối, như mê hồn trận. Sau này mới nhận ra là do ẻm quá tham, muốn 1 mình thả thính cho đc nhiều anh, từ anh expert researcher tới anh beginner, từ anh thuần ML tới anh có gốc gác statistician. Mỗi anh lại có mỗi yêu cầu khác nhau, nên em TF cũng phát minh ra hàng loạt interface với những level khác nhau, nào là level code kiểu dùng Estimator, rồi level code kiểu keras, rồi level code kiểu low-level. Bực nhất là em ấy có mình rồi mà vẫn dễ dãi với trai khác, contributer muốn gì em cũng chiều, thành ra chỉ là 1 function mà có quá trời interface, chẳng biết cái nào ok mà xài.</p></li>
-
-<li><p>Gần đây em có ấy nhận thấy đc 2 điều trên, nên thay vì thả thính diện rộng, giờ em chỉ tập trung thả thính theo style: eager execution kết hợp keras. Mình cũng trông mong sự thay đổi này chắc sẽ cải thiện đc tình cảm đang dần nhạt nhòa của 2 đứa, rứa mà ko ngờ lại gặp chuyện như thế này. TF 2.0 muốn tập trung vào eager execution và API keras, nên mình cũng coi thử cách code kiểu keras. Nhìn nó cũng ngon lành như mấy em đang hót (pytorch), code nhìn sạch sẽ hơn nhiều, thêm cái eager execution nữa nên cũng dễ thương hơn khi mà coder giờ có thể debug bằng pdb rồi. Mà document nói là TF 2.0 đang review, có thể gặp bug, nên thôi chưa dám xài, mình muốn ổn định hơn nên lấy bản TF 1.13.0 quốc thử trước, tại bản này TF khẳng định là STABLE, và tất nhiên là nó có module để code kiểu keras.</p>
-
-<p>Rứa mà ko tin được, bug, bug, bug hết 1 ngày của mình :3 [<a href="https://github.com/tensorflow/tensorflow/issues/27139#event-2230541288">https://github.com/tensorflow/tensorflow/issues/27139#event-2230541288</a>]. Nói rõ hơn, nếu đây ko đc coi là bug thì document quá tệ hại, tệ ko thể tả nổi, khi ko có chút cảnh báo nào về hành vi khó ưa này (nội dung 18+ ở link trước đó). Anw, thử trên bản TF 2.0 thì ko gặp lỗi này :v. Với lại, câu trả lời trên github cũng kỳ, TF 2.0 ra bản preview rồi, mình tưởng 1.x dừng đc rồi, vậy mà nó vẫn được tiếp tục phát triển :3. Em TF định phân thân làm 2 nhánh tách biệt luôn hay sao ?</p></li>
-
-<li><p>Em TF học văn chắc tệ. Đọc document ức chế như quỷ. Như cái tutorial này [<a href="https://www.tensorflow.org/tutorials/eager/custom_layers#implementing_custom_layers">https://www.tensorflow.org/tutorials/eager/custom_layers#implementing_custom_layers</a>], đọc vô ko hiểu rõ được khi nào nên dùng tf.keras.layers.Layer, khi nào dùng tf.keras.Model, nhìn kiểu y chang nhau :3. Tại sao lại đưa ra 2 khái niệm rồi mà nói rõ cái điểm  khác nhau vậy :3, phải lục đến document của TF 2.0 mới nói đến [<a href="https://www.tensorflow.org/alpha/tutorials/eager/custom_layers#layers_common_sets_of_useful_operations">https://www.tensorflow.org/alpha/tutorials/eager/custom_layers#layers_common_sets_of_useful_operations</a>]</p></li>
+<li>
+<p>Em TF luôn tự hào với static graph, giúp dễ dàng tối ưu để chạy nhanh hơn với ít memory hơn. Ờ, nhưng mà code kiểu static graph đem lại cảm giác như code với compiler vậy, cái static graph như cái thèn vô duyên đứng giữa mình (thèn coder) với cái code thực sự lúc chạy. Mà code kiểu đó thì chèn các logic rẽ nhánh hay vòng lặp cực mệt mỏi.</p>
+</li>
+<li>
+<p>Em TF có quá nhiều interface. Vô vàn, vô số kể, lạc lối, như mê hồn trận. Sau này mới nhận ra là do ẻm quá tham, muốn 1 mình thả thính cho đc nhiều anh, từ anh expert researcher tới anh beginner, từ anh thuần ML tới anh có gốc gác statistician. Mỗi anh lại có mỗi yêu cầu khác nhau, nên em TF cũng phát minh ra hàng loạt interface với những level khác nhau, nào là level code kiểu dùng Estimator, rồi level code kiểu keras, rồi level code kiểu low-level. Bực nhất là em ấy có mình rồi mà vẫn dễ dãi với trai khác, contributer muốn gì em cũng chiều, thành ra chỉ là 1 function mà có quá trời interface, chẳng biết cái nào ok mà xài.</p>
+</li>
+<li>
+<p>Gần đây em có ấy nhận thấy đc 2 điều trên, nên thay vì thả thính diện rộng, giờ em chỉ tập trung thả thính theo style: eager execution kết hợp keras. Mình cũng trông mong sự thay đổi này chắc sẽ cải thiện đc tình cảm đang dần nhạt nhòa của 2 đứa, rứa mà ko ngờ lại gặp chuyện như thế này. TF 2.0 muốn tập trung vào eager execution và API keras, nên mình cũng coi thử cách code kiểu keras. Nhìn nó cũng ngon lành như mấy em đang hót (pytorch), code nhìn sạch sẽ hơn nhiều, thêm cái eager execution nữa nên cũng dễ thương hơn khi mà coder giờ có thể debug bằng pdb rồi. Mà document nói là TF 2.0 đang review, có thể gặp bug, nên thôi chưa dám xài, mình muốn ổn định hơn nên lấy bản TF 1.13.0 quốc thử trước, tại bản này TF khẳng định là STABLE, và tất nhiên là nó có module để code kiểu keras.</p>
+<p>Rứa mà ko tin được, bug, bug, bug hết 1 ngày của mình :3 [https://github.com/tensorflow/tensorflow/issues/27139#event-2230541288]. Nói rõ hơn, nếu đây ko đc coi là bug thì document quá tệ hại, tệ ko thể tả nổi, khi ko có chút cảnh báo nào về hành vi khó ưa này (nội dung 18+ ở link trước đó). Anw, thử trên bản TF 2.0 thì ko gặp lỗi này :v. Với lại, câu trả lời trên github cũng kỳ, TF 2.0 ra bản preview rồi, mình tưởng 1.x dừng đc rồi, vậy mà nó vẫn được tiếp tục phát triển :3. Em TF định phân thân làm 2 nhánh tách biệt luôn hay sao ?</p>
+</li>
+<li>
+<p>Em TF học văn chắc tệ. Đọc document ức chế như quỷ. Như cái tutorial này [https://www.tensorflow.org/tutorials/eager/custom_layers#implementing_custom_layers], đọc vô ko hiểu rõ được khi nào nên dùng tf.keras.layers.Layer, khi nào dùng tf.keras.Model, nhìn kiểu y chang nhau :3. Tại sao lại đưa ra 2 khái niệm rồi mà nói rõ cái điểm  khác nhau vậy :3, phải lục đến document của TF 2.0 mới nói đến [https://www.tensorflow.org/alpha/tutorials/eager/custom_layers#layers_common_sets_of_useful_operations]</p>
+</li>
 </ol>
-
 <p>Tới đây thì ko thể chịu đựng hơn nữa !!!</p>
-
 <h1 id="bước-2-tìm-sự-thay-thế-cho-tầm-hồn-bị-tổn-thương-v">Bước 2: Tìm sự thay thế cho tầm hồn bị tổn thương :v</h1>
-
 <p>Pytorch, ko còn em nào khác hấp dẫn hơn nữa. Tới thời điểm này là 2 đứa đã quen đc gần 1 tuần, cảm thấy Cực kỳ thích những điểm cute sau đây:</p>
-
 <ol>
 <li>API đồng nhất, và gọn nữa, rất sướng. Tất cả các layer đều được coi là Module, ko có nắng mưa kiểu lúc thì Layer, lúc thì Model như em TF.</li>
 <li>Document gọn, súc tích, rất sướng.</li>
 <li>Code theo kiểu, code tới đâu chạy tới đó (imperative), như code python bình thường. Cái này thì ko dám khẳng định là tốt hơn cái static graph của em TF, nhưng đc cái là nó phù hợp với trực quan của coder. Với code kiểu này cũng vui vui (chắc là ham đồ mới), như RNN trong tf thì mình chỉ biết nhét 1 sequence vô rồi nhận 1 sequence ra, còn RNN trong pytorch mình có thể tự viết 1 vòng loop qua từng step 1, việc này cực lợi hại khi mà mình có thể tùy ý làm bất cứ thứ gì để customize trên từng step. Hơn nữa, việc dùng if &hellip; else, for loop cũng dễ dàng và tự nhiên hơn nhiều.</li>
 </ol>
-
 <p>Tuy vậy, cũng có 1 số thứ hơi hơi ko ưng ý lắm:</p>
-
 <ul>
-<li>API <code>Tensor.to()</code> thì trả về 1 tensor, ko sửa đổi gì <code>Tensor</code> gốc cả, nhưng <code>Module.to()</code> thì lại có. Nó hơi ko đồng nhất :( . Do Pytorch có cái luật là function nào kết thúc với dấu _, ví dụ <code>abc_()</code> thì nó sẽ chạy kiểu <code>in_place</code>, thay đổi nội bộ object, ko  trả về gì cả, nên API <code>Module.to()</code> thay bằng <code>Module.to_()</code> thì đẹp hơn</li>
-<li>Việc quản lý Tensor ở CPU hay GPU là do mình quyết định. Tuy là flexible nhưng mà mình mắc công phải nhớ nhiều thứ: nhớ đẩy tensor input lên GPU, nhớ đẩy các tensor nào mình tự tạo thêm trong lúc forward() lên GPU, &hellip;</li>
-
-<li><p>API của Pytorch ko hoàn toàn tuân thủ theo interface của Keras, mà theo mình thì TF theo đúng chuẩn keras, nhìn có vẻ tinh tế hơn.</p>
-
-<p>Cụ thể, khi tạo 1 customer layer trong Pytorch, hàm <code>__init__</code> có thể ko nhận vào input shapes, nhưng mà coder có thể (hoặc bắt buộc, chưa coi kỹ) tạo ra hết các weights cần thiết, sao cho mấy weights này phải phù hợp với shape của input. TF giải quyết chuyện này theo cách của keras: với <code>__init__</code> mày chỉ cần tạo ra các biến mà ko phụ thuộc vào shape của input thôi, còn phần còn lại mày để hàm <code>build()</code> lo. Mình thấy cách của em người iu cũ hay ho hơn.</p></li>
-
-<li><p>Điểm xấu cuối cùng, cái này là của cả 2 em. Vd với code sau đây:</p></li>
+<li>
+<p>API <code>Tensor.to()</code> thì trả về 1 tensor, ko sửa đổi gì <code>Tensor</code> gốc cả, nhưng <code>Module.to()</code> thì lại có. Nó hơi ko đồng nhất :( . Do Pytorch có cái luật là function nào kết thúc với dấu _, ví dụ <code>abc_()</code> thì nó sẽ chạy kiểu <code>in_place</code>, thay đổi nội bộ object, ko  trả về gì cả, nên API <code>Module.to()</code> thay bằng <code>Module.to_()</code> thì đẹp hơn</p>
+</li>
+<li>
+<p>Việc quản lý Tensor ở CPU hay GPU là do mình quyết định. Tuy là flexible nhưng mà mình mắc công phải nhớ nhiều thứ: nhớ đẩy tensor input lên GPU, nhớ đẩy các tensor nào mình tự tạo thêm trong lúc forward() lên GPU, &hellip;</p>
+</li>
+<li>
+<p>API của Pytorch ko hoàn toàn tuân thủ theo interface của Keras, mà theo mình thì TF theo đúng chuẩn keras, nhìn có vẻ tinh tế hơn.</p>
+<p>Cụ thể, khi tạo 1 customer layer trong Pytorch, hàm <code>__init__</code> có thể ko nhận vào input shapes, nhưng mà coder có thể (hoặc bắt buộc, chưa coi kỹ) tạo ra hết các weights cần thiết, sao cho mấy weights này phải phù hợp với shape của input. TF giải quyết chuyện này theo cách của keras: với <code>__init__</code> mày chỉ cần tạo ra các biến mà ko phụ thuộc vào shape của input thôi, còn phần còn lại mày để hàm <code>build()</code> lo. Mình thấy cách của em người iu cũ hay ho hơn.</p>
+</li>
+<li>
+<p>Điểm xấu cuối cùng, cái này là của cả 2 em. Vd với code sau đây:</p>
+</li>
 </ul>
-
 <pre><code>class CustomLayer(nn.Module):
     def __init__(self):
          super(CustomLayer, self).__init__()
@@ -140,12 +134,8 @@ print(list(layer_ins.parameters()))
 # tensor([[1., 1.],
 #        [1., 1.]], requires_grad=True)]
 
-</code></pre>
-
-<p>Kỳ dị vãi, ko biết là nó chạy magical code sao mà cái hàm <code>parameters()</code> lại nhận thức được sự tồn tại của <code>attribute W</code>, trong khi hàm <code>__init__()</code> của parent đã được gọi trước :v. Ko biết coder xịn vô thấy sao, chứ như mình, ban đầu nhìn dô ko hiểu nó làm sao làm đc như vậy là thấy bực rồi.</p>
-
+</code></pre><p>Kỳ dị vãi, ko biết là nó chạy magical code sao mà cái hàm <code>parameters()</code> lại nhận thức được sự tồn tại của <code>attribute W</code>, trong khi hàm <code>__init__()</code> của parent đã được gọi trước :v. Ko biết coder xịn vô thấy sao, chứ như mình, ban đầu nhìn dô ko hiểu nó làm sao làm đc như vậy là thấy bực rồi.</p>
 <h1 id="tổng-kết">Tổng kết</h1>
-
 <p>Tổng kết thì giờ đang có những trải nghiệm mới mẻ đầy hứng thú với em Pytorch, nên có thể coi như tạm quên đi đc nổi đau chia tay vs em TF.</p>
 
 </main>

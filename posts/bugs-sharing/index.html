@@ -81,31 +81,20 @@
 
 
 <main>
-
-
-<h2 id="1-use-pandas-series-as-a-list">1. Use <code>pandas.series</code> as a list</h2>
-
-<pre><code class="language-python">x = pd.Series(range(10))
-y = list(range(10))
-del x[5]
-del y[5]
-y[5] → 6
-x[5] → raise  Key Error exception
-</code></pre>
-
-<h2 id="2-use-pandas-read-csv-and-pandas-to-csv">2. Use <code>pandas.read_csv</code> and <code>pandas.to_csv</code></h2>
-
+<h2 id="1-use-pandasseries-as-a-list">1. Use <code>pandas.series</code> as a list</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">x <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>Series(range(<span style="color:#ae81ff">10</span>))
+y <span style="color:#f92672">=</span> list(range(<span style="color:#ae81ff">10</span>))
+<span style="color:#66d9ef">del</span> x[<span style="color:#ae81ff">5</span>]
+<span style="color:#66d9ef">del</span> y[<span style="color:#ae81ff">5</span>]
+y[<span style="color:#ae81ff">5</span>] <span style="color:#960050;background-color:#1e0010">→</span> <span style="color:#ae81ff">6</span>
+x[<span style="color:#ae81ff">5</span>] <span style="color:#960050;background-color:#1e0010">→</span> <span style="color:#66d9ef">raise</span>  Key Error exception
+</code></pre></div><h2 id="2-use-pandasread_csv-and-pandasto_csv">2. Use <code>pandas.read_csv</code> and <code>pandas.to_csv</code></h2>
 <p>Sometimes, after <code>to_csv</code>, you reload the file with <code>read_csv</code>, it raises exception:</p>
-
 <pre><code>ParserError: Error tokenizing data. C error: Buffer overflow caught - possible malformed input file.
-</code></pre>
-
-<p>This occurs because there is a text column which contains endline characters. To use this pair of functions properly, explicitly indicate <code>line_terminator</code> by endline character, as follow:</p>
-
-<pre><code class="language-python">to_csv(lineterminator='\n')
-read_csv(line_terminator='\n')
-</code></pre>
-
+</code></pre><p>This occurs because there is a text column which contains endline characters. To use this pair of functions properly, explicitly indicate <code>line_terminator</code> by endline character, as follow:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">to_csv(lineterminator<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+read_csv(line_terminator<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</code></pre></div>
 </main>
 
     <footer>

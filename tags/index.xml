@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Machine learning</title>
@@ -12,7 +12,7 @@
     
     
     <item>
-      <title>Pandas</title>
+      <title>pandas</title>
       <link>/tags/pandas/</link>
       <pubDate>Sat, 14 Dec 2019 16:36:00 +0700</pubDate>
       
@@ -21,7 +21,7 @@
     </item>
     
     <item>
-      <title>Pytorch</title>
+      <title>pytorch</title>
       <link>/tags/pytorch/</link>
       <pubDate>Sat, 08 Jun 2019 15:26:00 +0700</pubDate>
       
@@ -30,7 +30,7 @@
     </item>
     
     <item>
-      <title>Sklearn</title>
+      <title>sklearn</title>
       <link>/tags/sklearn/</link>
       <pubDate>Sat, 08 Jun 2019 15:26:00 +0700</pubDate>
       
@@ -39,7 +39,7 @@
     </item>
     
     <item>
-      <title>Tokenize</title>
+      <title>tokenize</title>
       <link>/tags/tokenize/</link>
       <pubDate>Sat, 08 Jun 2019 15:26:00 +0700</pubDate>
       

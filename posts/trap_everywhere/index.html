@@ -81,88 +81,55 @@
 
 
 <main>
-
-
 <p>Tập hợp lại những lỗi mình đã từng gặp, hoặc do ngu hoặc do ngu và lười.</p>
-
 <p>Có lỗi khá hiển nhiên, có lỗi rất khó thấy, có lỗi của do mình thiệt, có lỗi do người ta, có lỗi chẳng làm chết 1 con ruồi, có lỗi làm mình mất mấy ngày trời, có lỗi được coi là bug, có lỗi &hellip; chỉ đơn thuần là lỗi.</p>
-
 <h1 id="1-tokenize-lại-string-đã-được-tokenize">1. Tokenize lại string đã được tokenize</h1>
-
 <h3 id="mô-tả">Mô tả</h3>
-
 <p>Lỗi này xảy ra khi mình code service B dùng lại output của thèn service A. Thèn B, mặc dù đã biết là output của A là một string đã tokenize rồi, nhưng tính nó đa nghi nên nó lấy string đã qua xử lý của thèn A để tự tokenize lại. Và thèn B tin rằng dù string qua 2 lần tokenize thì kết quả cũng y chang thôi.</p>
-
 <p>Một ngày nọ, niềm tin sụp đổ :3</p>
-
 <p>Code:</p>
-
-<pre><code class="language-python">    &gt;&gt;&gt;from nltk import word_tokenize
-    &gt;&gt;&gt;txt=&quot;&lt;b&gt;Tôi ghét đi học.&lt;/b&gt;&quot;
-    &gt;&gt;&gt;word_tokenize(txt)
-    ['&lt;', 'b', '&gt;', 'Tôi', 'ghét', 'đi', 'học.', '&lt;', '/b', '&gt;']
-    &gt;&gt;&gt;word_tokenize(' '.join(word_tokenize(txt)))
-    ['&lt;', 'b', '&gt;', 'Tôi', 'ghét', 'đi', 'học', '.', '&lt;', '/b', '&gt;']
-</code></pre>
-
-<p>Phải mất 2 lần tokenize thì chữ <em>học.</em> mới được tách ra làm 2 token <em><code>học</code></em> và <em><code>.</code></em></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">    <span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#f92672">from</span> nltk <span style="color:#f92672">import</span> word_tokenize
+    <span style="color:#f92672">&gt;&gt;&gt;</span>txt<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;b&gt;Tôi ghét đi học.&lt;/b&gt;&#34;</span>
+    <span style="color:#f92672">&gt;&gt;&gt;</span>word_tokenize(txt)
+    [<span style="color:#e6db74">&#39;&lt;&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;&gt;&#39;</span>, <span style="color:#e6db74">&#39;Tôi&#39;</span>, <span style="color:#e6db74">&#39;ghét&#39;</span>, <span style="color:#e6db74">&#39;đi&#39;</span>, <span style="color:#e6db74">&#39;học.&#39;</span>, <span style="color:#e6db74">&#39;&lt;&#39;</span>, <span style="color:#e6db74">&#39;/b&#39;</span>, <span style="color:#e6db74">&#39;&gt;&#39;</span>]
+    <span style="color:#f92672">&gt;&gt;&gt;</span>word_tokenize(<span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">.</span>join(word_tokenize(txt)))
+    [<span style="color:#e6db74">&#39;&lt;&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>, <span style="color:#e6db74">&#39;&gt;&#39;</span>, <span style="color:#e6db74">&#39;Tôi&#39;</span>, <span style="color:#e6db74">&#39;ghét&#39;</span>, <span style="color:#e6db74">&#39;đi&#39;</span>, <span style="color:#e6db74">&#39;học&#39;</span>, <span style="color:#e6db74">&#39;.&#39;</span>, <span style="color:#e6db74">&#39;&lt;&#39;</span>, <span style="color:#e6db74">&#39;/b&#39;</span>, <span style="color:#e6db74">&#39;&gt;&#39;</span>]
+</code></pre></div><p>Phải mất 2 lần tokenize thì chữ <em>học.</em> mới được tách ra làm 2 token <em><code>học</code></em> và <em><code>.</code></em></p>
 <h3 id="ảnh-hưởng">Ảnh hưởng</h3>
-
 <ul>
 <li>Lỗi này có vẻ ít gây ra nhiều ảnh hưởng. Chỉ được phát hiện khi chạy qua đống <code>unittest</code></li>
 </ul>
-
 <h3 id="phòng-tránh">Phòng tránh</h3>
-
 <ul>
 <li>Lỗi này chắc gặp mới biết chứ ko lường trước được.</li>
 </ul>
-
-<h1 id="2-sklearn-feature-extraction-text-countvectorizer">2. sklearn.feature_extraction.text.CountVectorizer</h1>
-
+<h1 id="2-sklearnfeature_extractiontextcountvectorizer">2. sklearn.feature_extraction.text.CountVectorizer</h1>
 <h3 id="mô-tả-1">Mô tả</h3>
-
 <p>Mục đích chính của class này là để convert text data sang vector theo kiểu bag of word, khá tiện. Hồi mới lọ mọ với NLP thì cứ nhắm mắt nhắm mũi mà xài thôi, có 1 đống parameters khi tạo instance của class này, và đa số đều có default sẳn, mình chẳng thèm coi kỹ làm gì, tin mặc định là tốt rồi. Cùng lắm là nhìn sơ sơ chỗ <code>analyzer=’word’</code> để đảm bảo là nó đang làm trên word.</p>
-
 <p>Rồi sau này mới phát hiện, <code>CountVectorizer</code> mặc định sẽ ignore hết mấy dấu chấm, dấu phẩy, &hellip;</p>
-
 <p>Code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#f92672">from</span> sklearn.feature_extraction.text <span style="color:#f92672">import</span> CountVectorizer
+<span style="color:#f92672">&gt;&gt;&gt;</span>corpus <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Tôi ghét đi học.&#39;</span>, <span style="color:#e6db74">&#39;Tôi, cực kỳ, ghét học!&#39;</span>]
+<span style="color:#f92672">&gt;&gt;&gt;</span>vectorizer <span style="color:#f92672">=</span> CountVectorizer()
+<span style="color:#f92672">&gt;&gt;&gt;</span>vectorizer<span style="color:#f92672">.</span>fit_transform(corpus)
+<span style="color:#f92672">&gt;&gt;&gt;</span><span style="color:#66d9ef">print</span>(vectorizer<span style="color:#f92672">.</span>get_feature_names())
+[<span style="color:#e6db74">&#39;cực&#39;</span>, <span style="color:#e6db74">&#39;ghét&#39;</span>, <span style="color:#e6db74">&#39;học&#39;</span>, <span style="color:#e6db74">&#39;kỳ&#39;</span>, <span style="color:#e6db74">&#39;tôi&#39;</span>, <span style="color:#e6db74">&#39;đi&#39;</span>]
 
-<pre><code class="language-python">&gt;&gt;&gt;from sklearn.feature_extraction.text import CountVectorizer
-&gt;&gt;&gt;corpus = ['Tôi ghét đi học.', 'Tôi, cực kỳ, ghét học!']
-&gt;&gt;&gt;vectorizer = CountVectorizer()
-&gt;&gt;&gt;vectorizer.fit_transform(corpus)
-&gt;&gt;&gt;print(vectorizer.get_feature_names())
-['cực', 'ghét', 'học', 'kỳ', 'tôi', 'đi']
-
-</code></pre>
-
-<p>Nó ko thêm &lsquo;.&rsquo;, &lsquo;,&rsquo; và &lsquo;!&rsquo; vào list vocabs !!!
+</code></pre></div><p>Nó ko thêm &lsquo;.&rsquo;, &lsquo;,&rsquo; và &lsquo;!&rsquo; vào list vocabs !!!
 Nhớ là có 1 giai đoạn mình xài class này để làm nhanh việc build vocabs, và dính chưởng khi một mớ dấu câu đều ko có trong vocabs. Phải một vài lần xài mới check lại vocabs và phát hiện ra.</p>
-
 <h3 id="ảnh-hưởng-1">Ảnh hưởng</h3>
-
 <ul>
 <li>Kỹ tính xíu, check lại vocabs là phát hiện đc lỗi này. Ảnh hưởng mức bình thường, ko phải model nào cũng cần dấu câu.</li>
 </ul>
-
 <h3 id="phòng-tránh-1">Phòng tránh</h3>
-
 <ul>
 <li>Đọc kỹ document, coi kỹ default parameters có ý nghĩa gì</li>
 </ul>
-
-<h1 id="3-joblib-https-joblib-readthedocs-io-en-latest">3. <a href="https://joblib.readthedocs.io/en/latest/">Joblib</a></h1>
-
+<h1 id="3-joblibhttpsjoblibreadthedocsioenlatest">3. <a href="https://joblib.readthedocs.io/en/latest/">Joblib</a></h1>
 <h3 id="mô-tả-2">Mô tả</h3>
-
 <p>Lib này cực tiện để chạy parallel, đặc biệt là ở bước prep-rocessing. Một cách khó hiểu, có một lần khi sử dụng lib này, mình phát hiện ra thời gian chạy 1 function bằng lib này tăng gấp 10 lần so với chạy thường.</p>
-
 <p>Lỗi này được phát hiện khi mình deploy model mới, và kèm theo bước pre-processing dùng joblib, kết quả là latency của hệ thống tăng đột ngột :v. Ban đầu cứ tưởng là preprocess có step nào đó phức tạp, mò mò chặp mới thấy do thèn này. Buồn cái là lỗi này mình ko reproduce lại được, cũng chẳng biết vì sao luôn, hồi đó chỉ fix nhanh là ko xài joblib nữa.</p>
-
 <p>Code mô tả theo note hồi xưa ghi lại thôi, ko reproduce đc.</p>
-
 <pre><code>start = time.time()
 docs = Parallel(n_jobs=-1)(delayed(__tokenize_single_doc)(doc) for doc in docs)
 docs = Parallel(n_jobs=-1)(delayed(__clean_text)(doc) for doc in docs)
@@ -175,117 +142,77 @@ docs = [__clean_text(doc) for doc in docs]
 t2 = time.time() - start
 # t2 ~= 20 m
 
-</code></pre>
-
-<h3 id="ảnh-hưởng-2">Ảnh hưởng</h3>
-
+</code></pre><h3 id="ảnh-hưởng-2">Ảnh hưởng</h3>
 <ul>
 <li>Chạy pre-processing với lượng data lớn mà dính cái này thì chờ từ hạ sang đông luôn.</li>
 </ul>
-
 <h3 id="phòng-tránh-2">Phòng tránh</h3>
-
 <ul>
 <li>Chưa biết, gần đây ko xài lại nữa. Chắc nếu dùng thì ráng nhìn cpu xem nó có nhảy lên tương ứng với số core ko</li>
 </ul>
-
 <h1 id="4-create-a-custom-module-trong-pytorch">4. Create a custom Module trong Pytorch</h1>
-
 <h3 id="mô-tả-3">Mô tả</h3>
-
 <p>Code:</p>
-
-<pre><code class="language-python">class A(nn.Module):
-    def __init__(self):
-        super(A, self).__init__()
-        self.x = nn.Linear(2, 2)
-        self.y = [nn.Linear(2, 2) for _ in range(10)]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>(nn<span style="color:#f92672">.</span>Module):
+    <span style="color:#66d9ef">def</span> __init__(self):
+        super(A, self)<span style="color:#f92672">.</span>__init__()
+        self<span style="color:#f92672">.</span>x <span style="color:#f92672">=</span> nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)
+        self<span style="color:#f92672">.</span>y <span style="color:#f92672">=</span> [nn<span style="color:#f92672">.</span>Linear(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>)]
         
-a = A()
-print(list(a.named_parameters()))
-</code></pre>
-
-<p>Trong Pytorch thì Module là 1 component thường chứa parameters, cái mà model cần cập nhật để &ldquo;học&rdquo;. Như trong code trên thì <code>Module A</code> có 1 <code>attribute</code> tên là <code>x</code>, cũng là <code>Module</code>. Pytorch code sẳn cho mình cái base class <code>nn.Module</code> thần kỳ, để chỉ cần khai báo như trên thôi là <code>module A</code> tự động biết danh sách parameters của nó gồm cả các parameters của thèn <code>x</code>.</p>
-
+a <span style="color:#f92672">=</span> A()
+<span style="color:#66d9ef">print</span>(list(a<span style="color:#f92672">.</span>named_parameters()))
+</code></pre></div><p>Trong Pytorch thì Module là 1 component thường chứa parameters, cái mà model cần cập nhật để &ldquo;học&rdquo;. Như trong code trên thì <code>Module A</code> có 1 <code>attribute</code> tên là <code>x</code>, cũng là <code>Module</code>. Pytorch code sẳn cho mình cái base class <code>nn.Module</code> thần kỳ, để chỉ cần khai báo như trên thôi là <code>module A</code> tự động biết danh sách parameters của nó gồm cả các parameters của thèn <code>x</code>.</p>
 <p>Cho nên khi gọi <code>list(a.named_parameters())</code> thì kết quả trả về sẽ gồm một phần kiểu:</p>
-
 <pre><code>    [('x.weight', Parameter containing:
       tensor([[ 0.0526,  0.5711],
               [-0.4674,  0.6332]], requires_grad=True)),
      ('x.bias', Parameter containing:
       tensor([-0.4549,  0.7019], requires_grad=True))]
-</code></pre>
-
-<p>Áp dụng logic tương tự cho cái <code>self.y</code>, thì kết quả của <code>list(a.named_parameters())</code> cũng phải chứa cái gì đó tương tự như trên, duplicate lên 10 lần. Nhưng thực tế là ko, kết quả của <code>list(a.named_parameters())</code> chỉ có thế. Nghĩa là, model của mình, chưa bao giờ nghĩ rằng mớ weights trong <code>list self.y</code> cũng là thứ cần được tính gradient và cập nhật lại sau mỗi step :((</p>
-
+</code></pre><p>Áp dụng logic tương tự cho cái <code>self.y</code>, thì kết quả của <code>list(a.named_parameters())</code> cũng phải chứa cái gì đó tương tự như trên, duplicate lên 10 lần. Nhưng thực tế là ko, kết quả của <code>list(a.named_parameters())</code> chỉ có thế. Nghĩa là, model của mình, chưa bao giờ nghĩ rằng mớ weights trong <code>list self.y</code> cũng là thứ cần được tính gradient và cập nhật lại sau mỗi step :((</p>
 <p>Điểm khác nhau cơ bản, là <code>x</code> là Module, còn <code>y</code> là list <code>Module</code>. Có người cũng raise chuyện này lên repo của Pytorch, sau này họ support chuyện này bằng class <code>nn.ModuleList</code>. Thông tin thêm về việc vì sao người ta ko làm cái chuyện này thành default luôn mà phải thông qua một class khác: <a href="https://discuss.pytorch.org/t/list-of-nn-module-in-a-nn-module/219">pytorch_forum</a></p>
-
 <h3 id="ảnh-hưởng-3">Ảnh hưởng:</h3>
-
 <ul>
 <li>Nghiêm trọng vì nó làm sai hết cái model mình tưởng tượng trong đầu rồi. Đau đớn hơn là code sẽ vẫn cứ chạy bình thường, ko warning, ko error nào cả, thập chí loss cũng có thể vẫn giảm :v. Document Pytorch ko có, hoặc ít nhất là ko hề nhất mạnh điểm này :(.</li>
 </ul>
-
 <h3 id="phòng-tránh-3">Phòng tránh</h3>
-
 <ul>
 <li>Lỗi xuất phát từ bản tính ngây thơ trong sáng, dễ tin người, và tin người mù quáng :v. Bài học rút ra là đọc và tin document chẳng bao giờ là đủ, phải luôn đa nghi, kiểm tra output (thêm <code>unittest</code> hoặc dùng <code>assert</code>) bất cứ chỗ nào cảm thấy nghi nhờ.</li>
 <li>Một điểm nhỏ là, nhờ dùng pytorch nên mình mới để ý nhiều hơn về mấy việc này, đơn giản vì dễ check output tại bất cứ chỗ nào, tiện hơn TF ngày xưa</li>
 </ul>
-
 <h1 id="5-logging-cái-loss">5. Logging cái loss</h1>
-
 <h3 id="mô-tả-4">Mô tả</h3>
-
 <p>Cái này ko hẳn là lỗi (nên chỉ có phần &ldquo;Mô tả&rdquo; thôi), chỉ là 1 tình huống kỳ kỳ.
 Thường thì khi train, mình luôn in ra nhiều loại số, thiết yếu nhất là <code>train_loss</code> của 1 vài batchs. Ví dụ, với <code>interval=100</code>, thay vì chỉ tính mỗi <code>loss</code> của batch đó, mình lưu lại <code>loss</code> của mỗi step training, rồi cứ đc 100 step thì tính mean của đống <code>loss</code> đó rồi log ra, reset lại list <code>loss</code>. In ra như vậy thì khi visualize cái <code>training loss</code> nó mịn hơn xíu, dễ thấy xu hướng của loss hơn xíu.</p>
-
 <p>Đến 1 ngày đẹp trời mình gặp chuyện dở ương này :v
-<img src="/img/trap_everywhere/ridiculous_loss.png" alt="Ridiculous loss!" title="Ridiculous loss" /></p>
-
+<img src="/img/trap_everywhere/ridiculous_loss.png" alt="Ridiculous loss!" title="Ridiculous loss"></p>
 <p>Mấy cái số như sau:</p>
-
 <pre><code>loss_mean = 20704.1440
 loss_std = 133535.5681
 loss_median = 10.2480
 w_a (accuracy) = 0.9505
-</code></pre>
-
-<p>Có 3 điều rút ra từ 4 số trên:</p>
-
+</code></pre><p>Có 3 điều rút ra từ 4 số trên:</p>
 <ul>
 <li>Loss của 1 batch nào đó bị lớn bất thường, vì <code>mean</code> và <code>std</code> đều cực lớn</li>
 <li>Chuyện này có thể do <code>loss</code> của 1 sample nào đó trong batch lớn bất thường, nhưng nhìn chung thì mọi thứ vẫn ổn, vì <code>median</code> thấp chấp nhận được, <code>accuracy</code> ở mức bình thường so với các step trước</li>
 <li>Mặc dù, với code hiện tại thì model vẫn chạy tốt, nhưng đây là dấu hiệu cho thấy có vấn đề về numerical stability</li>
 </ul>
-
 <p>Do ko đào sâu chuyện này nên mình ko nhớ chính xác do đoạn code nào, nhưng đoán có thể do mình xài: <code>nn.Softmax()</code> rồi tính loss bằng <code>nn.NLLLoss</code> (Pytorch). Ko hiểu vì sao mình cần tách 2 cái này ra nữa :3.</p>
-
 <h1 id="6-dataloader-của-pytorch">6. DataLoader của Pytorch</h1>
-
 <h3 id="mô-tả-5">Mô tả</h3>
-
 <p>Để hỗ trợ chuyện load data, Pytorch có 2 class là: <code>Dataset</code> và <code>DataLoader</code>. Khái quát thì <code>Dataset</code> định nghĩa: data là cái gì, còn <code>DataLoader</code> thì định nghĩa chuyện load data như thế nào, vì vậy nên trong tham số khởi tạo <code>DataLoader</code> có <code>batch_size</code>. Thèn <code>DataLoader</code> chứa thèn <code>Dataset</code>. Cả 2 thèn đều support function <code>len()</code> với ý nghĩa khác nhau, mình thì ngu nên tưởng là như nhau.</p>
-
 <ul>
 <li><code>len()</code> của <code>Dataset</code> sẽ là số lượng sample (record) trong data của mình</li>
 <li><code>len()</code> của <code>DataLoader</code> sẽ là số lượng step để lặp qua hết <code>Dataset</code>, mỗi step là nó lấy ra 1 <code>batch_size</code> samples</li>
 </ul>
-
 <h3 id="ảnh-hưởng-4">Ảnh hưởng</h3>
-
 <ul>
 <li>Không ảnh hưởng gì tới sự đúng sai của model, nhưng vì mình có log ra số lượng step ước tính sẽ chạy, nên nó gây hiểu nhầm ở đây. Tối qua nhìn số đó thì tưởng là nó chạy xíu là xong, sáng nay mở ra thấy nó vẫn còn chạy :v. Ảnh hưởng chủ yếu là chiếm tài nguyên lâu hơn dự định thôi</li>
 </ul>
-
 <h3 id="phòng-tránh-4">Phòng tránh</h3>
-
 <ul>
 <li>Đừng ngu</li>
 </ul>
-
 <h1 id="7-bla-bla-bla">7. Bla bla bla</h1>
-
 <p>List hiện chỉ tới đây thôi, còn nhiều lỗi ngu nữa mà thôi, khoe ngu nhiều ko tốt :3</p>
 
 </main>
