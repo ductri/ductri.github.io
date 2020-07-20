@@ -6,20 +6,10 @@
     <description>Recent content in Posts on Machine learning</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>vi</language>
-    <lastBuildDate>Tue, 30 Jun 2020 20:15:24 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 14 Dec 2019 16:36:00 +0700</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Tensor Decomposition in Graph Clustering</title>
-      <link>/posts/tensor-decomposition-in-graph-clustering/</link>
-      <pubDate>Tue, 30 Jun 2020 20:15:24 -0700</pubDate>
-      
-      <guid>/posts/tensor-decomposition-in-graph-clustering/</guid>
-      <description>This is my very first technical report at Oregon State University. It was the final project report of course Matrix Analysis. This version has been undergone minor amendments after grading 90/100.
-Abstract  Tensor decomposition has been propular for decades because of its distinctive characteristics compared to matrix. There are many works dedicated to exploiting tensor potential through various areas, particularly in graph clustering. However, there is a lack of a clear connection between traditional clustering and tensor-based methods.</description>
-    </item>
     
     <item>
       <title>Bug sharing</title>
