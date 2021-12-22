@@ -1,0 +1,12 @@
+I"Ñ<p>I encounter ADMM several time, did go through the derivation 2 times at
+least, still I cannot write it down from scratch when a friend of mine
+asked me about it. This note is to summary my understand about it.</p>
+
+<h1 id="sec:derivation">Derivation</h1>
+
+<p>ADMM deals with an optimization problem in the following form:</p>
+
+\[\begin{align*}
+    &amp; \mathop{\mathrm{minimize}}\quad f(x) + g(z) \\
+    &amp; \text{subject to } \quad Ax + Bz = c\end{align*}\]
+:ET

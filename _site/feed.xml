@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2021-12-22T00:32:04-08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Tri Nguyen</title><subtitle>Spreading PhD's anxiety ...
+</subtitle><entry><title type="html">ADMM - derivation, recipe, and code</title><link href="http://localhost:4000/blog/2021/admm/" rel="alternate" type="text/html" title="ADMM - derivation, recipe, and code" /><published>2021-12-21T15:30:00-08:00</published><updated>2021-12-21T15:30:00-08:00</updated><id>http://localhost:4000/blog/2021/admm</id><content type="html" xml:base="http://localhost:4000/blog/2021/admm/">&lt;p&gt;I encounter ADMM several time, did go through the derivation 2 times at
+least, still I cannot write it down from scratch when a friend of mine
+asked me about it. This note is to summary my understand about it.&lt;/p&gt;
+
+&lt;h1 id=&quot;sec:derivation&quot;&gt;Derivation&lt;/h1&gt;
+
+&lt;p&gt;ADMM deals with an optimization problem in the following form:&lt;/p&gt;
+
+\[\begin{align*}
+    &amp;amp; \mathop{\mathrm{minimize}}\quad f(x) + g(z) \\
+    &amp;amp; \text{subject to } \quad Ax + Bz = c\end{align*}\]</content><author><name></name></author><category term="note" /><category term="optimisation" /><summary type="html">I encounter ADMM several time, did go through the derivation 2 times at least, still I cannot write it down from scratch when a friend of mine asked me about it. This note is to summary my understand about it.</summary></entry></feed>

@@ -1,0 +1,161 @@
+\documentclass[11pt,a4paper]{article}
+
+% --------------------------------------------------------- 
+% PACKAGES AND PREDEFINED SETTINGS
+% --------------------------------------------------------- 
+
+%\usepackage{lmodern}
+%\usepackage{xcolor}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage[utf8x]{inputenc}
+\usepackage[linesnumbered,lined,boxed,commentsnumbered,ruled,vlined]{algorithm2e}
+\usepackage{enumitem}
+%\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx} % Allows including images
+\usepackage[colorlinks=false]{hyperref} % the option is there to remove the square around links which is what I don't like.
+\usepackage{perpage} 
+\MakePerPage{footnote} % Reset the footnote counter perpage. may require to run latex twice.
+\usepackage[margin=2cm]{geometry} % This is here to fit more text into the page.
+\setlength{\parindent}{0pt} % No indentation for paragraphs. Because that is just old.
+%\setlength{\parskip}{\baselineskip} % Instead use vertical paragraph spacing.
+\fontencoding{T1} % the better font encoding.
+\usepackage{chngcntr} % https://tex.stackexchange.com/questions/28333/continuous-v-per-chapter-section-numbering-of-figures-tables-and-other-docume
+%\usepackage{thmtools} % http://ftp.math.purdue.edu/mirrors/ctan.org/macros/latex/exptl/thmtools/thmtools.pdf
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{listings}
+\lstset{language=python}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+\usepackage[
+backend=biber,
+style=alphabetic,
+citestyle=alphabetic
+]{biblatex}
+%\addbibresource{citation.bib}
+\usepackage{afterpage}
+\usepackage{multirow}
+
+% --------------------------------------------------------- 
+% SETTINGS
+% --------------------------------------------------------- 
+\counterwithin{figure}{section}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+% --------------------------------------------------------- 
+% CUSTOM COMMANDS
+% --------------------------------------------------------- 
+
+\newcommand{\rank}[1]{\text{rank}(#1)}
+\newcommand{\pr}[1]{\text{Pr}\left(#1\right)}
+\newcommand{\st}{\text{subject to}\quad }
+\newcommand{\trace}[1]{\text{tr}\left(#1\right)}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\vect}[1]{\text{vec}\left(#1\right)}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % https://tex.stackexchange.com/questions/42726/align-but-show-one-equation-number-at-the-end 
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+\newcommand{\incfig}[2][1]{%
+    \def\svgwidth{#1\columnwidth}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{minimize}
+\DeclareMathOperator*{\maximize}{maximize}
+
+% --------------------------------------------------------- 
+% CUSTOM ENVIRONMENTS
+% --------------------------------------------------------- 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{A note on ADMM}
+\author{	Tri Nguyen \\
+        \texttt{nguyetr9@oregonstate.edu} \\
+        }
+
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+
+I encounter ADMM several time, did go through the derivation 2 times at least, still I cannot write it down from scratch when a friend of mine asked me about it. This note is to summary my understand about it.
+
+\section{Recipe}%
+\label{sec:recipe}
+ADMM deals with an optimization problem in the following form:
+\begin{align*}
+    & \minimize \quad f(x) + g(z) \\
+    & \text{subject to } \quad Ax + Bz = c
+\end{align*}
+
+Updating procedure:
+\begin{itemize}
+    \item abc
+    \item df
+\end{itemize}
+
+
+\section{Derivation}%
+\label{sec:derivation}
+It's not really a derivation but rather a step by step how to get to the procedure above.
+
+\begin{enumerate}
+    \item The augmented Lagrangian function:
+        \[
+        L_\rho(x, z, y) := f(x) + g(z) + y^T (Ax + Bz - c) + \dfrac{\rho}{2} \norm{Ax + Bz - c}_2^2
+        \] 
+    \item The dual function:
+        \[
+        g(\rho) := \inf_{x, z} L(x, z, \rho)
+        \] 
+\end{enumerate}
+
+
+\end{document}
