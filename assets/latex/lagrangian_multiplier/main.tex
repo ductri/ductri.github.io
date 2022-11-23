@@ -1,0 +1,202 @@
+\documentclass[11pt,a4paper]{article}
+
+% --------------------------------------------------------- 
+% PACKAGES AND PREDEFINED SETTINGS
+% --------------------------------------------------------- 
+
+%\usepackage{lmodern}
+%\usepackage{xcolor}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage[utf8x]{inputenc}
+\usepackage[linesnumbered,lined,boxed,commentsnumbered,ruled,vlined]{algorithm2e}
+\usepackage{enumitem}
+%\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx} % Allows including images
+\usepackage[hidelinks]{hyperref} % the option is there to remove the square around links which is what I don't like.
+\usepackage{perpage} 
+\MakePerPage{footnote} % Reset the footnote counter perpage. may require to run latex twice.
+\usepackage[margin=2cm]{geometry} % This is here to fit more text into the page.
+% \setlength{\parindent}{0pt} % No indentation for paragraphs. Because that is just old.
+%\setlength{\parskip}{\baselineskip} % Instead use vertical paragraph spacing.
+\fontencoding{T1} % the better font encoding.
+\usepackage{chngcntr} % https://tex.stackexchange.com/questions/28333/continuous-v-per-chapter-section-numbering-of-figures-tables-and-other-docume
+%\usepackage{thmtools} % http://ftp.math.purdue.edu/mirrors/ctan.org/macros/latex/exptl/thmtools/thmtools.pdf
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{listings}
+\lstset{language=python}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+\usepackage[
+backend=biber,
+style=alphabetic,
+citestyle=alphabetic
+]{biblatex}
+%\addbibresource{citation.bib}
+\usepackage{afterpage}
+\usepackage{multirow}
+\usepackage{bm}
+
+% --------------------------------------------------------- 
+% SETTINGS
+% --------------------------------------------------------- 
+\counterwithin{figure}{section}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+% --------------------------------------------------------- 
+% CUSTOM COMMANDS
+% --------------------------------------------------------- 
+
+\def\green{\color{green}}
+\def\red{\color{red}}
+\def\blue{\color{blue}}
+\newcommand{\rank}[1]{\text{rank}(#1)}
+\newcommand{\pr}[1]{\text{Pr}\left(#1\right)}
+\newcommand{\st}{\text{subject to}\quad }
+\newcommand{\trace}[1]{\text{tr}\left(#1\right)}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\vect}[1]{\text{vec}\left(#1\right)}
+\newcommand{\diag}[1]{\text{diag}\left(#1\right)}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % https://tex.stackexchange.com/questions/42726/align-but-show-one-equation-number-at-the-end 
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+\newcommand{\T}{\!\top\!}
+
+\newcommand{\incfig}[2][1]{%
+    \def\svgwidth{#1\columnwidth}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{minimize}
+\DeclareMathOperator*{\maximize}{maximize}
+\newcommand{\indep}{\perp \!\!\! \perp}
+
+% --------------------------------------------------------- 
+% CUSTOM ENVIRONMENTS
+% --------------------------------------------------------- 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{block}{Block}[section]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{Lagrangian Multiplier Method}
+\author{	Tri Nguyen \\
+        \texttt{nguyetr9@oregonstate.edu} \\
+        }
+
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+
+\section{My mistake}%
+\label{sec:my_mistake}
+
+It is common to encounter a constrained optimisation like
+\begin{subequations}
+\label{problem:origin}
+\begin{alignat}{2}
+    & \minimize_{x} \quad && f(x) \\
+    & \text{subject to} && Ax = b
+\end{alignat}
+\end{subequations}
+where $f(x)$ is differentiable.
+
+\paragraph{First try} 
+\begin{subequations}
+\label{problem:lagrangian}
+\begin{alignat}{2}
+    & \minimize_{x} \quad &&  f(x) + y^{\T}(Ax - b) 
+\end{alignat}
+for some $y>0$.
+\end{subequations}
+Is this true? This looks very similar to some method called Lagrangian multiplier. So it should be right? It is totally wrong. If my adviser ever me doing this, or even just think about it, I must be kicked out of my lab.
+
+Truth is, I have been easily confused of this and the Lagrangian method before writing this down.
+\paragraph{Second try: The right way} 
+We can utilize KKT conditions.
+% We have a block\footnote{called it block since I don't know if theorem, or lemma, or whatever is suitable} about KKT conditions.
+ 
+In general, KKT conditions is sufficient but not always necessary. However, in our case, it is necessary since the Slater's condition is reasonably assumed to be satisfied. Otherwise, it is quite meaningless to try to work on the problem.
+
+The KKT conditions are
+\begin{subequations}
+\label{eq:kkt}
+\begin{align}
+    Ax &= b \\
+    \nabla f(x) + y^{\T}A &= 0 
+\end{align}
+\end{subequations}
+So $x^{*}$ is a solution of \eqref {problem:origin} iff there exists some $y^{*}$ such that $(x^{*}, y^{*})$ is a solution of \eqref{eq:kkt}.
+So solving this system of equations, we can get all solutions of Problem \eqref{problem:origin}.
+
+The name Lagrangian multiplier come from the fact that the quantity in xxx is Lagrangian, i.e., a function of $x, y$. And we want to find critical points of that function, i.e., setting gradient respect of $x, y$ to $0$, but not find the minimal point. I think that's most confusing part.
+
+\begin{block}[KKT conditions. (no proof)] 
+    Necessary condition and sufficient condition:
+    \begin{itemize}
+        \item For a constrained optimisation problem with zero duality gap, if $x^{*}$ and $(\lambda^{*}, \nu^{*})$ are primal and dual optimal then $x^{*}, \lambda^{*}, \nu^{*}$ are satisfied KKT conditions.
+        \item For a constrained convex optimisation problem, if $x^{*}, \lambda^{*}, \nu^{*}$ are satisfied KKT conditions, then $x^{*}$ and $(\lambda^{*}, \nu^{*})$ are primal and dual optimal with zero duality gap.
+    \end{itemize}
+\end{block}
+\section{If $f$ is not convex.} 
+Now move on to nonconvex case. In general, best thing we hope from \eqref{problem:origin} is getting a local minima. 
+
+It is getting hard to use KKT conditions. The sufficient condition is meaningless now as it is only applicable for convex problem. For necessary condition, how do we check strong duality.
+
+Luckily, there is a theorem not involving KKT condition, and provide necessary condition in exactly the form of Lagrangian multiplier method.
+It says that if $x$ is a local minima, then there must exists  $y$ such that
+ \[
+\nabla f(x) + y^{\T} A = 0
+\] 
+Then with the equality constraint on $x$, we again arrive the same formula in \eqref{eq:kkt}.
+
+That is nice.
+
+Now lets extend to inequality constraint.
+
+\end{document}
