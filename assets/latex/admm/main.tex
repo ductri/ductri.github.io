@@ -76,6 +76,9 @@ citestyle=alphabetic
 % CUSTOM COMMANDS
 % --------------------------------------------------------- 
 
+\def\green{\color{green}}
+\def\red{\color{red}}
+\def\blue{\color{blue}}
 \newcommand{\rank}[1]{\text{rank}(#1)}
 \newcommand{\pr}[1]{\text{Pr}\left(#1\right)}
 \newcommand{\st}{\text{subject to}\quad }
@@ -83,6 +86,7 @@ citestyle=alphabetic
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 \newcommand{\vect}[1]{\text{vec}\left(#1\right)}
+\newcommand{\diag}[1]{\text{diag}\left(#1\right)}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % https://tex.stackexchange.com/questions/42726/align-but-show-one-equation-number-at-the-end 
 \newcommand{\set}[1]{\left\{#1\right\}}
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
@@ -103,6 +107,7 @@ citestyle=alphabetic
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}{Lemma}[section]
+\newtheorem{block}{Block}[section]
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -127,20 +132,60 @@ citestyle=alphabetic
 
 I encounter ADMM several time, did go through the derivation 2 times at least, still I cannot write it down from scratch when a friend of mine asked me about it. This note is to summary my understand about it.
 
-\section{Recipe}%
-\label{sec:recipe}
-ADMM deals with an optimization problem in the following form:
+\section{Dual Ascend}%
+Firstly, take a look at a common optimization problem with linear equality constraint
+\begin{subequations}
+\label{eq:dual_ascend_problem}
+\begin{alignat}{2}
+    & \minimize_{x} \quad && f(x) \\
+    & \text{subject to} && Ax = b,
+\end{alignat}
+\end{subequations}
+
+The first method comes to mind is Lagrangian multiplier. 
+The Lagrangian is 
+\[
+L(x, y) = f(x) + y^{\!\top\!} (Ax - b).
+\]
+Optimizing on $L(x, y)$ is easier since it is a unconstrained optimisation problem.
+\begin{equation}
+\label{eq:lagrangian_multiplier}
+\minimize_{x, y} \; L(x, y)
+\end{equation} 
+Solutions ($x^{*}, y^{*}$) of this problem would potentially provide us solution of the original problem.
+
+\begin{block}
+If $x^{*}$ is a solution of Problem \eqref{eq:dual_ascend_problem}, then it would be a part of a stationary point of problem \eqref{eq:lagrangian_multiplier}, i.e, $(x^{*}, y^{*})$ is a stationary point of problem \eqref{eq:lagrangian_multiplier} for some $y^{*}$.
+\end{block}
+\begin{proof}
+    It might be too much but I will invoke KKT conditions. KKT conditions provides a set necessary conditions for a stationary point of a constrained problem. One of the condition is
 \begin{align*}
-    & \minimize \quad f(x) + g(z) \\
-    & \text{subject to } \quad Ax + Bz = c
+\dfrac{\partial\; L(x^{*}, y)}{\partial\; x} = 0
 \end{align*}
+Hence, any solution $x^{*}$ of problem \ref{eq:dual_ascend_problem} would be stationary point of problem \eqref{eq:lagrangian_multiplier}.
 
-Updating procedure:
-\begin{itemize}
-    \item abc
-    \item df
-\end{itemize}
+\end{proof}
 
+\begin{block}[KKT conditions. (no proof)] 
+    Necessary condition and sufficient condition:
+    \begin{itemize}
+        \item For a constrained optimisation problem with zero duality gap, if $x^{*}$ and $(\lambda^{*}, \nu^{*})$ are primal and dual optimal then $x^{*}, \lambda^{*}, \nu^{*}$ are satisfied KKT conditions.
+        \item For a constrained convex optimisation problem, if $x^{*}, \lambda^{*}, \nu^{*}$ are satisfied KKT conditions, then $x^{*}$ and $(\lambda^{*}, \nu^{*})$ are primal and dual optimal with zero duality gap.
+    \end{itemize}
+\end{block}
+\begin{block}[Strong duality]
+    These conditions which guarantees strong duality are called constraint qualifications.
+    \begin{itemize}
+        \item If the problem is convex, Slater's condition is a constraint qualification. It requires existence of a strictly feasible point.
+        \item Other constraint qualifications.
+    \end{itemize}
+\end{block}
+
+ So one can work on the Lagrangian problem then pick out the best solution for the original problem. That fact that solving Problem \eqref{eq:lagrangian_multiplier} is much easier makes this method a good-to-go method to deal with this constrained problem.
+
+\begin{block}[Lagrangian multiplier]
+     
+\end{block}
 
 \section{Derivation}%
 \label{sec:derivation}
@@ -153,9 +198,113 @@ It's not really a derivation but rather a step by step how to get to the procedu
         \] 
     \item The dual function:
         \[
-        g(\rho) := \inf_{x, z} L(x, z, \rho)
+        g(y) := \inf_{x, z} L_\rho(x, z, y)
+        \] 
+    \item Dual problem:
+        \[
+        \maximize_{y} \quad g(y)
+        \] 
+        using gradient ascent, where the gradient respect to $y$ is 
+         \[
+        \nabla g(y) = Ax + Bz - c \quad \text{({\blue prove this})}
         \] 
 \end{enumerate}
+So 3 steps are
+\begin{align*}
+    & x^{k+1} \leftarrow \argmin_{x} \quad L_{\rho} (x, z^{k}, y^{k}) \\
+    & z^{k+1} \leftarrow \argmin_{z} \quad L_{\rho} (x^{k+1}, z, y^{k}) \\
+    & y^{k+1} \leftarrow y^{k} + \rho (Ax^{k+1} + Bz^{k+1} - c)
+\end{align*}
+which are equivalent to
+\begin{align*}
+    & x^{k+1} \leftarrow \argmin_{x} \quad \left(  f(x) + \dfrac{\rho}{2} \norm{Ax +Bz^{k} -c + u^{k}} \right)\\
+    & z^{k+1} \leftarrow \argmin_{z} \quad \left(  g(z) + \dfrac{\rho}{2} \norm{Ax^{k+1} + Bz -c + u^{k}} \right)\\
+    & u^{k+1} \leftarrow u^{k} + Ax^{k+1} + Bz^{k+1} - c
+\end{align*}
+where $u = \dfrac{1}{\rho} y$.
+
+{\blue What if we define residual as $-Ax - Bz + c$?}
+\section{Examples}%
+\label{sec:examples}
+
+\subsection{Problem 1}%
+\label{sub:problem_1}
+
+\begin{alignat*}{2}
+    & \minimize_{\mathbf{A}} \quad && \norm{\underline{\mathbf{X}}^{(1)} - (\mathbf{C} \odot \mathbf{B}) \diag{\boldsymbol  \lambda} \mathbf{A}^{\rm T} }_{\rm F}^2 \\
+    & \text{subject to} && \mathbf{A} \geq 0,  \mathbf{1}^{\rm T} \mathbf{A} = \mathbf{1}^{\rm T} 
+\end{alignat*}
+We can use PGD to solve this, but ADMM is more flexible, and we are not sure which one is faster.
+
+\begin{itemize}
+    \item Step 1: Translate problem to ADMM form
+        \begin{alignat*}{2}
+            & \minimize_{\mathbf{A}, \widetilde{\mathbf{A}}} \quad && 
+            \dfrac{1}{2}\norm{\underline{\mathbf{X}} - (\mathbf{C} \odot \mathbf{B}) \diag{\boldsymbol \lambda} \mathbf{A}^{\rm T} }_{\rm F}^2 + I(\widetilde{\mathbf{A}} \in \Delta) \\
+            & \text{subject to} && \mathbf{A} = \widetilde{\mathbf{A}}
+        \end{alignat*}
+    \item Step 2: Plug in ADMM updating rule
+        \begin{align*}
+        &\mathbf{A}^{k+1} \leftarrow \minimize_{\mathbf{A}} \quad \left(  \dfrac{1}{2}\norm{\underline{\mathbf{X}}^{(1)} - (\mathbf{C} \odot \mathbf{B}) \diag{\boldsymbol \lambda} \mathbf{A}^{\rm T} }_{\rm F}^2 
+        + \dfrac{\rho}{2} \norm{\mathbf{A} - \widetilde{\mathbf{A}}^{k} + \mathbf{U}^{k}}_{\rm F}^2\right) \\
+        &\widetilde{\mathbf{A}}^{k+1} \leftarrow 
+        \minimize_{\widetilde{\mathbf{A}}} \quad I(\widetilde{\mathbf{A}} \in \Delta) + \dfrac{\rho}{2} \norm{\mathbf{A}^{k+1} - \widetilde{\mathbf{A}} + \mathbf{U}^{k}}_{\rm F}^2 \\
+        & \quad \quad \quad = 
+        \minimize_{\widetilde{\mathbf{A}}} \quad I(\widetilde{\mathbf{A}} \in \Delta) + \dfrac{\rho}{2} \norm{\widetilde{\mathbf{A}} - \mathbf{A}^{k+1} - \mathbf{U}^{k}}_{\rm F}^2 \\
+        & \quad \quad \quad = 
+        \mathcal{P}_{\Delta}(\mathbf{A}^{k+1} + \mathbf{U}^{k}) \\
+        &\mathbf{U}^{k+1} \leftarrow 
+        \mathbf{U}^{k} + \mathbf{A}^{k+1} - \widetilde{\mathbf{A}}^{k+1}
+        \end{align*}
+        Solve for $\mathbf{A}^{\rm T} $:
+        \begin{align*}
+       & \nabla = \mathbf{0} \\
+       \Leftrightarrow &\diag{\boldsymbol \Lambda} (\mathbf{C} \odot \mathbf{B})^{\rm T} \left( (\mathbf{C} \odot \mathbf{B})\diag{\boldsymbol \Lambda}\mathbf{A}^{\rm T}  - \underline{\mathbf{X}}^{(1)} \right) + \rho (\mathbf{A}^{\rm T}  - \left(  \widetilde{\mathbf{A}}^{k}\right)^{\rm T} + \left(  \mathbf{U}^{k}\right)^{\rm T} ) = \mathbf{0} \\
+       \Leftrightarrow  &\left(  \diag{\boldsymbol \Lambda} (\mathbf{C}^{\rm T} \mathbf{C} * \mathbf{B}^{\rm T} \mathbf{B}) \diag{\boldsymbol  \Lambda}  + \rho \mathbf{I}_{\text{size($\mathbf{A}^{\rm T} $, 1)}}\right) \mathbf{A}^{\rm T} 
+             = \diag{\boldsymbol \Lambda} (\mathbf{C} \odot \mathbf{B})^{\rm T} \underline{\mathbf{X}}^{(1)} + \rho \left( \left(  \widetilde{\mathbf{A}}^{k}\right)^{\rm T} - \left(  \mathbf{U}^{k}\right)^{\rm T} \right) \\
+       &\mathbf{G} \mathbf{A}^{\rm T}  = \mathbf{H}
+       \end{align*}
+                    
+        
+        
+\end{itemize}
+
+\subsection{Example 2}%
+\label{sub:example_2}
+\begin{alignat*}{2}
+    & \minimize_{\mathbf{A}} \quad && \norm{\underline{\mathbf{X}}^{(1)} - (\mathbf{C} \odot \mathbf{B})\mathbf{A}^{\rm T} }_{\rm F}^2 \\
+    & \text{subject to} && \mathbf{A} \in \mathcal{C}
+\end{alignat*}
+
+Step 1: translate to ADMM form. There are several ways to do that, and they are slightly different. Let's stick with the following recipe. The little transpose notation is very easily confusing.
+\begin{alignat*}{2}
+    & \minimize_{\mathbf{A}, \widetilde{\mathbf{A}}} \quad && \norm{\underline{\mathbf{X}}^{(1)} - (\mathbf{C} \odot \mathbf{B})\widetilde{\mathbf{A}}}_{\rm F}^2 + I(\mathbf{A} \in \mathcal{C}) \\
+    & \text{subject to} && \mathbf{A} = \widetilde{\mathbf{A}}^{\rm T} 
+\end{alignat*}
+
+Step 2:
+\begin{itemize}
+    \item Update $\widetilde{\mathbf{A}}$,
+        \begin{align*}
+            & \widetilde{\mathbf{A}} \leftarrow \dfrac{1}{2} \norm{\underline{\mathbf{X}}^{(1)} - (\mathbf{C} \odot \mathbf{B}) \widetilde{\mathbf{A}}}_{\rm F}^2 + \dfrac{\rho}{2} \norm{\mathbf{A} - \widetilde{\mathbf{A}}^{\rm T}  + \mathbf{U}} \\ 
+            & \quad \leftarrow \dfrac{1}{2} \norm{\underline{\mathbf{X}}^{(1)} - (\mathbf{C} \odot \mathbf{B}) \widetilde{\mathbf{A}}}_{\rm F}^2 + \dfrac{\rho}{2} \norm{\widetilde{\mathbf{A}} - \mathbf{A}^{\rm T}  - \mathbf{U}^{\rm T} } \\ 
+        & \nabla_{\widetilde{\mathbf{A}}} = 0 \\
+        \Leftrightarrow & ((\mathbf{C}^{\rm T} \mathbf{C} * \mathbf{B}^{\rm T} \mathbf{B}) + \rho \mathbf{I}) \widetilde{\mathbf{A}} = (\mathbf{C} \odot \mathbf{B})^{\rm T} \underline{\mathbf{X}}^{(1)} + \rho (\mathbf{A} + \mathbf{U})^{\rm T}  \\
+        \Leftrightarrow & \widetilde{\mathbf{A}} = \big[(\mathbf{C}^{\rm T} \mathbf{C} * \mathbf{B}^{\rm T} \mathbf{B}) + \rho \mathbf{I}_F \big]^{-1} \big[(\mathbf{C} \odot \mathbf{B})^{\rm T} \underline{\mathbf{X}}^{(1)} + \rho (\mathbf{A} + \mathbf{U})^{\rm T} \big]
+        \end{align*}
+    \item Update $\mathbf{A}$ usually with a proximal operator,
+        \begin{align*}
+        \mathbf{A} \leftarrow \argmin_{\mathbf{A}} \; I(\mathbf{A} \in \mathcal{C}) + \dfrac{\rho}{2} \norm{\mathbf{A} - \widetilde{\mathbf{A}}^{\rm T} + \mathbf{U} }_{\rm F}^2
+        \end{align*}
+    \item Update dual variable $\mathbf{U}$,
+        \begin{align*}
+        \mathbf{U} \leftarrow \mathbf{U} + \mathbf{A} - \widetilde{\mathbf{A}}^{\rm T} 
+        \end{align*}
+\end{itemize}
+{\blue Does the order of update $\mathbf{A}, \widetilde{\mathbf{A}}$ matter? How's about initilization for each sub-problem? Should we init them randomly, or used value from previous iteration?}
+
+Small $\rho$ is important to converge to a smaller objective value.
+
 
 
 \end{document}
