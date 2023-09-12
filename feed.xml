@@ -5,9 +5,404 @@
     <description>description</description>
     <link>https://ductri.github.io/</link>
     <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 26 Nov 2022 12:47:04 -0800</pubDate>
-    <lastBuildDate>Sat, 26 Nov 2022 12:47:04 -0800</lastBuildDate>
+    <pubDate>Mon, 11 Sep 2023 22:09:28 -0700</pubDate>
+    <lastBuildDate>Mon, 11 Sep 2023 22:09:28 -0700</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>My take on ICML2023</title>
+        <description>&lt;!-- # My take on ICML2023 --&gt;
+
+&lt;p&gt;These are a few papers I found interesting either by the work itself or the concepts/techniques it used, although the concept/techniques might be old.
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;paper-1-inpainting-with-diffusion-model&quot;&gt;Paper 1: Inpainting with Diffusion Model&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/paper1_title.png&quot; width=&quot;800&quot; style=&quot;border: 1px solid  black;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/paper1-authors.png&quot; width=&quot;300&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;problem-setting&quot;&gt;Problem Setting&lt;/h3&gt;
+
+&lt;p&gt;Given a partially masked image where the shape of the mask is arbitrary, generate the hidden part to produce a complete image.
+Here is a demonstrate from the paper (part of Figure 9), where the black areas represent the missing part of the input images.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/paper1-demo1.png&quot; width=&quot;800&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/paper1-demo1-result.png&quot; width=&quot;800&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;review-on-diffusion&quot;&gt;Review on Diffusion&lt;/h3&gt;
+
+&lt;p&gt;Forward diffusion dynamic:&lt;/p&gt;
+
+\[\begin{equation}
+d \textbf{x} = \textbf{f}(\textbf{x}, t) d \textbf{x} + \textbf{G}(\textbf{x}, t) d\textbf{w},
+\end{equation}\]
+
+&lt;p&gt;where  ( x^2=6 ),
+$\textbf{x} \in \mathbb{R}^{d}, \textbf{w} \in \mathbb{R}^{d}$ and $\textbf{f}(\cdot,x):\mathbb{R}^{d} \to \mathbb{R}^{d}, \textbf{G}(\textbf{x}, t): \mathbb{R}^{d} \to \mathbb{R}^{d \times d}$.&lt;/p&gt;
+
+&lt;p&gt;Note that functions $\textbf{f}, \textbf{G}$ are pre-specified and fixed.&lt;/p&gt;
+
+&lt;p&gt;(Anderson, 1982) shown that we can model the dynamic if time travels in the &lt;strong&gt;backward&lt;/strong&gt; direction as&lt;/p&gt;
+
+\[\begin{equation}
+d\textbf{x} = (\textbf{f}(\textbf{x}, t) - \nabla \cdot [\textbf{G}(\textbf{x}, t) \textbf{G}(\textbf{x}, t)^{\sf T}] - \textbf{G}(\textbf{x}, t)\textbf{G}(\textbf{x}, t)^{\sf T} \nabla_{\textbf{x}} \log p_t(\textbf{x})) dt + \textbf{G}(\textbf{x}, t) d \overline{\textbf{w}}
+\end{equation}\]
+
+&lt;p&gt;Now if $\textbf{x}$ is generated conditioning on some $\textbf{y}$, the same recipe is still applicable. 
+In particular, we can think of describing a collection of diffusion processes (instead of a single diffusion process) indexed by $\textbf{y}$.&lt;br /&gt;
+The forward of these diffusion processes would be exactly identical to each others as the forward describes how to diffuse the input $\textbf{x}_0 = \textbf{x}$ and knowing $\textbf{y}$ does not affect those processes. In contrast, the backward of these diffusions are different, i.e.,
+\(\begin{equation}
+d\textbf{x} = \Big(\textbf{f}(\textbf{x}, t) - \nabla \cdot [\textbf{G}(\textbf{x}, t) \textbf{G}(\textbf{x}, t)^{\sf T}] - \textbf{G}(\textbf{x}, t)\textbf{G}(\textbf{x}, t)^{\sf T} \nabla_{\textbf{x}} {\color{green} \log p_t(\textbf{x} \mid \textbf{y}})\Big) dt + \textbf{G}(\textbf{x}, t) d \overline{\textbf{w}}.
+\end{equation}\)&lt;/p&gt;
+
+&lt;p&gt;This is also the reasoning behind classifier guidance diffusion method, as
+\(\log p_t(\textbf{x} \mid \textbf{y}) = \log p_t(\textbf{y} \mid \textbf{x}) + \log p_{t}(\textbf{x}).\)&lt;/p&gt;
+
+&lt;p&gt;In any case, if we have access to $\log p_t(\textbf{y} \mid \textbf{x})$, then we can use an &lt;strong&gt;unconditional generative diffusion model&lt;/strong&gt; to generate samples conditioning on $\textbf{y}$.&lt;/p&gt;
+
+&lt;h3 id=&quot;possible-solutions&quot;&gt;Possible solutions:&lt;/h3&gt;
+
+&lt;p&gt;We can always train a conditional generative model with the pair of &lt;strong&gt;(partially masked image, full image)&lt;/strong&gt;. But this might not be well generalizable since the mask shape is arbitrary. Instead, training an &lt;strong&gt;unconditional generative model&lt;/strong&gt; is much easier since the unlabeled image data are abundant.&lt;/p&gt;
+
+&lt;p&gt;One solution for inpainting with diffusion model was written in the appendix of (Song, 2021). Denote 
+$\textbf{x} = (\Omega(\textbf{x}), \Omega^{c}(\textbf{x}))$
+corresponds to the revealed and missing part of the input image $\textbf{x}$. Then the inpainting problem can be cast to the conditional generative framework is: How to generate $\Omega^{c}(\textbf{x})$ given $\Omega(\textbf{x})$?
+Specifically, how to estimate ${\color{green}\log p_{t} (\Omega^{c}(\textbf{x}) \mid \Omega(\textbf{x}_0))}?.$&lt;/p&gt;
+
+&lt;p&gt;(Song, 2021) suggests an approximation like this&lt;/p&gt;
+
+\[\begin{align}
+p_{t} (\Omega^{c}(\textbf{x}) \mid \Omega(\textbf{x}_0)) 
+&amp;amp;= \int p_{t} \big(\Omega^{c}(\mathcal{x}), \Omega(\textbf{x}) \mid \Omega(\textbf{x}_0)\big) d \Omega(\textbf{x}) \\
+&amp;amp;= \mathop{\mathbb{E}}_{\Omega(\textbf{x}) \sim p_t(\Omega(\textbf{x}) \mid \Omega(\textbf{x}_0))} \left[ p_t(\Omega^{c}(\textbf{x}) \mid \Omega(\textbf{x}), \Omega(\textbf{x}_0)) \right] \\
+&amp;amp;\approx \mathop{\mathbb{E}}_{\Omega(\textbf{x}) \sim p_t(\Omega(\textbf{x}) \mid \Omega(\textbf{x}_0))} \left[ p_t(\Omega^{c}(\textbf{x}) \mid \Omega(\textbf{x})) \right] \\
+&amp;amp;\approx p_t(\Omega^{c}(\textbf{x}) \mid \widehat{\Omega}(\textbf{x})),
+\end{align}\]
+
+&lt;p&gt;where the last approximation can be understood as we estimate the expectation by evaluating the function at &lt;em&gt;a&lt;/em&gt; randomly drawn sample $\widehat{\Omega}(\textbf{x}) \sim p_t(\Omega(\textbf{x}) \mid \Omega(\textbf{x}_0))$. This sample drawing is pretty easily as it is defined by the forward process, and we can increase its precision by draw more than one sample.
+The first approximation, however, I haven’t figured out how it worked as well as how accurate it was. But my hunch is that it &lt;strong&gt;isn’t&lt;/strong&gt; very good, otherwise people will just stop working on inpainting problem which is not the case.&lt;/p&gt;
+
+&lt;p&gt;Another suggestion which looks a bit heuristic to me was proposed in (Song, 2020), also in the appendix.
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/inpainting-heuristic-alg.png&quot; width=&quot;500px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Not sure if these 2 approaches are related. But again, inpainting demonstration was not the main focus in this work either.&lt;/p&gt;
+
+&lt;p&gt;Now to the “real work”.
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/inpaint-title.png&quot; width=&quot;800px&quot; /&gt;
+I had a hard time trying find the novelty of this work in comparison to (Song, 2020). 
+Here is all I found from the paper
+&lt;!-- The author did not try very hard to highlight the difference either. They only said: --&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/inpainting-diff.png&quot; width=&quot;350px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In any case, here is the brief overview of their solution:&lt;/p&gt;
+&lt;p float=&quot;left&quot;&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/inpainting-solution.png&quot; width=&quot;500px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/inpainting-solution-demo.png&quot; width=&quot;300px&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Originally, only with that solution, they got ‘ehhh’ quality-wise samples, and so they proposed another technical idea called &lt;em&gt;resamples&lt;/em&gt; to improve the &lt;strong&gt;coherence&lt;/strong&gt; of generated images:
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/inpainting-improvement.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That leads to our target paper published in ICML 2023.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-aa.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;previous-limitations&quot;&gt;Previous limitations&lt;/h4&gt;
+&lt;p&gt;The issue with previous approaches is that:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-motivation.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;their-solution&quot;&gt;Their solution&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-sol1.png&quot; width=&quot;200px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-sol2.png&quot; width=&quot;250px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-sol3.png&quot; width=&quot;250px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The simple version of their solution consider $\textbf{g}_{\boldsymbol \theta}(\cdot)$ that maps $\widetilde{\textbf{X}}_T$ to $\widetilde{\textbf{X}}_0$ is a deterministic mapping, which can be realized pratically with DDIM diffusion model. 
+Under this view, what they are doing is essentially the same as optimizing over the latent vector to satisfy certain constraint, same as in GAN.
+And then of course, they will have to exploit/take into account properties of diffusion somewhere in the pipeline.&lt;/p&gt;
+
+&lt;p&gt;Indeed, the gradient over $\textbf{g}_{\boldsymbol \theta}(\cdot)$ would be super costly. So they proposed to use “one-step approximation”.
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-onestep-approx.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;where $\textbf{f} _{\boldsymbol \theta}^{T}(\textbf{x}) \approx \textbf{g} _{\boldsymbol \theta}(\textbf{x})$.&lt;/p&gt;
+
+&lt;p&gt;But different from \(\textbf{g}\) where it requires to undergo 10-100 iterations, \(\textbf{f}_{\boldsymbol \theta}\) has a closed-form expression.
+The function \(\textbf{f} _{\boldsymbol \theta}\) is defined based on the following relation&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/remind-diffusion.png&quot; width=&quot;500px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And they do have certain empirical evidence that the $\textbf{f}_{\boldsymbol \theta}$ should be an okay estimate of $\textbf{g}$,
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-f-estimation.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then they move to the general case where the backward process is stochastic. In this case, they will try to perform the same optimization at very iteration of the backward process.
+In principle, it is not the optimal way to do inference. To see that,&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/copaint-stochastic.png&quot; width=&quot;600px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note that only $\widetilde{\textbf{X}} _T$ is the variable in previous case, but in this case all $\widetilde{\textbf{X}} _{t}, t=0..T$ are variables. So their practical strategy is to use greedy approach, i.e., only optimize over $\widetilde{\textbf{X}}_t$ at iteration $t$.&lt;/p&gt;
+
+&lt;p&gt;My main concern about this method is running time, since the optimization is over image space which could be large, and also it is needed for every steps in the backward process. In their exp, they only run 1 step of gradience ascent, and show that it is faster than the state-of-the-art while having comparable quality (quite surprising). Refer to Figure 3 in the paper.&lt;/p&gt;
+
+&lt;!-- Comment: Why didn't we see the issue addressed in this paper? It seems that both the issue and the proposed solution are not very novel to come up with. --&gt;
+
+&lt;p&gt;On the same track of generating “consistent” samples with diffusion, there is another paper from Stanford:
+&lt;a href=&quot;http://proceedings.mlr.press/v202/lou23a/lou23a.pdf&quot;&gt;Lou, Aaron, and Stefano Ermon. “Reflected diffusion models.” arXiv preprint arXiv:2304.04740 (2023)&lt;/a&gt;.
+&lt;!-- #### Some other things about diffusion in ICML2023 --&gt;
+&lt;!-- There are 73 papers has the &quot;diffusion&quot; in their title. --&gt;
+&lt;!--  --&gt;
+&lt;!-- - On the same track of generating &quot;consistent&quot; samples with diffusion, there is another paper from Stanford: --&gt;
+&lt;!-- [Lou, Aaron, and Stefano Ermon. &quot;Reflected diffusion models.&quot; arXiv preprint arXiv:2304.04740 (2023)](http://proceedings.mlr.press/v202/lou23a/lou23a.pdf). --&gt;
+&lt;!--  --&gt;
+&lt;!-- - Training diffusion with a **single** image: --&gt;
+&lt;!--     + [Kulikov, Vladimir, et al. &quot;Sinddm: A single image denoising diffusion model.&quot; International Conference on Machine Learning. PMLR, 2023.](https://proceedings.mlr.press/v202/kulikov23a/kulikov23a.pdf) --&gt;
+&lt;!--     + [Nikankin, Yaniv, Niv Haim, and Michal Irani. &quot;Sinfusion: Training diffusion models on a single image or video.&quot; arXiv preprint arXiv:2211.11743 (2022).](https://arxiv.org/pdf/2211.11743.pdf) --&gt;
+&lt;!--  --&gt;
+&lt;!-- - Diffusion with representation learning --&gt;
+&lt;!--  --&gt;
+&lt;!-- - Diffusion for optimization: --&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;paper-2-diffusion-and-representation-learning&quot;&gt;Paper 2: Diffusion and Representation Learning&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/diffusion-representation.png&quot; width=&quot;800px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/diffusion-rep-authors.png&quot; width=&quot;350px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I have been thinking about images during diffusion process might contain different level of fidelity which we might want to exploit. This paper seems to realizes that idea. I really liked the proposed idea in the paper but the writing, particularly on mathematical derivations are quite clumsy and hard to follow.
+&lt;!-- A bit of history, this paper was rejected to ICRL2022. --&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;motivation&quot;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;Representation learning uses 2 main approaches: contrastive learning and Non-contrastive learning (beta-VAE, denoising AE). While contrastive learning dominant the field, it requires additional supervising signals.
+So this works propose a way to learn some representation in a completely unsupervised way using diffusion model.&lt;/p&gt;
+
+&lt;h3 id=&quot;why-diffusion&quot;&gt;Why diffusion?&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/rep-dif-demo.png&quot; width=&quot;800px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/rep-dif-para.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;proposed-idea&quot;&gt;Proposed idea&lt;/h3&gt;
+
+&lt;p&gt;Recall the score matching objective for unconditional diffusion model:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/dif-rep-bg11.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;which can be learned approximately via a practical objective&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/dif-rep-bg2.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now &lt;strong&gt;suppose&lt;/strong&gt; we want to train a conditional diffusion model given labeled data $(\textbf{x}, y(\textbf{x}))$, the objective would change to&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/dif-rep-bg3.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;From that perspective, they propose to substitute $y(\textbf{x} _0)$ with an trainable encoder $\textbf{E} _{\boldsymbol \phi}(\textbf{x}_0)$.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/dif-rep-obj.png&quot; width=&quot;500px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;reasoning&quot;&gt;Reasoning&lt;/h4&gt;
+
+&lt;p&gt;The objective of denoising score matching is equivalent to the probabilistic view (under certain parameterization). Particularly, the equation in (4) is equivalent to (if the forward step is to add a Gaussian noise)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/dif-rep-rea-den.png&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can see that minimizing the obj above, equivalently the obj in (4) is meant to make $\textbf{s} _{\boldsymbol \theta}(\widetilde{\textbf{x}}, \sigma)$ learn the direction toward $\textbf{x}$ or ($\textbf{x} _0$ in (4)) starting from $\widetilde{\textbf{x}}$(or $\textbf{x} _t$ in (4)). If $\textbf{s} _{\boldsymbol \theta}$ has access to additional information of $\textbf{x} _0$, via $\textbf{E} _{\boldsymbol \phi}(\textbf{x} _0)$, then it is hypothesized that $\textbf{E} _{\boldsymbol \phi}(\textbf{x} _0)$ would be able learn that direction, and hence help recover $\textbf{x} _0$.&lt;/p&gt;
+
+&lt;p&gt;Also, a side point is that having $\textbf{E} _{\phi}$ to optimize allow to get to a lower objective value. So at least $\textbf{E} _{\phi}$ makes certain different (the model cannot ignore that input).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/rep-dif-para.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And lastly, the author proposed to include time step $t$ in the encoder’s parameters. Final objective function is&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/rep-diff-final-obj.png&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;performance&quot;&gt;Performance&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/rep-dif-perf.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/rep-diff-perf2.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;some-comments&quot;&gt;Some comments&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The proposal of using $\textbf{E}_{\boldsymbol \phi}$ seems quite heuristic. Don’t know if there a theory/principle way to back it up.&lt;/li&gt;
+  &lt;li&gt;Performance/experiment is not very surprising or convincing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;paper-3-equivariant-in-representation-learning&quot;&gt;Paper 3: Equivariant in Representation Learning&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-title.png&quot; width=&quot;800px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-author.png&quot; width=&quot;300px&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;motivation-1&quot;&gt;Motivation&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;What is equivariant?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What is a good representation? It should be low dimentional, invariant to unintersting transformation. Now people also propose that the latent should also contain information about transformation in a certain seperated elements.&lt;/p&gt;
+
+&lt;p&gt;Lots of papers on presentation learning is actually about how to distangled latent factors. And while it sounds intuitive, concrete defintion of distanglements are not completely agreed to each other. Among these, the work of [&lt;strong&gt;higgins2018towards&lt;/strong&gt;] in which they soly proposed a very abstract but rigorous definition attracts quite a number of followers. And this paper is not an exception.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-def.png&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In words (in my understanding), equivariant requires that the latent vector contains all information about the transformation performed on the sample space so that there exists a transformation on the latten space to produce the same latent vector.&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-map-visu.png&quot; width=&quot;200px&quot; /&gt;
+&lt;figcaption&gt;&lt;em&gt;X denotes sample space while Y denotes latent space (figure taken from &lt;a href=&quot;https://en.wikipedia.org/wiki/Equivariant_map&quot;&gt;Wiki&lt;/a&gt;).&lt;/em&gt;&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;For reference, invariant is a special case of equivariant.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Why do we care about equivariant?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It seems that learning latent vector to be invariant is quite intuitive and should be enough. However, for certain task, some augmentation transformation might accidentally destroy useful information. For instance, flower classification might want to use color as a feature, but color distoration augmentation might corrupt that information.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-moti.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;That is the only paragraph to motivate to learn equivariant in the paper.
+There may be more reason to acquire equivariant in the literature.
+For now, let’s take it for granted that learn an equivariant latent is a good thing to do. Let’s see how do they do it!&lt;/p&gt;
+
+&lt;h3 id=&quot;the-problem-setting-and-the-goal&quot;&gt;The problem setting and the goal&lt;/h3&gt;
+
+&lt;p&gt;They first propose a 3D dataset (lets skip the part why do they need to do that, maybe current datasets aren’t good enough to show what they what to show). Each sample in this dataset contains:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The image which is a 2D render of a 3D object.&lt;/li&gt;
+  &lt;li&gt;The class that the 3D object belongs to.&lt;/li&gt;
+  &lt;li&gt;The configuration that used to render 3D object to 2D images, including $x$-rotation angle, $y$-roration angle, $z$-rotation angle, light conditions, and colors.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Some image samples:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-data.png&quot; width=&quot;500px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Task&lt;/em&gt;&lt;/strong&gt;: Given sample $\textbf{x}$ as the 2D image rendering from a 3D object undergone a rotation transformation with known configurations (such as rotation angles), we want to learn 2 mappings:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An encoder to map $\textbf{x}$ to its representation $\textbf{z}$,&lt;/li&gt;
+  &lt;li&gt;A mapping that map $\textbf{z}$ to $\textbf{z} _{ori}$ which is the latent of the before-transformed data point $\textbf{x}$. In their framework, these 2 mappings are $f$ and $\rho _{Y}$.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;proposal&quot;&gt;Proposal&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-archi.png&quot; width=&quot;800px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-loss1.png&quot; width=&quot;400px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-loss2.png&quot; width=&quot;350px&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-result1.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-result2-des.png&quot; width=&quot;300px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/equi-split-result2.png&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;paper-4-another-representation-learning&quot;&gt;Paper 4: Another representation learning&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-title.png&quot; width=&quot;800px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-authors.png&quot; width=&quot;300px&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;motivation-2&quot;&gt;Motivation&lt;/h3&gt;
+
+&lt;p&gt;Rotation and translate transformation are meaningless in term of identifying meaningful object, hence the ideal representation should be invariant to those transformation. Existing methods are not always do that task well on complex datasets such as semiconductor wafer maps or plankton microscope images.&lt;/p&gt;
+
+&lt;p&gt;Also, my guess is that people don’t really augment data with very large angle for rotation like they do in this work ($[0, 2\pi]$).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Task&lt;/em&gt;&lt;/strong&gt;
+We want to learn a latent representation such that it is invariant to rotation and translation.&lt;/p&gt;
+
+&lt;h3 id=&quot;proposal-1&quot;&gt;Proposal&lt;/h3&gt;
+
+&lt;p&gt;Using &lt;strong&gt;&lt;em&gt;implicit neural representation&lt;/em&gt;&lt;/strong&gt;: viewing an 2D image as a function $\textbf{f}(x, y): \mathbb{R} \times \mathbb{R} \to \mathbb{R}^{c}$, where $c$ is the number of channels. This is the only interesting part of this paper (to me). The INR was proposed since 2007 and then getting popular 2-3 years recently.&lt;/p&gt;
+
+&lt;p&gt;With that in mind, we now can model the generative process involving translation and rotation.
+It is worth noting (surprising to me) that we have &lt;strong&gt;no idea&lt;/strong&gt; how to model rotation transformation on sample space.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/trans-rota.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-arch.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;With this mechanism, rotation and translation parameters are just 2 extra parameters beside the latent vector. We will learn all these parameters using several (intuitively derived) losses.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-losses.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-e-cons.png&quot; width=&quot;200px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-other-losses.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-consis-loss.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;And the symm loss, cover later …&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;result-1&quot;&gt;Result&lt;/h3&gt;
+
+&lt;p&gt;Visually speaking, the result looks quite interesting. Note image is the only input.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-resul1.png&quot; width=&quot;800px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-result3.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt; Note that all baselines use INR.
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/imp-neu-result2.png&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;How about disentangle?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;paper-5-yet-another-representation-learning-paper&quot;&gt;Paper 5: Yet another representation learning paper&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyperbolic.png&quot; width=&quot;800px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyperbolic-authors.png&quot; width=&quot;300px&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;motivation-3&quot;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;Latent representation should store information in a hierchachy like the way human think.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyperbolic-ideal.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;proposal-2&quot;&gt;Proposal&lt;/h3&gt;
+
+&lt;p&gt;Break up with the Euclidean space, move to the hyperbolic space.
+Some definitions, but I wont cover all in details.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyperbolic-def.png&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The important feature of this space is:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyper-concept.png&quot; width=&quot;400px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The losses: Contrastive loss + Entailment loss&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Contrastive loss is realized like in the CLIP paper. Given pair of text, image, model tries to predict which matches which.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyper-contra-loss.png&quot; width=&quot;300px&quot; /&gt; (from CLIP paper)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyper-entail-loss.png&quot; width=&quot;400px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyper-entail-cone.png&quot; width=&quot;200px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The entailment loss is used to model the relationship ($\textbf{u}$, “is a”, $\textbf{v}$)&lt;/p&gt;
+
+&lt;h3 id=&quot;result-2&quot;&gt;Result&lt;/h3&gt;
+
+&lt;p&gt;Look quite interesting!!!
+&lt;img src=&quot;/assets/images/2023-09-11-my-take-on-icml2023/hyperbolic-result1.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;!-- ## Some other papers on representation learning --&gt;
+&lt;!--  --&gt;
+&lt;!-- Proof of better generalization? --&gt;
+
+</description>
+        <pubDate>Mon, 11 Sep 2023 13:33:00 -0700</pubDate>
+        <link>https://ductri.github.io/note/2023/09/11/my-take-on-icml2023.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2023/09/11/my-take-on-icml2023.html</guid>
+        
+        <category>diffusion,</category>
+        
+        <category>prepresentation-learning</category>
+        
+        
+        <category>note</category>
+        
+      </item>
     
       <item>
         <title>Reinforcement Learning is So Confusing</title>
@@ -17,7 +412,7 @@ While re-reading Reinforcement Learning as an attempt to get rid of that heurist
 &lt;p&gt;So this is an attempt to make thing more concrete under a somewhat first principle view.&lt;/p&gt;
 
 &lt;p&gt;The note is currently very unorganized.
-&lt;a href=&quot;https://ductri.github.io/assets/latex/RL_understanding/rl_understanding.pdf&quot;&gt;Let’s go!&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&quot;https://ductri.github.io/assets/latex/RL_understanding/rl_understanding.pdf&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 22 Nov 2022 14:41:00 -0800</pubDate>

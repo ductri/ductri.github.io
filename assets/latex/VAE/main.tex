@@ -1,0 +1,249 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{tri_preamble}
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{My take on Variational Auto-Encoder }
+\author{	Tri Nguyen \\\\
+        \texttt{nguyetr9@oregonstate.edu} \\\\
+        }
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+Notation.
+$P(X=x)$ sometimes is written as $P(x)$ if the random variable $X$ is clear from the context. Capital letter $X$ denotes a random variable while small letter $x$ denotes some realization of random variable.
+
+\section{Preliminary}%
+\label{sec:preliminary}
+Given two random variable $X, Z$, for arbitrary PDF $Q(Z)$, we have
+\begin{align*}
+\log P(x) 
+&= \log P(X=x)  \\
+&= \sum_{z} Q(z) \log P(x) \\
+&= \sum_{z} Q(z) \log \left(\dfrac{P(z \mid x) P(x)}{P(z \mid x)} \right)\\
+&= \sum_{z} Q(z) \log \left(  \dfrac{Q(z)}{P(z \mid x)} \dfrac{P(x, z)}{Q(z)} \right)\\
+&= \sum_{z} Q(z) \log \dfrac{Q(z)}{P(z \mid x)} + \sum_{z} Q(z) \log \dfrac{P(x, z)}{Q(z)}\\
+&= \Dkl{Q(Z)}{P(Z \mid X=x)} + \mathcal{L}(Q), \numberthis \label{eq:decomposition}
+\end{align*} 
+where we have defined 
+\[
+\mathcal{L}(Q) \triangleq \mathop{\mathbb{E}}_{Z \sim Q(Z)} \left[ \log \dfrac{P(x, z)}{Q(z)} \right].
+\]
+The decomposition in \eqref{eq:decomposition} is the beginning of variational inference. Two comments about that decomposition:
+\begin{itemize}
+    \item It holds for any PDF $Q(Z)$. We will see that to make it related, people will choose that distribution as condition distribution $Q(Z \mid X)$, as we shall see in Section~\ref{sec:main_paper}.
+    \item As the first term $\Dkl{}{}$ is nonnegative, we have a lower of the likelihood \footnote{The term likelihood used to refer $P(X)$ might not very sensible, as there is no parameter. However, in almost every context, that $P(X)$ will belong to some parametric family.}
+        \[
+        \log P(x) \geq \mathcal{L}(Q).
+        \] 
+Admittedly, this is a very superficial way to explain the lower bound. We should have derived the lower bound from something like Jensen's inequality. However, I find this way easier and more intuitive to remember.
+\item The lower bound $\mathcal{L}(Q)$ is called the \textit{variational lower bound}. It depends on two functions and one realization: PDF $Q(X)$, PDF $P(X, Z)$, and $x$, resp. It is written as $\mathcal{L}(Q)$ only emphasize that $Q$ plays as variable although it is a function. Hence the term variational.
+\item And lastly, $\log P(x)$ reaches its lower bound only if $\Dkl{Q \mid P} = 0$. This means $\log P(x)$ reaches its minimum if variable $Q(Z)$ equals to the posterior $P(Z\mid X)$.
+{We wish to find an good approximation of the true posterior distribution.}
+Yet, it is obvious that we could not just set $Q(Z)$ to the true posterior since then the optimization on $\mathcal{L}(Q)$ will be intractable. {\red It is intractable because we are taking expectation over $Q(Z)$ which is $P(Z \mid )$ in this case.}
+\end{itemize}
+
+
+\section{Main Paper}%
+\label{sec:main_paper}
+
+\subsection{Problem setting}%
+\label{sub:subsection_nameproblem_setting}
+% The generative process:
+% \begin{itemize}
+%     \item Get a fixed $\boldsymbol \theta^{\star }$
+%     \item $\bm{Z} \sim p_{\boldsymbol \theta^{\star }}(\bm{Z})$
+%     \item $\bm{X} \sim p_{\boldsymbol \theta^{\star }}(\bm{X} \mid \bm{Z})$ 
+% \end{itemize}
+\begin{figure}[ht]
+    \centering
+    \incfig[0.4]{vae-generative-model}
+    \caption{VAE generative model. The conditional distribution family $p_{\boldsymbol \theta}(\bm{X} \mid \bm{Z})$ is assumed to be known, such as Gaussian, while the true $\boldsymbol \theta^{\star }$ is unknown. $\bm{X}$ is observed variable while $\bm{Z}$ is hidden variable.}
+    \label{fig:vae-generative-model}
+\end{figure}
+
+\begin{block}
+Given:
+\begin{itemize}
+    \item Function family of $p_{\boldsymbol \theta^{\star }}(\bm{Z})$
+    \item Function family of $p_{\boldsymbol \theta^{\star }}(\bm{X} \mid \bm{Z})$
+    \item And $N$ i.i.d. samples $\bm{x}_{1}, \ldots , \bm{x}_N$, each $\bm{x}_i \sim p_{\boldsymbol \theta^{\star }(\bm{X} \mid \bm{Z})}$
+\end{itemize}
+\textbf{Goal}: Identify $\boldsymbol \theta^{\star }$. 
+\end{block}
+{\blue Uniqueness of $\boldsymbol \theta^{\star }$? }
+
+\paragraph{Naive attempt.} 
+Let's use maximum likelihood (ML) principle to estimate $\boldsymbol \theta^{\star }$. Log likelihood for sample $\bm{x}^{_i}$ is
+\begin{align*}
+\log \textsf{Pr}(\bm{x}_i) 
+&= \log \left( \sum_{\bm{z}} \textsf{Pr}(\bm{x}_i, \bm{z}) \right) \\
+&= \log \left( \sum_{\bm{z}} \textsf{Pr}(\bm{x}_i \mid \bm{z}) \textsf{Pr}(\bm{z}) \right) \\
+&= \log \left( \sum_{\bm{z}} p_{\boldsymbol \theta}(\bm{x}_i \mid \bm{z}) p_{\boldsymbol \theta}(\bm{z}) \right)
+\end{align*}
+Since we know function family of $p_{\boldsymbol \theta}(\bm{x} \mid \bm{z})$ and $p_{\boldsymbol \theta}(\bm{z})$, we can plug them in here,
+and then use Pytorch to optimize with respect to $\boldsymbol \theta$.
+Unfortunately, life is not that easy. We have no way to express that summation over $\bm{z}$ in a close form expression. And it is impossible to directly enumerate all possible $\bm{z}$ to construct the objective function. And it gets worse if $\bm{z}$ is continuous, \ldots
+\paragraph{Prior attempt.} 
+Okay, so there is no way to deal with MLE objective directly. 
+Then lets try to optimize its surrogate instead.
+People have used the lower bound of negative MLE as surrogate for ages.
+As covered in Section \ref{sec:preliminary}, for arbitrary proper distribution $q(\bm{Z})$,
+% \begin{equation}
+% \log \textsf{Pr}(\bm{x}_i) = \Dkl{q(\bm{Z} \mid \bm{x}_i)}{p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)} + \mathop{\mathbb{E}}_{q(\bm{Z}\mid \bm{x}_i)} \left[ \log \dfrac{p_{\boldsymbol \theta}(\bm{Z}, \bm{x}_i)}{q(\bm{Z}\mid \bm{x}_i)} \right]
+% \geq \mathop{\mathbb{E}}_{q(\bm{Z}\mid \bm{x}_i)} \left[ \log \dfrac{p_{\boldsymbol \theta}(\bm{Z}, \bm{x}_i)}{q(\bm{Z}\mid \bm{x}_i)} \right]
+% \label{eq:elbo_lower_bound}
+% \end{equation} 
+\begin{equation}
+\log \textsf{Pr}(\bm{x}_i) = \Dkl{q(\bm{Z})}{p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)} + \mathop{\mathbb{E}}_{q(\bm{Z})} \left[ \log \dfrac{p_{\boldsymbol \theta}(\bm{Z}, \bm{x}_i)}{q(\bm{Z})} \right]
+\geq \mathop{\mathbb{E}}_{q(\bm{Z})} \left[ \log \dfrac{p_{\boldsymbol \theta}(\bm{Z}, \bm{x}_i)}{q(\bm{Z})} \right]
+\label{eq:elbo_lower_bound}
+\end{equation} 
+There are 2 things we can do with this inequality: (i) look for a $q(\bm{Z})$ to obtain a lower bound as tight as possible (ii) and then maximize it. 
+% Trivial solution for task (i) is to set $q(\bm{Z} \mid \bm{x}_i)$ to $p_{\boldsymbol}(\bm{z} \mid \bm{x}_i)$. That would gives us the equality.
+For task (i), we should $q(\bm{Z})$ as $q(\bm{Z} \mid \bm{x}_i)$ as the true posterior depending on $\bm{x}_i$. 
+The functional family of $q(\bm{Z} \mid \bm{x}_i)$ should be as much flexible as possible so that lower bound is close to the true objective. But we also needs to restrict it since choosing a too complicated distribution will lead to intractability.
+To see this, assuming choosing $q(\bm{Z} \mid \bm{x}_i) = p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)$, i.e., the true posterior\footnote{ Note that we \textbf{never} have closed-form expression for this $p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)$, but that's okay we might not need to know it.}. The lower bound is now equal to the true likelihood and is
+\[
+\mathcal{L}(Q) = 
+\mathcal{L}(p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)) 
+= \mathop{\mathbb{E}}_{p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)} \left[ \log p_{\boldsymbol \theta}(\bm{x}_i) \right]
+=  \log p_{\boldsymbol \theta}(\bm{x}_i),
+\] 
+This is meaningless as it returns to the original MLE. And as shown in the native attempt, this wouldn't work.
+
+\begin{block}
+This shows the tension in choosing the functional family to approximate true posterior while keeping it tractable. And we shall see how people deal with this situation.
+\end{block}
+
+Okay, lets restrict $Q(\bm{Z} \mid \bm{x}_i)$ to something more tractable. What about 
+\begin{equation}
+\label{eq:mean_field_theory}
+Q(\bm{Z} \mid \bm{x}_i) = \prod_{j=1}^{k} Q_j(\bm{Z}_j \mid \bm{x}_i),
+\end{equation} 
+where we partition elements in $\bm{Z}$ to $\bm{Z}_1, \ldots , \bm{Z}_k$. This is developed in physics and called \textit{mean field theory}.
+Plug in to and do some manipulation would lead to a system of equations. And then based on that, they derive a iterative method \ldots 
+
+{\red fill this in later, or not}.
+
+At the end of the day, the assumption in \eqref{eq:mean_field_theory} might not true in lots of cases. If that happens, even if we get to the optimal solution, it is still not the optimum in terms of MLE objective.
+
+\subsection{The VAE way}%
+\label{sub:the_vae_way}
+As everything is approximated by neural network, why don't we use neural network to construct the approximate posterior family. In particular, the true posterior $p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)$ might be very complicated, so let the deep neural network deal with it.
+We choose $q(\bm{Z} \mid \bm{x}_i)$ in \eqref{eq:elbo_lower_bound} as $q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_i)$,
+where $q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_i)$ must satisfy:
+\begin{itemize}
+    \item Be a proper distribution. This is actually not easy, and was not emphasized enough in the paper. It is deal by choosing some known distribution, such as Gaussian, exponential distribution, and let certain parameters being controlled by the neural network.
+    \item The key parameter is then determined by $f_{\boldsymbol \phi}(\bm{x}_i)$, where $f_{\boldsymbol \phi}(\bm{x}_i)$ is a neural network.
+\end{itemize}
+The hope is that the posterior might belong the some well known distribution. This could be true if the prior and the condition distribution are chosen in a certain ways (conjugate distributions for instance). \textbf{But it would not hold in general, especially in case we do not even know the prior}.
+To be fair, assume the distribution of the true posterior $p_{\boldsymbol \theta}(\bm{Z} \mid \bm{x}_i)$ belongs to some well-known distribution, estimating the parameters of this distribution is still very hard. We only know that these parameters might depend on $\bm{x}_i$.
+That is the focus of VAE. It proposal to use a neural network to approximate this complicated unknown dependence of $\bm{Z}$ on $\bm{x}_i$.
+
+Toward this end, we have 
+\[
+\log p_{\boldsymbol \theta}(x^{(i)})
+= \Dkl{q_{\boldsymbol \phi}(Z \mid x^{(i)})}{p_{\boldsymbol \theta}(Z \mid x^{(i)})} + \mathcal{L}(\boldsymbol \theta, \boldsymbol \phi; x^{(i)}), \quad \text{(Equation (1) in \cite{kingma2013auto})}
+\] 
+where 
+\begin{align*}
+\mathcal{L}(\boldsymbol \theta, \boldsymbol \phi; x^{(i)})
+&\triangleq \mathop{\mathbb{E}}_{Z \sim Q(Z \mid x^{(i)})} \left[ \log \dfrac{P(x^{(i)}, Z)}{Q(Z \mid x^{(i)})} \right] \\
+&= \mathop{\mathbb{E}}_{Z \sim Q(Z \mid x^{(i)})} \left[ \log \dfrac{p_{\boldsymbol \theta}(x^{(i)}, Z)}{q_{\boldsymbol \phi}(Z \mid x^{i})} \right] \\
+&= \mathop{\mathbb{E}}_{Z \sim q_{\boldsymbol \phi}(Z \mid x^{(i)})} \left[ - \log q_{\boldsymbol \phi}(Z \mid x^{(i)}) + \log p_{\boldsymbol \theta}(x^{(i)}, Z) \right] 
+\quad \text{(RHS of (2) in \cite{kingma2013auto})} \\
+&= - \Dkl{q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_{i})}{p_{\boldsymbol \theta}(\bm{Z})} + \mathop{\mathbb{E}}_{\bm{Z} \sim q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_{i})} \left[ \log p_{\boldsymbol \theta}(\bm{x}_i \mid \bm{Z}) \right]
+\end{align*} 
+We again want to maximize the lower bound, but now it is with respect to both $\boldsymbol \phi$ and $\boldsymbol \theta$. By changing $\boldsymbol \phi$, it is allowed to find a tighter lower bound, while by changing $\boldsymbol \theta$, it is allowed to maximize this lower bound.
+
+The notation $\mathcal{L}(\boldsymbol \theta, \boldsymbol \phi; x^{()})$  reflects our last comment:
+\begin{itemize}
+    \item The variational lower bound depends on $P(X, Z)$ via $\boldsymbol \theta$. There is a subtle point thought. The dependence of $\mathcal{L}$ on $\boldsymbol \theta$ is only ``complete'' if the prior $P(Z)$ is fixed. In their Section 3, they do use a fixed prior for $Z$.
+    \item The variational lower depends on $Q(Z)$ via $\boldsymbol \phi$.
+    \item Lastly, it also depends on particular realization $x^{(i)}$.
+\end{itemize}
+
+Then for the whole dataset, 
+\[
+\sum^{n}_{i=1} \log p_{\boldsymbol \theta}(\bm{x}^{(i)}) = 
+\sum^{n}_{i=1} \Dkl{q_{\boldsymbol \phi}(Z \mid \bm{x}^{(i)})}{p_{\boldsymbol \theta}(Z \mid \bm{x}^{(i)})}
++ \mathcal{L}(\boldsymbol \theta, \boldsymbol \phi; \bm{X}),
+\] 
+where 
+\begin{align*}
+\mathcal{L}(\boldsymbol \theta, \boldsymbol \phi; \bm{X}) 
+&= \sum^{n}_{i=1} \left(  - \Dkl{q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_{i})}{p_{\boldsymbol \theta}(\bm{Z})} + \mathop{\mathbb{E}}_{\bm{Z} \sim q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_{i})} \left[ \log p_{\boldsymbol \theta}(\bm{x}_i \mid \bm{Z}) \right]\right)
+\end{align*} 
+We want to optimize this objective with respect to both $\boldsymbol \theta, \boldsymbol \phi$ simultaneously using gradient descent (Pytorch).
+The gradient of the first term can be evaluated ``easily''. If we carefully choose prior and the approximate posterior, the KL divergence can be expressed in close-form.
+The trickery occurs when evaluating gradient of the second term with respect to $\boldsymbol \phi$ as it appears under the expectation. In general, we are dealing with something like
+\[
+\nabla_{\boldsymbol \phi} \mathop{\mathbb{E}}_{Z \sim f_{\boldsymbol \phi}(Z)}  [g(Z)]
+\] 
+The native attempt was presented in \cite{paisley2012variational}.
+Gradient w.r.t $\boldsymbol \phi$ can be estimated as
+\begin{align*}
+\nabla_{\boldsymbol \phi} \mathop{\mathbb{E}}_{Z \sim f_{\boldsymbol \phi}(Z)}  [g(Z)]
+&= \nabla_{\boldsymbol \phi} \int_{Z} f_{\boldsymbol \phi}(Z) g(Z) dZ \\
+&= \int_{Z} g(Z)\nabla_{\boldsymbol \phi} f_{\boldsymbol \phi}(Z)  dZ \quad \text{(Leibniz integral rule)}\\
+&= \int_{Z} g(Z) f_{\boldsymbol \phi}(Z) \nabla_{\boldsymbol \phi} \log f_{\boldsymbol \phi}(Z) dZ \\
+&= \mathop{\mathbb{E}}_{Z \sim f_{\boldsymbol \phi}(Z)} \left[   g(Z) \nabla_{\boldsymbol \phi} \log f_{\boldsymbol \phi}(Z) \right]\\
+&\approx \dfrac{1}{L} \sum^{L}_{i=1} g(z_i) \nabla_{\boldsymbol \phi} \log f_{\boldsymbol \phi}(z_i)
+\end{align*} 
+
+{\blue Is this the same with policy gradient?}
+
+However, this gradient estimator exhibits high variance. To get a better estimator, VAE introduced the well-known reparameterization trick.
+Note that $\bm{Z} \sim q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_i)$ is chosen as some well-known distribution family, such as Gaussian, it is then possible to find $g_{\boldsymbol \phi}(\cdot)$ to reparameterize distribution of $\bm{Z}$ as
+\[
+\widetilde{\bm{Z}} = g_{\boldsymbol \phi}(\boldsymbol \epsilon, \bm{x}_i), \quad \boldsymbol \epsilon  \sim p(\boldsymbol \epsilon).
+\] 
+Essentially, we decompose $\bm{Z}$ into 2 parts: a deterministic mapping $g_{\boldsymbol \theta}(\cdot)$ that maps $\bm{x}_i$ to a certain $\bm{Z}$. And a stochastic part which is accounted by $p(\boldsymbol \epsilon)$. Of course, this decomposition is not always feasible. But when it is possible,
+we get a better gradient estimator since
+\begin{align*}
+\mathcal{L}(\boldsymbol \theta, \boldsymbol \phi; \bm{x}_i)
+&= \mathop{\mathbb{E}}_{\bm{Z} \sim q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_i)} \left[ -\log q_{\boldsymbol \phi}(\bm{Z} \mid \bm{x}_i) + \log p_{\boldsymbol \theta}(\bm{x}_i, \bm{Z}) \right] \\
+&= \mathop{\mathbb{E}}_{\boldsymbol \epsilon \sim p(\boldsymbol \epsilon)} \left[ -\log q_{\boldsymbol \phi}(g_{\boldsymbol \phi}(\boldsymbol \epsilon, \bm{x}_i) \mid \bm{x}_i) + \log p_{\boldsymbol \theta} (\bm{x}_i, g_{\boldsymbol \phi}(\boldsymbol \epsilon, \bm{x}_i))\right]
+\end{align*} 
+Then the gradient with respect to $\boldsymbol \phi$ is estimated as
+\begin{align*}
+\nabla_{\boldsymbol \phi} \mathcal{L}(\boldsymbol \theta, \boldsymbol \phi; \bm{x}_i)
+&= \mathop{\mathbb{E}}_{\boldsymbol \epsilon \sim p(\boldsymbol \epsilon)} \left[ - \nabla_{\boldsymbol \phi} \log q_{\boldsymbol \phi}(g_{\boldsymbol \phi}(\boldsymbol \epsilon, \bm{x}_i) \mid \bm{x}_i) + \nabla_{\boldsymbol \theta} \log p_{\boldsymbol \theta} (\bm{x}_i, g_{\boldsymbol \phi}(\boldsymbol \epsilon, \bm{x}_i))\right] \\
+&\approx \dfrac{1}{L} \sum^{L}_{\ell =1}  \left[ - \nabla_{\boldsymbol \phi} \log q_{\boldsymbol \phi}(g_{\boldsymbol \phi}(\boldsymbol \epsilon_\ell , \bm{x}_i) \mid \bm{x}_i) + \nabla_{\boldsymbol \theta} \log p_{\boldsymbol \theta} (\bm{x}_i, g_{\boldsymbol \phi}(\boldsymbol \epsilon_\ell , \bm{x}_i))\right],
+\end{align*} 
+where we sample $\ell $ such $\boldsymbol \epsilon \sim p(\boldsymbol \epsilon)$.
+And Pytorch can work on this.
+
+\section{Diffusion things}%
+\label{sec:diffusion_things}
+Let $\bm{x}$ follow the data distribution $p_0(\bm{x})$. We diffuse $\bm{x}$ by repetitively adding a little Gaussian noise, i.e.,
+\[
+\bm{x}_t = \bm{x}_{t-1} + \boldsymbol \epsilon_t, \quad \boldsymbol \epsilon_t \sim \mathcal{N}(0, \sigma_t^2), \quad t=1, .., T
+\] 
+In the limit of $T \to \infty$ and $\sigma_t \to 0$, this process will lead to $\bm{x}_T \sim \mathcal{N}(0, )$, a completely white noise.
+
+Given $\bm{x}_0$ follow some distribution $p_0$, i.e., $\bm{x}_0 \sim p_0(\bm{x})$, and a list of transformations, each of which take an $\bm{x} \in \mathcal{X}$ and produce a $\bm{x}' \in \mathcal{X}$. Applying these transformations consecutively to obtain:
+\[
+\bm{x}_0 \rightarrow \bm{x}_1 \rightarrow \ldots  \rightarrow \bm{x}_T
+\] 
+
+This process takes input as $\bm{x}_0$ and produces a list of random variables $\bm{x}_1, \ldots , \bm{x}_T$. In a more abstract sense, we can think of this process $\mathcal{F}$ is defined by the list of transformations, taking the input as a distribution $p_0$, and producing outputs as a list of distributions $p_0, p_1, \ldots , p_T$ (including $p_0$ for complete), which is called a probability path.
+The only thing that I assume is: given $p_0$, a fixed $F$ will always produce a same probability path $p_0, p_1, \ldots , p_T$.
+
+Question is: Does there exist an reverse process $\mathcal{F}'$ such that 
+\[
+\mathcal{F}(p_0) = \mathcal{F}'(p_T).
+\] 
+Probably. The real question is how hard to construct such $\mathcal{F}'$.
+
+Now, let's make thing concrete. If $\mathcal{F}$ is a diffusion process then the reverse process $\mathcal{F}'$ is also a diffusion process \cite{anderson1982reverse}. 
+
+
+\printbibliography
+
+\end{document}
+
