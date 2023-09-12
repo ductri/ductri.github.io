@@ -1,0 +1,23 @@
+# Site settings
+title: Tri Nguyen
+email: ductricse@gmail.com
+description: "description"
+logo_location: "https://ductri.github.io/assets/images/naruto.jpg"
+
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "https://ductri.github.io" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+
+highlighter: rouge
+
+#Other Global Configuration
+exclude: ['README.md']
+
+excerpt_separator: <!--more-->
+
+#show the jumbotron header on index page
+show_blog_header: true

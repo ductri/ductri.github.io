@@ -1,0 +1,205 @@
+\documentclass[11pt,a4paper]{article}
+
+% --------------------------------------------------------- 
+% PACKAGES AND PREDEFINED SETTINGS
+% --------------------------------------------------------- 
+
+%\usepackage{lmodern}
+%\usepackage{xcolor}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+%\usepackage[utf8x]{inputenc}
+\usepackage[linesnumbered,lined,boxed,commentsnumbered,ruled,vlined]{algorithm2e}
+\usepackage{enumitem}
+%\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx} % Allows including images
+\usepackage[colorlinks=false]{hyperref} % the option is there to remove the square around links which is what I don't like.
+\usepackage{perpage} 
+\MakePerPage{footnote} % Reset the footnote counter perpage. may require to run latex twice.
+\usepackage[margin=2cm]{geometry} % This is here to fit more text into the page.
+\setlength{\parindent}{0pt} % No indentation for paragraphs. Because that is just old.
+%\setlength{\parskip}{\baselineskip} % Instead use vertical paragraph spacing.
+\fontencoding{T1} % the better font encoding.
+\usepackage{chngcntr} % https://tex.stackexchange.com/questions/28333/continuous-v-per-chapter-section-numbering-of-figures-tables-and-other-docume
+%\usepackage{thmtools} % http://ftp.math.purdue.edu/mirrors/ctan.org/macros/latex/exptl/thmtools/thmtools.pdf
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{listings}
+\lstset{language=python}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+\usepackage[
+backend=biber,
+style=alphabetic,
+citestyle=alphabetic
+]{biblatex}
+\addbibresource{refs.bib}
+\usepackage{afterpage}
+\usepackage{multirow}
+
+% --------------------------------------------------------- 
+% SETTINGS
+% --------------------------------------------------------- 
+\counterwithin{figure}{section}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+% --------------------------------------------------------- 
+% CUSTOM COMMANDS
+% --------------------------------------------------------- 
+
+\def\green{\color{green}}
+\def\red{\color{red}}
+\def\blue{\color{blue}}
+\newcommand{\rank}[1]{\text{rank}(#1)}
+\newcommand{\pr}[1]{\text{Pr}\left(#1\right)}
+\newcommand{\st}{\text{subject to}\quad }
+\newcommand{\trace}[1]{\text{tr}\left(#1\right)}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\vect}[1]{\text{vec}\left(#1\right)}
+\newcommand{\diag}[1]{\text{diag}\left(#1\right)}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % https://tex.stackexchange.com/questions/42726/align-but-show-one-equation-number-at-the-end 
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+\newcommand{\incfig}[2][1]{%
+    \def\svgwidth{#1\columnwidth}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{minimize}
+\DeclareMathOperator*{\maximize}{maximize}
+\newcommand{\indep}{\perp \!\!\! \perp}
+\newcommand{\notindep}{\not\!\perp \!\!\! \perp}
+
+% --------------------------------------------------------- 
+% CUSTOM ENVIRONMENTS
+% --------------------------------------------------------- 
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{Notes on causal inference}
+\author{	Tri Nguyen \\
+        \texttt{nguyetr9@oregonstate.edu} \\
+        }
+
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+
+\section{Why linear Gaussian is non-identifiable?}%
+
+Theorem quoted in Theorem 4.2 \cite{peters2017elements}
+\begin{theorem}[Linear Gaussian]
+    \label{theorem:linear-gaussian}
+    Given that $Y = \alpha X  + N_Y$, where $X \indep N_Y$. Then there exists $N_X$ and  $\beta$ such that
+    $ X = \beta Y + N_X$ such that $Y \indep N_X$ if and only if both $X$ and  $N_Y$ are normally distributed.
+\end{theorem}
+
+\begin{proof}
+We need to prove both directions.
+
+\paragraph{Step 1.} The $\Rightarrow $ direction: assume $X, Y_N \sim \mathcal{N}$.
+
+So we need to find some $\beta$ and $N_X$ such that they makes $Y$ and  $N_X$ to be independent.
+
+Since $Y \sim \mathcal{N}$, it would be easier if $N_X$ is also normal. In that case, we only need to design $N_X$ so that  
+\[
+\text{cov}(Y, N_X) = 0.
+\]
+
+So the goal is to find $N_X$ that satisfy:
+ \begin{itemize}
+    \item $N_X$ is normal.
+    \item  $ cov(Y, N_X) = 0$.
+\end{itemize}
+Let start from
+\begin{align*}
+N_X  = X - \beta Y = X - \beta (\alpha X + N_Y) = (1 - \alpha \beta ) X  - \beta N_Y
+\end{align*}
+haha, this is already normal little enforcement to ensure the whole thing is not $0$. So the other thing should be
+\begin{align*}
+\quad &cov(N_X, Y) = 0 \\
+\Leftrightarrow \quad & \text{cov}((1-\alpha \beta ) X - \beta N_Y , \alpha X + N_Y) = 0 \\
+\Leftrightarrow \quad & (1-\alpha \beta) \alpha \text{var}(X) + (1- \alpha \beta) \text{cov}(X, N_Y)
+- \alpha \beta \text{cov}(N_Y, X) - \beta \text{var}(N_Y) = 0 \\
+\Leftrightarrow \quad & (1- \alpha \beta) \alpha \text{var}(X) - \beta \text{var}(N_Y) = 0 \\
+\Leftrightarrow \quad & \alpha \text{var}(X) = \alpha^2 \beta \text{var}(X) + \beta \text{var}(N_Y)  \\
+\Leftrightarrow \quad & \beta = \dfrac{ \alpha \text{var}(X)}{\alpha^2 \text{var}(X) + \text{var}(N_Y)}
+\end{align*}
+
+
+\paragraph{Step 2.}  The $\Leftarrow$ direction: assume the existence of  $N_X, \beta$ and \ldots 
+It turns out the reverse direction is harder to prove. We need to invoke Darmois-Skitovich theorem.
+\begin{theorem}[Darmois-Skitovich]
+    Let $X_1, \ldots , X_N$ be mutually independent. If there are exists nonzero coefficients $\alpha_i, \beta_i$ such that
+    \[
+    Y_1 = \sum^{N}_{i=1} \alpha_i X_i, \quad Y_2 = \sum^{N}_{i=1} \beta_i X_i
+    \] 
+    where $Y_1 \indep Y_2$, then all  $X_i$'s  are normally distributed.
+\end{theorem}
+Now we have two RV $X \indep N_Y$, and there are some nonzero coefficients that make
+\[
+\begin{cases}
+Y = \alpha X + N_Y \\
+N_X = (1-\alpha \beta) X - \beta N_Y
+\end{cases}
+\] 
+$Y \indep N_X$. Hence by Darmois-Skitovich theorem,  $X, N_Y$ are normally distributed.
+
+Of course, we need to handle some corner cases where some of the coefficients are $0$. But since I'm lazy \ldots  
+\end{proof}
+
+Whenever two RVs are not independent, either one RV causes the other or either there is a common cause to both of them. In the former case, we want to determine the direction of the causality given joint pdf of 2 RVs.
+ For example, if $X$ causes  $Y$, our basic assumption is  $Y = f(X, N_Y)$ where the noise $N_Y \indep X$.
+In general, if one tries to model  $X = g(Y, N_X)$, the estimated noise $N_X$ would satisfy $N_X \notindep Y$. So the difference in $N_Y \indep X$ and  $N_X \notindep Y$ are the key to determine direction of causality.
+
+However, in case that $X, N_Y$ are independent and normal, and the model are linear, then the reverse  model $N_X, Y$ are also independent, as pointed out in Theorem~\ref{theorem:linear-gaussian}. Hence, in that case, although the causal effect is unidirectional in reality, one cannot distinguish between 2 directions using only joint pdf of $X, Y$.
+\printbibliography
+
+\end{document}
+

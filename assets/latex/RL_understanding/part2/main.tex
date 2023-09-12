@@ -1,0 +1,382 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{tri_preamble}
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{Title}
+\author{	Tri Nguyen \\\\
+        \texttt{nguyetr9@oregonstate.edu} \\\\
+        }
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+
+The right thing to do is Dynamic Programming. But right thing is always hard to do. So the less right things to do are
+\begin{itemize}
+    \item Approximation in value space $J^{*}(x)$.
+
+        For this, we have several options.
+        \begin{itemize}
+            \item First, to deal with expectation is a stochastic setting, we can just assume a deterministic setting instead, by eliminating all randomness by their mode 1 value for example.
+
+                Then in deterministic setting, for the min operator, we can use brute force, integer programming (discrete), $A^{*}$ search (discrete), or nonlinear programming (continuous)
+        \end{itemize}
+    \item Approximation in policy space 
+\end{itemize}
+This is weird. In 2.1.4, they learn an approximate $\widetilde{Q}()$ based on approximate $\widetilde{J}$. I thought getting $Q$ from $J$ should be obvious. It may not because if action space is large.
+
+Parameterization can be used in both value approximation and policy approximation. In both case, the setting is very similar to supervised learning setting.
+
+RL methods has many intertwined components.
+
+2.1.6 shows an interesting point. Good an approximation $\widetilde{J}$ is not necessarily closed to $J^{*}$. It is good as long as it is \textit{uniformly distant} from $J^{*}$. The proposed criterion is that $Q(x, u) -\widetilde{Q}(x, u)$ change gradually as $u$ changes.
+
+Until now, we only talk about deterministic policy.
+
+Good point: in the use of $\ell$-lookahead, as $\ell$ is getting longer, the role of $\widetilde{J}$ diminishes.
+
+A an $\ell$-lookahead, we are solving $\ell$-stage DP in an exact manner where we assume the terminal cost is approximated by $\widetilde{J}$.
+
+2.3. Now we talk. Problem approximation.
+This is what is used in MARL currently.
+
+{\blue Kindly think about MARL setting where environment is deterministic, policy is deterministic. could be the use of tensor?}
+
+So what so-called \textit{policy improvement} is\textit{rollout algorithm}. It only works under either of the following assumptions:
+\begin{itemize}
+    \item The base policy is sequentially consistent, i.e., if it generates sequence of states $s_k, s_{k+1}, \ldots , s_N$ starting from $x_{k}$ , then it also generates a sequence $s_{k+1}, \ldots , s_{N}$ starting from $s_{k+1}$.
+    \item The base policy is sequentially improving.
+\end{itemize}
+
+Definition of rollout algorithm:
+It applies at state $x_k$ the control $\widetilde{u}_k(x_k)$ given by the minimization
+\[
+\widetilde{u}_k(x_k) \triangleq \argmin_{u} \; \widetilde{Q}_k(x_k, u),
+\] 
+where $\widetilde{Q}_k(x_k, u)$ is the approximation of the true $Q_k(x_k, u)$ defined by
+\[
+\widetilde{Q}_k(x_k, u) \triangleq g_k(x_k, u) + H_{k+1}(f_k(x_k, u)),
+\] 
+where $H_{k+1}(x_{k+1})$ is cost of the base heuristic starting from $x_{k+1}$.
+
+Okay, let's try to describe all things without using RL terminologies.
+\section{Setting and Notation}%
+\label{sec:setting_and_notation}
+
+\begin{itemize}
+    \item The system dynamic is governed by $s_{t+1} = f(s_{t}, a_t, w_{t})$, where $s_{t+1}$ denotes state variable at time $t+1$, $a_t$ is the action variable at time $t$, $w_t$ is random noise.
+    \item $a_t$ is the action chosen by $\mu_{t}: \mathcal{S} \rightarrow \mathcal{A}$
+    \item At each step, there is a reward $g_t(s_t, a_t, \omega_t)$
+    \item The system starts at state $s_0$.
+    \item Let the system run for $N$ steps.
+\end{itemize}
+Denote $J_{\pi}: \mathcal{S} \to \mathbb{R}$ as a cost function of $\pi = \set{\mu_0, \mu_1, \ldots }$,
+\begin{align*}
+    J_{\pi}(s_0) &\triangleq \mathop{\mathbb{E}}_{\omega_0, \ldots , w_N} \left[  \sum^{N}_{t=0} \alpha ^{t-1} g_t(s_t, \mu_t(s_t), \omega_t)\right], \quad \text{where} \numberthis \label{eq:J_pi} \\
+    s_{t+1} &= f(s_t, \mu_t(s_t), \omega_t)
+\end{align*} 
+The factor $\alpha<1$ is not important here. It is used in case of infinite horizon, we are having it here so the transition to infinite horizon can be smoother.
+
+Define $J^{*}: \mathcal{S} \to \mathbb{R}$ as the optimal cost function
+\begin{equation}
+\label{def:optimial_J}
+J^{*}(s_0) \triangleq \max_{\pi} J_{\pi}(s_0) 
+\end{equation} 
+Note that $J^{*}(s_0)$ as a well-defined function, but it has nothing to do with any particular $\pi$.
+Optimal $J^{*}(s_0)$ can be obtained by different $\pi$ at different $s_0$.
+{\blue However, this is rarely the case.} In particular, $\exists \pi^{*}$ such that
+\[
+    J^{*}(s_0) = J_{\pi^{*}}(s_0) \quad \forall s_0 \in \mathcal{S}
+\] 
+This might because of the so-called \textit{principle of optimality}. Consider deterministic system for simplicity (stochastic system can be treated in the same way), if we run DP, we then arrive at an optimal $J^{\star }$, and using that $J^{\star }$, we can find the optimal $\pi^{*}$. That proves the existence of $\pi^{*}$. This is nice as it is a construction proof.
+
+The DP algorithm specifically exploits the principle of optimality to reduce the search space significantly.
+In a deterministic system, it essentially repeats
+\[
+J^{*}_t(s_{t}) = \argmin_{a_t} \; g_t(s_t, a_t) + J^{*}_{t+1}(f(s_t, a_t))
+\] 
+Hence at each time step, we can define function $\mu^{*}_t: \mathcal{S} \to \mathcal{A}$, and collection of such functions over $t$ leads to the construction of $\pi^{*}$. It is the same for stochastic function.
+
+% \section{Simple case 1}%
+% \label{sec:simple_case_1}
+% Simplification assumptions:
+% \begin{itemize}[noitemsep]
+%     \item Let consider finite horizon, so we do not to worry about the limit for now.
+%     \item Let consider ``stationary policy'', i.e, $\set{\mu_0, \mu_1, \ldots } = \set{\mu, \mu, \ldots }$. {\blue what is policy, what is stationary policy? Why stationary?}
+%     \item Let assume the system dynamic is known and stationary, i.e, following functions
+% \begin{align}
+% &s_{t+1} = f(s_t, \mu_t(s_t), \omega_t) \\
+% &g(s_t, \mu_t(s_t), \omega_t),
+% \end{align}
+% where $\omega_t$ are random disturbance. Note that functions $f, g$ are independent of timestep $t$.
+% \end{itemize}
+%
+% The problem of maximizing
+% \[
+% J(s_0) = \sum^{N}_{t=1} \alpha ^{t-1} g(s_t, \mu_t(s_t))
+% \] 
+% under this simplified setting is perfectly solved by dynamic programming.
+% The optimization problem is
+% \begin{alignat*}{2}
+%     & \minimize_{\mu_t(\cdot)} \quad &&  J(s_0) \\
+%     & \text{subject to} && s_{t+1} = f(s_t, \mu_t(s_t)) \\
+% \end{alignat*}
+%
+% \paragraph{Example.} 
+% Find the shortest path is a perfect example under this setting. The problem is known as the shortest salesman problem (SSP). {\blue Describe it here \ldots }
+
+\begin{algorithm}[H]
+    \label{alg:dp}
+    \DontPrintSemicolon
+    \caption{Dynamic programming 1}
+    \SetAlgoLined
+    \KwIn{System dynamic: $f_t(s, a, \omega), g_t(s, a, \omega)$, and distribution of all $\omega_t$'s; starting state $s_0$ , number of timestep $T$ }
+    \KwOut{$J^{\star }(s_0)$, and $J^{\star }_t(s)$ for $ 0\leq t\leq T, s \in \mathcal{S}$ }
+    
+    \BlankLine
+    \BlankLine
+    Set $J^{\star }_T(s) = \mathop{\mathbb{E}}_{\omega_T} \left[  g_T(s, \mu_{T}(s), \omega_T) \right], \quad \; \forall s \in \mathcal{S}$ \;
+    \For {$t=T-1$ to $1$ }{
+        $J^{\star }_{t}(s) = \min_{\mu_{t}(\cdot)} \mathop{\mathbb{E}}_{\omega_t} 
+        \left[ g_t(s, \mu_t(s), \omega_{t}) + \alpha J^{\star }_{t+1}(f_t(s, \mu_t(s), \omega_{t})) \right], \quad \; \forall s \in \mathcal{S}$ \; \label{alg:step_3}
+    }
+\end{algorithm}
+{\blue It's nice that we only need to deal with one $\omega_t$ at a time.}
+\begin{remark}
+    Hey, we don't run simulation here. Everything is figured out analytically. Also, in many games, $\omega_t$ is a deterministic factor.
+\end{remark}
+\begin{remark}
+    And the DP algorithm can deal with problem satisfies the \textit{principle of optimality} (volume 1). Principle of optimality states that a tail of the optimal sequence of actions is also optimal.
+\end{remark}
+For any function $J: \mathcal{S} \rightarrow \mathbb{R}$, define operators
+\begin{align*}
+    (T J) (s) &\triangleq \min_{u \in U(s)}\; \mathop{\mathbb{E}}_{\omega} 
+    \left[ g(s, u, \omega) + \alpha J(f(s, u, \omega)) \right] \\
+    (T_{\mu} J) (s) &\triangleq \mathop{\mathbb{E}}_{\omega} \left[ g(s, \mu(s), \omega) + \alpha J(f(s, \mu(s), \omega)) \right]
+\end{align*} 
+{\blue $T^{k}J: \mathcal{S} \rightarrow \mathop{\mathbb{R}}$ is a function, which can be viewed as the optimal cost function for the $k$-stage, $\alpha$ discount problem with cost per step $g$, and terminal cost $\alpha ^{k}J$.}
+
+Then, Algorithm~\ref{alg:dp} can be rewritten as
+\begin{align*}
+&J^{\text{init}}(s) = \mathop{\mathbb{E}}_{\omega_T} [g(s, \omega_T)] \\
+&J^{* } = T^{N} J^{\text{init}} 
+\end{align*}
+
+{\blue Okay, nothing new happens here. It is still just a vanilla DP applying on a finite horizon problem. It will give us an exact solution.}
+
+\section{Infinite Horizon}%
+\label{sec:infinite_horizon}
+
+Now let us stretch problem to infinite horizon. What would happen? 
+First of all, the so-called policy $\pi$ becomes a sequence $\pi = \set{\mu_0, \mu_1, \ldots }$. 
+Accordingly, let us define
+% $J_\pi(s_0)$ in \eqref{eq:J_pi} becomes
+\begin{align}
+    J_{\pi}(s_0) &\triangleq \lim_{N \to \infty} \; \mathop{\mathbb{E}} \left[  \sum^{N}_{t=0} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t)\right], \label{eq:J_pi_inf} \\
+    J^{*}(s_0) &\triangleq \min_{\pi} J_\pi(s_0) = \min_{\pi} \lim_{N \to \infty} \; \mathop{\mathbb{E}} \left[  \sum^{N}_{t=0} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t)\right], \label{eq:J_opt_inf}
+\end{align} 
+with respect to system dynamics governed by $f, g$.
+
+% {\blue An alternative for $J^{*}(s_0)$ is $J^{*}(s_0) = \max_{\pi} \lim_{N \to \infty} \; \sum^{N}_{t=0} \alpha ^{t-1} g(s_t, \mu_t(s_t))$, but it would be more complicated to work with.}
+
+As $\alpha<1$, and the system dynamic is finite, $J_\pi(s_0)$ is finite, so it is a well-defined quantity, and so is $J^{*}(s_0)$.
+% This surely looks natural, but note that there is alternative.
+What would happen with DB in Algorithm~\ref{alg:dp} now? As it starts from $T$ in finite horizon case, where would it start now? Does it ever converge to anything? And if it does, what would it be?
+
+The short answers are
+\begin{itemize}
+    \item We can pick arbitrary $T$, set an arbitrary initial function for $J^{*}_T$.
+    \item Then we run step~\ref{alg:step_3} in Algorithm~\ref{alg:dp} infinitely many times.
+\end{itemize}
+The procedure is guaranteed to converge, and moreover, it produces the optimal value respect to the objective in \eqref{eq:J_pi_inf}.
+
+\begin{theorem}
+    \label{theorem:main_result}
+    We have following results \parencite[Section 1.1.3]{bertsekas1999dynamic}
+    \begin{enumerate}
+        \item (Convergence of the DP Algorithm) Let $J^{\text{init}}$ be a zero function, i.e, $J^{\text{init}}(s) = 0, \; \forall s \in \mathcal{S}$. Then,
+            \[
+            J^{*} = \lim_{k \to \infty} T^{k} J^{\text{init}},
+            \] 
+            where $J^{*}$ defined in \eqref{eq:J_opt_inf}.
+            Moreover, when $\alpha<1$, $J^{init}$ can be any bounded function.
+        \item (Bellman's equation) By definition of operator $T$, for any function $J$
+            \[
+                (T^{k} J)(s) = \min_{u} \; \mathop{\mathbb{E}}_{\omega} \left[ g(s, u, \omega) + \alpha (T^{k-1} J)(f(s, u, \omega)) \right],
+            \] 
+            Then taking $k \to \infty$ and use the first result, we obtain
+            \begin{equation}
+                \label{eq:bellman}
+                J^{* }(s) = \min_{u} \; \mathop{\mathbb{E}}_{\omega} \left[ g(s, u, \omega) + \alpha J^{* }(f(s, u, \omega)) \right],
+            \end{equation} 
+            or shortly, $J^{* } = T J^{* }$.
+        \item (Characterization of optimal stationary policies) If policy $\mu$ satisfy Bellman equation, then it is optimal.
+    \end{enumerate}
+\end{theorem}
+
+The last paragraph in the book comments that: we can dispense stochastic policy in many cases.
+
+\begin{proposition}[Existence of optimal stationary policy]
+    A stationary $\mu$ is optimal if and only if 
+    \[
+    T J^{\star } = T_\mu J^{\star }
+    \] 
+$J^{\star }$ always exists under ``typical setting''. 
+\end{proposition}
+
+The first result comes from the fact that the tail of summation diminishes. The proof looks nice.
+\begin{theorem}[Convergence of the DP Algorithm]
+    \label{theorem:dp_convergence}
+         Let $J^{\text{init}}$ be a zero function, i.e, $J^{\text{init}}(s) = 0, \; \forall s \in \mathcal{S}$. Then,
+\[
+J^{*} = \lim_{k \to \infty} T^{k} J^{\text{init}},
+\] 
+where $J^{*}$ defined in \eqref{eq:J_opt_inf}.
+Moreover, when $\alpha<1$, $J^{init}$ can be any bounded function.
+\end{theorem}
+\begin{proof}
+For some $k>0$,
+   \begin{align*}
+   J_\pi(s_0) 
+   &= \lim_{N \to \infty} \mathop{\mathbb{E}} \left[ \sum^{N}_{t=1}   \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t) \right] \\
+   &= \mathop{\mathbb{E}} \left[ \sum^{k}_{t=1} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t) \right] + \lim_{N \to \infty} \left( \mathop{\mathbb{E}} \left[ \sum^{N}_{t=k+1} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t) \right]\right) \\
+   &= \mathop{\mathbb{E}} \left[ \alpha ^{k}J^{\text{init}}(s_k) + \sum^{k-1}_{t=1} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t) \right] + \lim_{N \to \infty} \left( \mathop{\mathbb{E}} \left[ \sum^{N}_{t=k+1} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t) \right]\right)  - \mathop{\mathbb{E}}[\alpha^{k} J^{\text{init}}(s_k)]\\
+   \end{align*} 
+   Take minimizing on both sides w.r.t $\pi$,
+   \begin{align*}
+   J^{*}(s_0) = T^{k} J^{\text{init}}(s_0) + \lim_{N \to \infty} \left( \mathop{\mathbb{E}} \left[ \sum^{N}_{t=k+1} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t) \right]\right) - \alpha ^{k} \mathop{\mathbb{E}}[J^{\text{init}}(s_k)]\\
+   \end{align*}
+   As $\abs{g(s, a, \omega)} < D$,
+   \[
+ \abs{  \lim_{N\to \infty} \mathop{\mathbb{E}} \left[\sum^{N}_{t=k+1} \alpha ^{t-1} g(s_t, \mu_t(s_t), \omega_t) }\right]
+       \leq D  \dfrac{\alpha^{k}}{1-\alpha}
+   \] 
+   That leads to
+   \begin{align*}
+   -D \dfrac{\alpha ^{k}}{1-\alpha} - \alpha ^{k} \mathop{\mathbb{E}}[J^{\text{init}}(s_k)]
+\leq J^{*}(s_0) - T^{k} J^{\text{init}}(s_0) \leq D \dfrac{\alpha ^{k}}{1-\alpha} - \alpha ^{k} \mathop{\mathbb{E}}[J^{\text{init}}(s_k)]
+   \end{align*}
+   As $\alpha < 1$, taking $k \to \infty$ when $N \to \infty$, we conclude $J^{*}(s_0) = J^{\text{init}}(s_0)$.
+\end{proof}
+\begin{corollary}
+   For a stationary policy $\pi = \set{\mu, \mu, \ldots }$,
+   \[
+   J_\pi = \lim_{k \to \infty} T_{\pi}^{k} J^{\text{init}}
+   \] 
+\end{corollary}
+{\red is value iteration DP algorithm?}
+
+\begin{theorem}(Bellman's equation)
+    \label{theorem:bellman_equation}
+We have following results \parencite[Section 1.1.3]{bertsekas1999dynamic}
+By definition of operator $T$, for any function $J$
+\[
+(T^{k} J)(s) = \min_{u} \; \mathop{\mathbb{E}}_{\omega} \left[ g(s, u, \omega) + \alpha (T^{k-1} J)(f(s, u, \omega)) \right],
+\] 
+Then taking $k \to \infty$ and use the first result, we obtain
+\begin{equation}
+\label{eq:bellman}
+J^{* }(s) = \min_{u} \; \mathop{\mathbb{E}}_{\omega} \left[ g(s, u, \omega) + \alpha J^{* }(f(s, u, \omega)) \right],
+\end{equation} 
+or shortly, $J^{* } = T J^{* }$. Furthermore, $J^{*}$ is the unique solution within the class of bounded functions.
+\end{theorem}
+\begin{proof}
+    
+\end{proof}
+\begin{theorem}[Characterization of optimal stationary policies]
+    \label{theorem:opt_stationary_policy}
+    A stationary policy $\mu$ is optimal iff
+    \[
+    T J^{*} = T_\mu J^{*}
+    \] 
+\end{theorem}
+Since $J^{*} = TJ^{*}$, and $J^{*}$ always exists, this implies that a stationary $\mu$ always exists. In particular, given $J^{*}$, we can define $\mu: \mathcal{S} \rightarrow \mathcal{A}$ as
+\[
+\mu(s) \triangleq \argmin_{u \in \mathcal{A}}\; \mathop{\mathbb{E}}[g(s, u, \omega) + \alpha J^{*}(f(s, u, \omega))]
+\] 
+By this construction, $T_{\mu} J^{*} = T J^{*}$, and hence stationary $\mu$ is optimal.
+However, this does \textbf{not} imply that all optimal policies are stationary, but rather shrinking our search space to the class of stationary policies.
+
+These 3 theorems \ref{theorem:dp_convergence}, \ref{theorem:bellman_equation}, \ref{theorem:opt_stationary_policy} are the backbone of all the RL methods. 
+
+\section{Methods to find the optimal stationary policy}%
+\label{sec:methods_to_find_the_optimal_stationary_policy}
+
+\subsection{Value Iteration}%
+\label{sub:value_iteration}
+
+As an easy application, Theorem~\ref{theorem:dp_convergence} leads to,
+\begin{corollary}[Value Iteration]
+    Start with arbitrary bounded function $J_0$, repeat the following
+\[
+J_{k+1} = TJ_{k}
+\] 
+\end{corollary}
+This is essentially the DP algorithm where we obtain an \textit{approximate} $J^{*}$, denoted as $\widetilde{J}^{*}$, by running DP as finitely many times as possible. Having $\widetilde{J}^{*}$, we can derive an approximate optimal stationary policy $\widetilde{\mu}^{*}$ using Theorem~\ref{theorem:opt_stationary_policy}, i.e.,
+\[
+\widetilde{\mu}^{*} \triangleq \argmin_{u \in \mathcal{A}} \; \mathop{\mathbb{E}}[g(s, u, \omega) + \alpha \widetilde{J}^{*}(f(s, u, \omega))]
+\] 
+Note that value iteration has no notion of a policy on its own.
+
+{\blue Similar idea to $Q$? What's advantage?}
+
+{\blue  the error analysis is also quite interesting.}
+
+And moving to Q version, and then moving to Q-learning which removes the need to knowing system dynamics, SARSA (more related to PI)
+
+\subsection{Policy Iteration}%
+\label{sec:policy_iteration}
+The algorithm has 2 steps:
+\begin{subequations}
+\begin{alignat}{2}
+    &\text{Find $J_{\mu^{k}}$ as a solution of } J &&\leftarrow T_{\mu^{k}} J \label{eq:pi_1}  \\
+    &\text{Get a new policy as } \mu^{k+1}(s) && \leftarrow \argmin_{u \in \mathcal{A}} \; \mathop{\mathbb{E}}_{\omega} \left[ g(s, u, \omega) + \alpha J_{\mu^{k}}(f(s, u, \omega)) \right] \label{eq:pi_2} 
+\end{alignat}
+\end{subequations}
+Repeating these 2 steps until $J_{\mu^{k}}(s) = J_{\mu^{k+1}}(s), \; \forall s$.
+
+\begin{theorem}
+    \[
+    J_{\mu^{k+1}}(s) \leq J_{\mu^{k}}(s)\quad \; \forall s, k
+    \] 
+\end{theorem}
+In retrospective, $J$'s in VI is an approximate of $J^{*}$, while $J$'s in PI are $J$'s of the generated policies.
+
+In \eqref{eq:pi_1}, if we only run Bellman equation a finite number of times, it is call optimistic PI. If we only run that 1 time, the PI algorithm is essentially identical to VI.
+
+\begin{subequations}
+\begin{alignat}{2}
+    &\text{Get a new policy as } \mu^{k+1}(s) && \leftarrow \argmin_{u \in \mathcal{A}} \; \mathop{\mathbb{E}}_{\omega} \left[ g(s, u, \omega) + \alpha J_{k}(f(s, u, \omega)) \right] \\
+    &\text{Set $J_{k+1} = \widehat{J}_{k, m_k}$ as } \widehat{J}_{k, m+1} && \leftarrow T_{\mu^{k}} \widehat{J}_{k, m}, \quad m=1, \ldots , m_k-1 \label{eq:pi_1}  \\
+\end{alignat}
+\end{subequations}
+Note that $J_k$ is not a cost function of any $\mu^{k+1}$.
+
+
+{\blue And similarly, a version for $Q$?}
+
+And then, lots of alternative is variant of PI, including actor-critic, TD($\lambda$), model-free PI, Q-learning (VI variant?)
+\section{todo}%
+\label{sec:todo}
+\begin{itemize}
+    \item Incorporate randomness to the system dynamics.
+    \item Define proper $J^{\star }$
+    \item There are 2 worries about existence: of $J^{\star }$ and $\mu^{star}$.
+    \item There are many obstacles: large state space, large action space, unknown dynamics.
+\end{itemize}
+
+The counterpart is to learn $Q$.
+
+When did subscript of $J$ go? I'd guess because of stationary assumption. So we reduce 1 order freedom.
+
+Hey, what is policy iteration? An alternative to DP?
+
+What if we apply DP Algorithm~\ref{alg:dp} to infinite case?
+
+It is a nice presentation. Finite horizon, DP, then take it to the limit, infinite horizon, DP in infinite horizon becomes Bellman equation\ldots 
+
+\end{document}
+

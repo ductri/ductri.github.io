@@ -1,0 +1,189 @@
+---
+author:
+- |
+  Tri Nguyen\
+  `nguyetr9@oregonstate.edu`\
+bibliography:
+- refs.bib
+title: \[Personal Note\] Why do we have all these kinds of update?
+---
+
+In this paper [@madjiheurem2021expected], the authors motivate their new
+type of updates with this line of reasoning. The well-known TD-update
+only update value of the immediately preceding states (given if the
+reward is not zero). The eligibility trace improves upon this by making
+the update propagating back multiple states along the observed
+trajectory. Then they proposed that we can even make a step further by
+not only updating all states along observed trajectory but also all
+"plausible" counterfactual trajectories.
+
+Although the reasoning is nicely motivated, I am not convinced and want
+to know why or how do we have all these kinds of updating. There should
+be a principle that they are all based on which the author seemingly
+assume all audience are aware of. I think the origin problem starts with
+the TD-update. Let's trace back from it.
+
+#### RL Goal.
+
+While the ultimate goal of using RL might be abstract and unqualitative,
+one must explicitly provide some objective so that we can have a certain
+of how good/bad are we doing. One of the such common goal is discounted
+cumulative reward. Be aware of that there are others goal, the reason of
+choosing this is out of scope for now. It is defined as
+$$G_{\pi} = \mathbb{E} \left[   \sum^{\infty}_{t=0} \gamma^{t} r_t\right]$$
+where the expectation is token over all available random variables. So
+we want to maximize a sum of all rewards, including the immediate reward
+with higher weight and future rewards with less significant weightings,
+and taking its average over multiple run.
+
+::: shaded
+::: blockx
+**Block 1**. The goal does not concern with variance, which means it
+might output a good policy in terms of average but might be very very
+unstable, e.g., getting a very high $G$ on a particular run, and
+moderate $G$ for other $99$ runs.
+:::
+:::
+
+#### Notation.
+
+We use $S_i$ as a random variable of state at time step $t$, $s_i$ as a
+particular state in a set of states
+$\mathcal{S}, \left\lvert\mathcal{S}\right\rvert=N$. Similar, $A_i$ is
+used as a random variable of action at time step $i$, $a_i$ as a
+particular action in a set of actions
+$\mathcal{A}, \left\lvert\mathcal{A}\right\rvert=M$;
+$r(S_i, A_i): \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ as
+a reward received at time step $i$;
+
+#### Dynamic programming.
+
+A way to decompose this $G$ is $$\begin{aligned}
+     G_{\pi} &= \mathbb{E} \left[  r(S_0, A_0) + \gamma r(S_1, A_1) + \gamma^2 r(S_2, A_2) + \ldots + \gamma^{t}r(S_t, A_t) + \ldots \right] \\
+     &= \mathbb{E} \left[r(S_0, A_0) + \gamma \underbrace{\mathbb{E} \left[ r(S_1, A_1) + \ldots  + \gamma^{t-1} r(S_t, A_t) + \ldots  \right]}_{\text{this term is still a RV}} \right]\\
+     &= \mathbb{E}[r(S_0, A_0) + \gamma V(S_1) ],\end{aligned}$$ where
+we define something called value function as follow.
+
+::: shaded
+::: definitionx
+**Definition 1** (Value function). A value function of a policy is a
+real-value function, $V_{\pi}: \mathcal{S} \rightarrow R$, and is
+defined as $$\label{eq:V_def}
+V_{\pi}(S_1=s) := \mathbb{E} \left[ r(s, A_1) + \gamma r(S_2, A_2) + \ldots  + \gamma^{t-1} r(S_t, A_t) + \ldots | S_1 = s \right]$$
+where $S_1$ is the state input, $S_2, S_3, \ldots$ are next states
+relatively to $S_1$ (index $1$ does not mean anything specific here,
+just indicate a relative temporal index).
+:::
+:::
+
+The conditioning $S_1=s$ is necessary since all remaining RVs
+$A_1, S_2, A_2, \ldots$ depend on that information. To make it clear,
+take a look at a quantity without that condition
+$$\mathbb{E} \left[ r(s, A_1) + \gamma r(S_2, A_2) + \ldots  + \gamma^{t-1} r(S_t, A_t) + \ldots \right]$$
+Since it needs to be deterministic, the expectation is taking over
+$A_1$, which makes no sense since there is no $P(A_1)$, we only have
+$P(A_1|S_1)$. Similarly, the expectation is taking over
+$S_2 \sim P(S_2)$. This is again wrong since doing this takes no account
+for a piece of observation that previous state is $S_1=s$. This can go
+on ...
+
+::: remark
+*Remark 1*. Value function at a state $s$, i.e., $V_\pi(S_1=s)$ is a
+deterministic quantity.
+:::
+
+::: remark
+*Remark 2*. Value function is time invariant, i.e.,
+$V_\pi(S_t=s) = V_\pi(S_k=s)$ for any $t, k \geq 0$.
+:::
+
+Since it is time invariant, we will use $V_\pi(S_1)$ as convention.
+
+::: remark
+*Remark 3*. Value function of a state can be described by value function
+of other states. $$\begin{aligned}
+    V_{\pi}(S_1=s) 
+    &= \mathbb{E}[r(s, A_1) + \gamma r(S_2, A_2) + \ldots + \gamma^{t-1} r(S_t, A_t) + \ldots  | S_1 = s] \\
+    &= \mathbb{E}_{A_1} \left[r(s, A_1) + \gamma \mathbb{E} [r(S_2, A_2) + \ldots + \gamma^{t-1} r(S_t, A_t) + \ldots  ] \mid S_1 = s \right] \quad \text{(splitting RVs)}\\
+    &= \sum_{i=1} \text{Pr}(A_1=a_i|S_1=s) \left(r(s, a_i) + \gamma \mathbb{E} [r(S_2, A_2) + \ldots + \gamma^{t-1} r(S_t, A_t) + \ldots \mid S_1=s, A_1 = a_i ]  \right) 
+    \end{aligned}$$
+:::
+
+The last term is $$\begin{aligned}
+\quad &\mathbb{E}[r(S_2, A_2) + \gamma r(S_3, A_3) + \ldots | S_1=s, A_1=a_i] \\
+&= \sum_{j=1} \text{Pr}(S_2=s_j|S_1=s, A_1=a_i) \mathbb{E}\left[ r(s_j, A_2) + \gamma r(S_3, A_3) + \ldots | S_1=s, A_1=a_i, S_2=s_j \right] \\
+&= \sum_{j=1} \text{Pr}(S_2=s_j|S_1=s, A_1=a_i) \mathbb{E}\left[ r(s_j, A_2) + \gamma r(S_3, A_3) + \ldots | S_2=s_j \right] \quad \text{(Markov property)} \\
+&= \sum_{j=1} \text{Pr}(S_2=s_j|S_1=s, A_1=a_i) V_{\pi}(S_2=s_j)\end{aligned}$$
+Combine those,
+$$V_\pi(S_1=s) = \sum_{i=1} \text{Pr}(A_1=a_i|S_1=s) \left( r(s, a_i) +  \gamma \sum_{j=1} \text{Pr}(S_2=s_j \mid S_1=s, A_1=a_i) V_\pi(S_2=s_j) \right)$$
+With deterministic policy, the outer sum reduces to a single quantity,
+$$V_\pi(S_1=s) = r(s, \pi(s)) + \gamma \sum_{j=1} \text{Pr}(S_2=s_j \mid S_1=s, A_1=\pi(s)) V_\pi(S_2=s_j)$$
+
+::: shaded
+::: {#block:value_function_relation .blockx}
+**Block 1**. For deterministic policy,
+$$V_\pi(S_1=s) = r(s, \pi(s)) + \gamma \sum_{j=1} \text{Pr}(S_2=s_j \mid S_1=s, A_1=\pi(s)) V_\pi(S_2=s_j)$$
+:::
+:::
+
+We can describe this more compactly using matrix/vector notation. Define
+the following quantities $$\begin{aligned}
+&\bm{V} = [V_\pi(S_1=s_1), V_\pi(S_1=s_2), \ldots , V_\pi(S_1=s_{|\mathcal{S}|})]^{\!\top\!} \in \mathbb{R}^{N},  \\
+&\bm{P} = \begin{bmatrix}
+    \text{Pr}(S_2=s_1| S_1=s_1, A_1=\pi(s_1)) & \ldots & \text{Pr}(S_2=s_{N} \mid S_1=s_1, A_1=\pi(s_1) ) \\
+                                          \vdots & \vdots   & \vdots \\
+      \text{Pr}(S_2=s_1 | S_1=s_N, A_1=\pi(s_N)) & \ldots & \text{Pr}(S_2=s_N | S_1=s_N, A_1=\pi(s_N)) 
+\end{bmatrix}  \in \mathbb{R}^{NM \times N}, \\
+& \bm{R} = [r(s_1, \pi(s_1)), r(s_2, \pi(s_2)), \ldots , r(s_N, \pi(s_N))]^{\!\top\!} \in \mathbb{R}^{N}\end{aligned}$$
+Then,
+Block [Block 1](#block:value_function_relation){reference-type="ref"
+reference="block:value_function_relation"} can be expressed compactly as
+$$\bm{V} = \bm{R} + \bm{P}\bm{V}$$
+
+well, it takes forever to reach the contraction operator :(
+
+::: shaded
+::: definitionx
+**Definition 1**. A action-value function of a policy $\pi$ is a
+real-value function
+$Q_{\pi}(s, a): \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$
+defined as $$Q_\pi(S_1=s, A_1=a) = r(s, a) +$$
+:::
+:::
+
+We have partitioned $G_{\pi}$ into a so-called immediate reward
+$r_0(S_0, A_0)$ and a future reward $\gamma V(S_1)$. We can actually do
+a further step that we decompose $V(S_1)$
+
+$$\begin{aligned}
+    V_{\pi}(S_1) 
+    &= \mathbb{E} \left[ r_1(S_1, A_1) + \gamma \mathbb{E}\left[ r_2(S_2, A_2) + \ldots + \gamma^{t-2} r_{t}(S_t, A_t) + \ldots  \right] \right] \\
+    &= \mathbb{E}[r_1(S_1, A_1) + \gamma V(S_2)] \\
+    &= \sum_{i=1} \end{aligned}$$ please define what is $S_i$? a random
+variable?
+
+The outer expectation is taking over
+
+-   $S_0$
+
+-   Policy $\pi$ at $S_0$.
+
+-   Reward at $S_0$, i.e., $r(S_0, A_0)$.
+
+-   Transition from $S_0$ to $S_1$, i.e., $p(S_1 | S_0, A_0)$.
+
+Now after we are clear about objective, and getting some insight, let's
+talk about method. Define an operator $\mathcal{T}$ that receives an
+array $\bm{V} \in \mathbb{R}^{|\mathcal{S}|}$, it will output another
+vector with the same dimension. Vector $\bm{V}$ is defined as
+$$\bm{V} = [V(s_1), V(s_2), \ldots , V(s_n)]$$ that is the $i$th element
+is value of function $V$ evaluating at state $s_i$. Be aware that $V$ is
+a function defined in [\[eq:V_def\]](#eq:V_def){reference-type="eqref"
+reference="eq:V_def"}. Confusingly, definition of function $V$ involves
+time, while this vector $\bm{V}$ does not.
+
+Next, define transition matrix,
+$\bm{P} \in \mathbb{R}^{|\mathcal{S}| \times |\mathcal{A}||\mathcal{S}|}$,
+$P(s| s', a)$.
+
+There is a relation between $\bm{V}^{t}$ and $\bm{V}^{t-1}$, which is

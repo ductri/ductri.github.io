@@ -1,0 +1,429 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{tri_preamble}
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{My Analysis Toolbox}
+\author{	Tri Nguyen \\\\
+        \texttt{nguyetr9@oregonstate.edu} \\\\
+        }
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+{\red \it In progress \ldots  }
+
+This is a collection of what I have used in my works, or seen from other interesting works. This should serve as a warehouse for me to casually browser through when trying to find ideas.
+In order to avoid cluttering, all the proofs are moved to the end of this note.
+
+\tableofcontents
+\listoftheorems
+\pagebreak
+
+\section{Tensor}%
+\label{sec:tensor}
+
+\subsection{Khatri-Rao product}%
+\label{sub:khatri_rao_product}
+\begin{lemma}[Khatri-Rao product] 
+    \label{lemma: Khatri-Rao product}
+    $\vect{\textbf{A}\textbf{D}\textbf{B}^T} = (\textbf{B} \odot \textbf{A}) \textbf{d} \quad $
+    where $\textbf{D} = \text{Diag(\textbf{d})} $
+\end{lemma}
+
+\subsection{Special case of lemma permutation}%
+\label{sub:special_case_of_lemma_permutation}
+
+
+\begin{lemma}[Special case of lemma permutation]
+        Given 2 nonsingular matrice $\overline{\mathbf{C}}, \mathbf{C} \in \mathbb{R}^{n\times n}$. If $w(\mathbf{v}^T\overline{\mathbf{C}}) = 1$ implies $w(\mathbf{v}^T\mathbf{C})=1$, then
+        \[
+        \overline{\mathbf{C}} = \mathbf{C}\Pi\Lambda
+        \] 
+\end{lemma}
+\begin{proof}
+    We have
+    \begin{align*}
+    \bar{\mathbf{C}}^{-1}\bar{\mathbf{C}} = 
+    \begin{bmatrix}
+        \mathbf{v}_1^T \\
+        \mathbf{v}_2^T \\
+        ... \\
+        \mathbf{v}_n^T \\
+    \end{bmatrix} \bar{\mathbf{C}} = \mathbf{I}
+    \end{align*} 
+    Since 
+    \begin{equation}
+        \label{eq:special-lemma-permutation-1}
+    w(\mathbf{v}_i^T\bar{\mathbf{C}}) = 1 \Rightarrow w(\mathbf{v}_i^T\mathbf{C}) = 1
+\end{equation}
+    And because $\mathbf{v}_1, \mathbf{v}_2, ..., \mathbf{v}_n$ are linearly independent and $\mathbf{C}$ is nonsingular, 
+    \begin{equation}
+        \label{eq:special-lemma-permutation-2}
+    \mathbf{v}_1^T\mathbf{C}, \mathbf{v}_2^T\mathbf{C}, ..., \mathbf{v}_n^T\mathbf{C} \text{ are linearly independent}
+\end{equation} 
+From \ref{eq:special-lemma-permutation-1}, \ref{eq:special-lemma-permutation-2}
+    \[
+    \Rightarrow \bar{\mathbf{C}}^{-1}\mathbf{C} = \Pi^T\mathbf{D} \Rightarrow \Rightarrow \overline{\mathbf{C}} = \mathbf{C}\mathbf{D}^{-1}\Pi
+    \] 
+\end{proof}
+
+
+\subsection{CPD uniqueness - Simple case}%
+\label{sub:cpd_uniqueness_simple_case}
+
+\begin{lemma}[CPD uniqueness - Simple case]
+    \label{lemma:CPD uniqueness - Simple case}
+    Given $\mathcal{X} = [[\mathbf{A}, \mathbf{B}, \mathbf{C}]]$ where $\mathcal{X} \in \mathbb{R}^{I\times J \times 2}, \mathbf{A}\in \mathbb{R}^{I\times F}, \mathbf{B} \in \mathbb{R}^{J\times F}, \mathbf{C}\in \mathbb{R}^{2\times F}$. If $k_\mathbf{C} = 2$ and $r_\mathbf{A} = r_\mathbf{B} = F$ then the decomposition of $\mathcal{X}$ is essential unique.
+\end{lemma}
+\begin{proof}
+    Two slabs of $\mathcal{X}$ are:
+    \begin{align*}
+        \mathcal{X}^{(1)} &= \mathcal{X}(:,:, 1) = \mathbf{A}\mathbf{D}_1(\mathbf{C}) \mathbf{B}^T\\
+        \mathcal{X}^{(2)} &= \mathcal{X}(:,:, 2) = \mathbf{A}\mathbf{D}_2(\mathbf{C}) \mathbf{B}^T
+    \end{align*}
+
+Define $\widetilde{\mathbf{A}} = \mathbf{A}\mathbf{D}_1(\mathbf{C}), \mathbf{D} = \mathbf{D}_1(\mathbf{C})^{-1}\mathbf{D}_2(\mathbf{C})$
+\begin{align*}
+    \Rightarrow \mathcal{X}^{(1)} &= \widetilde{\mathbf{A}}\mathbf{B}^T \\
+    \mathcal{X}^{(2)} &= \widetilde{\mathbf{A}}\mathbf{D}\mathbf{B}^T \\
+    \Rightarrow \overline{\mathcal{X}} = 
+    \begin{bmatrix}
+        \mathcal{X}^{(1)} \\
+        \mathcal{X}^{(2)} 
+    \end{bmatrix} &= 
+    \begin{bmatrix}
+        \widetilde{\mathbf{A}} \\
+        \widetilde{\mathbf{A}}\mathbf{D}
+    \end{bmatrix} \mathbf{B}^T \\
+    \Rightarrow \mathcal{R}(\mathcal{X}) &= \mathcal{R}\left(
+    \begin{bmatrix}
+        \widetilde{\mathbf{A}} \\ \widetilde{\mathbf{A}}\mathbf{D}
+    \end{bmatrix}
+\right) \quad \text{since }\mathbf{B}^T \text{ is full row rank} \numberthis \label{eq:cpd-uniqueness-1}
+\end{align*}
+Meanwhile, apply SVD to 
+$\begin{bmatrix}
+        \mathcal{X}^{(1)} \\
+        \mathcal{X}^{(2)} 
+    \end{bmatrix}$, we obtain:
+
+    \begin{align*}
+    \text{thin svd}\left(\begin{bmatrix}
+        \mathcal{X}^{(1)} \\
+        \mathcal{X}^{(2)} 
+    \end{bmatrix}\right)  &= \mathbf{U}\boldsymbol\Sigma \mathbf{V}^T \\
+    \Rightarrow \mathcal{R}(\overline{\mathcal{X}}) &= \mathcal{R}(\mathbf{U}) = \mathcal{R}\left(
+    \begin{bmatrix}
+        \mathbf{U}_1 \\ \textbf{U}_2
+    \end{bmatrix}\right) \numberthis \label{eq:cpd-uniqueness-2}
+    \end{align*}
+    From \ref{eq:cpd-uniqueness-1} and \ref{eq:cpd-uniqueness-2}, there exist a nonsingular matrix $\mathbf{M} \in \mathbb{R}^{F\times F}$ :
+    \begin{align*}
+    \begin{bmatrix}
+        \mathbf{U}_1 \\ \mathbf{U}_2
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        \widetilde{\mathbf{A}} \\ \widetilde{\mathbf{A}}\mathbf{D}
+    \end{bmatrix} \mathbf{M} \\
+    \end{align*} 
+    Define 
+    \begin{align*}
+        \mathbf{R}_1 &= \mathbf{U}_1^T\mathbf{U}_1 = \mathbf{M}^T\widetilde{\mathbf{A}}^T\widetilde{\mathbf{A}}\mathbf{M} = \mathbf{Q}\mathbf{M} \\
+        \mathbf{R}_2 &= \mathbf{U}_1^T\mathbf{U}_2 = \mathbf{M}^T\widetilde{\mathbf{A}}^T\widetilde{\mathbf{A}}\mathbf{D}\mathbf{M} = \mathbf{Q}\mathbf{D}\mathbf{M}
+    \end{align*} 
+    They have similar form with $\mathbf{U}_1, \mathbf{U}_2$ except they are square, and nonsigular. Thus,
+    \begin{align*}
+        \mathbf{R}_1\mathbf{R}_2^{-1} = \mathbf{Q}\mathbf{D}^{-1}\mathbf{Q}^{-1} \Rightarrow \mathbf{R}_2\mathbf{R}_1^{-1} = \mathbf{Q}\mathbf{D}\mathbf{Q}^{-1}
+    \end{align*}
+    $\mathbf{R}_2\mathbf{R}_1^{-1}$ is eigendecomposed to $\mathbf{Q}$ and $\mathbf{D}$. Therefore, we can find $\mathbf{D}, \mathbf{Q}$ by eigendecomposition of $\mathbf{R}_1\mathbf{R}_2^{-1}$. These 2 matrices are unique, but up to scale and permutation. What we have found are:
+    \begin{align*}
+        \overline{\mathbf{Q}} = \mathbf{Q}\Pi\Lambda
+    \end{align*}
+
+    Back substitution to find $\widetilde{\mathbf{A}}$, then $\mathbf{A}, \mathbf{B}, \mathbf{C}$. All these matrices are unique but up to scale and permutation. That completes the proof.
+\end{proof}
+
+\section{Matrix Algebra}%
+\label{sec:basic_algebra}
+
+\subsection{Grammian matrix}%
+\label{sub:grammian_matrix}
+
+\begin{lemma}[Gramian matrix]
+    \label{lemma:gramia-matrix}
+    If $\mathbf{A} \in \mathbb{R}^{m\times n}$ is full column rank, then $\mathbf{A}^T\mathbf{A}$ is invertible.
+\end{lemma}
+\begin{proof}
+    Since $\mathbf{A}$ is full column rank, then $\mathbf{A}\mathbf{x}= \mathbf{0} \Leftrightarrow \mathbf{x} =\mathbf{0}$
+   \[
+   \Rightarrow \mathbf{x}^T \mathbf{A}^T\mathbf{A}\mathbf{x} = \norm{\mathbf{A}\mathbf{x}}_2^2 > 0 \quad \text{for all }\mathbf{x} \neq \mathbf{0}
+   \]   
+   \[
+   \Rightarrow \mathbf{A}^T\mathbf{A} \mathbf{x} \neq \mathbf{0} \quad \text{for all }\mathbf{x} \neq \mathbf{0}
+   \] 
+   \[
+   \Rightarrow \mathbf{A}^T\mathbf{A} \quad \text{is full rank} \Rightarrow \mathbf{A}^T\mathbf{A} \quad \text{is invertible}
+   \] 
+   Comments:
+   \begin{itemize}[noitemsep]
+       \item Contradictary proof will be easier
+   \end{itemize}
+\end{proof}
+
+\subsection{Rank/Range of matrix multiplication}%
+\label{sub:rank_range_of_matrix_multiplication}
+
+
+\begin{lemma}[Rank/Range of matrix multiplication]
+    \label{lemma:rank/range of matrix multiplication}
+    Given $\mathbf{A}\in \mathbb{R}^{m\times n}, \mathbf{B}\in \mathbb{R}^{n\times p}$, and $\mathbf{B}$ is full row rank, then:
+    \[
+        \mathcal{R}(\mathbf{A}\mathbf{B}) = \mathcal{R}(\mathbf{A})
+    \] 
+\end{lemma}
+\begin{proof}
+    Since $\mathbf{B}$ is full row rank, then: $\mathcal{R}(\mathbf{B})=\set{\mathbf{y}: \mathbf{y}=\mathbf{B}\mathbf{x} \mid \mathbf{x}\in \mathbb{R}^{p}} = \mathbb{R}^{n}$
+    \begin{align*}
+        \Rightarrow \mathcal{R}(\mathbf{A}\mathbf{B}) &= \set{\mathbf{y}: \mathbf{y}=\mathbf{A}\mathbf{B}\mathbf{x} \mid \mathbf{x}\in \mathbb{R}^{p}} = \set{\mathbf{y}: \mathbf{y}= \mathbf{A}\mathbf{z} \mid \mathbf{z}\in \mathcal{R}(\mathbf{B})} \\
+&= \set{\mathbf{y}: \mathbf{y}=\mathbf{A}\mathbf{z} \mid \mathbf{z}\in \mathbb{R}^{n}}\\
+&= \mathcal{R}(\mathbf{A})
+    \end{align*}
+\end{proof}
+
+\subsection{Least square problem}%
+\label{sub:least_square_problem}
+
+\begin{lemma}[Least square problem]
+    \[
+    \min_{\mathbf{x}\in \mathbb{R}^{n}} \norm{\mathbf{y} - \mathbf{A}\mathbf{x}}^2
+    \] 
+   Number of ways to solve lease square problem:
+   \begin{itemize}[noitemsep]
+       \item Pseudo-inverse
+       \item Orthogonal projection
+       \item Moore-Penrose inverse
+   \end{itemize}
+   \begin{proof}[Solutions]
+       Firstly, let $\mathbf{x}_\text{LS}$ is solution, then it must satisfy
+       \[
+           \mathbf{A}^T\mathbf{A} \mathbf{x}_\text{LS} = \mathbf{A}^T\mathbf{y}
+       \] 
+
+       \begin{enumerate}
+           \item Pseudo-inverse. If $\mathbf{A}$ is full column rank, then solution is unique
+               \[
+                   \mathbf{x}_\text{LS} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{y}
+               \] 
+               Based on that, some defintions are arised:
+               \begin{itemize}
+                   \item Pseudo-inverse of $\mathbf{A}$ is $\mathbf{A}^{\dagger} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T$
+                   \item Project matrix of $\mathbf{A}$ is $\mathbf{P}_\mathbf{A} = \mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T = \mathbf{A}\mathbf{A}^{\dagger}$
+                   \item Projecting $\mathbf{y}$ onto $\mathbf{A}$ is vector $\Pi_\mathbf{A}(\mathbf{y}) = \mathbf{P}_\mathbf{A} \times \mathbf{y}$
+               \end{itemize}
+       Note that these definitions above valid only if $\mathbf{A}^T\mathbf{A}$ is invertible, which requires $\mathbf{A}$ full column rank as stated in \ref{lemma:gramia-matrix}
+   \item If $\mathbf{A}$ is full row rank.
+   \item If $\mathbf{A}$ is rank deficient.
+       \end{enumerate}
+   \end{proof}
+\end{lemma}
+
+\subsection{Big 0, Small o}%
+\label{sub:big_0_small_o}
+\begin{itemize}
+    \item Big O
+$f(x) = O(x)$ if 
+\[
+    \lim_{x \to 0} \frac{f(x)}{x} < \infty
+\] 
+Or we can say: $f(x)$ approaches 0 as least as fast as $x$
+\item Small o
+
+$f(x) = o(x)$ if 
+\[
+    \lim_{x \to 0} \frac{f(x)}{x} = 0
+\] 
+Or we can say: $f(x)$ approaches 0 faster than $x$
+\end{itemize}
+
+
+\subsection{First-order necessary condition}%
+\label{sub:first_order_necessary_condition}
+\begin{lemma}
+    If $\mathbf{x}^{*}$ is local solution of $f$ over $\boldsymbol\Omega$, then for any feasible direction $\mathbf{d}$, we have:
+    \[
+        \nabla f(\mathbf{x}^{*}) \mathbf{d} \geq 0
+    \] 
+\end{lemma}
+
+\begin{proof}[Proof 1: Taylor approximation]
+    Let $\mathbf{x}=\mathbf{x}^{*} + \alpha \mathbf{d}$ where $\alpha > 0$, then Taylor expansion gives us:
+    \[
+        f(\mathbf{x}) = f(\mathbf{x}^{*} + \alpha \mathbf{d}) = f(\mathbf{x}^{*}) + \alpha \nabla f(\mathbf{x}^{*})\mathbf{d} + o(\norm{\alpha \mathbf{d}})
+    \] 
+    Given $\alpha$ small enough, then:
+    \[
+        f(\mathbf{x}^{*} + \alpha \mathbf{d}) \approx f(\mathbf{x}^{*}) + \alpha \nabla f(\mathbf{x}^{*})\mathbf{d}     \] 
+
+        The fact that $\mathbf{x}^{*}$ is local solution leads to:
+        \begin{align*}
+            f(\mathbf{x}^{*}) &\leq f(\mathbf{x}) \\
+            \Leftrightarrow f(\mathbf{x}^{*}) &\leq f(\mathbf{x}^{*}) + \alpha \nabla f(\mathbf{x}^{*})\mathbf{d}  \\
+            \Leftrightarrow \nabla f(\mathbf{x}^{*})\mathbf{d} &\geq 0
+        \end{align*}
+\end{proof}
+
+\begin{proof}[Proof 2: Derivative]
+    Let $g(\alpha) = f(\mathbf{x}^{*} + \alpha \mathbf{d})$, then
+    \begin{itemize}
+        \item $g(0) = f(\mathbf{x}^{*})$ is local solution
+        \item $g'(0) = \lim_{\alpha \rightarrow 0}(g(\alpha) - g(0))/\alpha$
+    \end{itemize}
+    \begin{align}
+        \Rightarrow g'(0) \alpha &= g(\alpha) - g(0) \\
+        \Rightarrow f'(\mathbf{x}^{*})d &= g(\alpha) - g(0) \geq 0
+    \end{align}
+\end{proof}
+\begin{lemma}[First-order condition of convex function]
+    First-
+\end{lemma}
+\begin{lemma}[Global solution of convex function]
+    
+\end{lemma}
+
+\subsection{Positive/Negative half-space}%
+\label{sub:positive_half_space}
+Why does it exist?
+
+\subsection{Order of convergence}%
+\label{sub:order_of_convergence}
+Let sequence of real numbers $\{x_k\}$ converges to $x^{*}$. The order of convergent sequence $\{x_k\}$ is a positive number $p$, such that:
+\[
+    0 \leq \overline{\lim_{k \rightarrow \infty}} \frac{\abs{x_{k+1}-x^{*}}}{\abs{x_k - x^{*}}^{p}} < \infty
+\] 
+The notion $\overline{\lim}$ is limit of supreme.
+
+Note that the order of convergence only concerns with the tail of the sequence, as we take limit.
+
+\begin{definition}[Linear convergence]
+    A sequence has the convergence order of unity is call linear convergence. It is too prevailed so that people make it own defintion. If
+    \[
+        \lim_{k \rightarrow \infty} \frac{\abs{x_{k+1} - x^{*}}}{\abs{x_k-x^{*}}} = \beta < 1
+    \] 
+    holds, then sequence is said to converge linearly with convergence ratio (rate) $\beta$. 
+
+    If $\beta = 0$, then it is called superlinear, which is faster than linear. Convergence of any order greater than unity is superlinear. 
+
+    \textbf{Warning:} Convergence order of 1 is not equivalent to linear convergence, because it might be sublinear. Take sequence $x_k = 1/k$ as an example.
+
+
+    \textbf{Warning:} Superlinear convergence might has the convergence order of unity. Take sequence $x_k = (\frac{1}{k})^{k}$ as an example.
+\end{definition}
+
+
+\begin{lemma}[Frobenis norm bounds]
+    \label{lemma:svd_bound}
+    Let $\bm{A}, \bm{B} \in \mathbb{R}^{K \times K}$.
+    \begin{align}
+    &\norm{\bm{A} \bm{B}}_{\rm F} \geq \sigma_{\min}(\bm{A}) \norm{\bm{B}}_{\rm F} \label{eq:svd_sigma_min} \\
+    &\norm{\bm{A} \bm{B}}_{\rm F} \geq \sigma_{\min}(\bm{B}) \norm{\bm{A}}_{\rm F} \label{eq:svd_sigma_min_2} \\
+    &\norm{\bm{A} \bm{B}}_{\rm F} \leq \sigma_{\max}(\bm{A}) \norm{\bm{B}}_{\rm F} \label{eq:svd_sigma_max} \\
+    &\norm{\bm{A} \bm{B}}_{\rm F} \leq \sigma_{\max}(\bm{B}) \norm{\bm{A}}_{\rm F} \label{eq:svd_sigma_max_2} 
+    \end{align} 
+\end{lemma}
+\begin{proof}
+    To prove \eqref{eq:svd_sigma_min},
+    \begin{align*}
+    \norm{\bm{A} \bm{B}}_{\rm F}^2 
+    &= \sum^{K}_{i=1} \norm{\bm{A} \bm{b}_i}^2 \\
+    &= \sum^{K}_{i=1} \norm{\bm{U} \boldsymbol \Sigma \bm{V}^{\T} \bm{b}_i}^2 \quad \text{(SVD decomposition of $\bm{A}$ always exists)}\\
+    &= \sum^{K}_{i=1} \left( \bm{b}_i^{\T}\bm{V} \boldsymbol \Sigma  \bm{U}^{\T} \right) \bm{U} \boldsymbol \Sigma \bm{V}^{\T} \bm{b}_i \\
+    &= \sum^{K}_{i=1} \bm{b}_i^{\T}\bm{V} \boldsymbol \Sigma^2 \bm{V}^{\T} \bm{b}_i \\
+    &= \sum^{K}_{i=1} \sum^{K}_{j=1} (\bm{b}_i^{\T} \bm{v}_j)^2 \sigma_j^2 \\
+    &\geq \sum^{K}_{i=1}\sigma_{\min}^2 \sum^{K}_{j=1} (\bm{b}_i^{\T} \bm{v}_j)^2  \\
+    &= \sum^{K}_{i=1}\sigma_{\min}^2 \norm{\bm{b}_i^{\T} \bm{V}}_{\rm F}^2  \quad \text{(surprisingly, this is an important step)} \\
+    &= \sum^{K}_{i=1}\sigma_{\min}^2 \norm{\bm{b}_i }^2 \\
+    &= \sigma_{\min}^2 \norm{\bm{B}}_{\rm F}^2
+    \end{align*} 
+    To prove \eqref{eq:svd_sigma_max},
+    \begin{align*}
+    \norm{\bm{A} \bm{B}}_{\rm F}^2 
+    &= \sum^{K}_{i=1} \norm{\bm{A} \bm{b}_i}^2 \\
+    &= \sum^{K}_{i=1} \norm{\bm{U} \boldsymbol \Sigma \bm{V}^{\T} \bm{b}_i}^2 \quad \text{(SVD decomposition of $\bm{A}$ always exists)}\\
+    &= \sum^{K}_{i=1} \left( \bm{b}_i^{\T}\bm{V} \boldsymbol \Sigma  \bm{U}^{\T} \right) \bm{U} \boldsymbol \Sigma \bm{V}^{\T} \bm{b}_i \\
+    &= \sum^{K}_{i=1} \bm{b}_i^{\T}\bm{V} \boldsymbol \Sigma^2 \bm{V}^{\T} \bm{b}_i \\
+    &= \sum^{K}_{i=1} \sum^{K}_{j=1} (\bm{b}_i^{\T} \bm{v}_j)^2 \sigma_j^2 \\
+    &\leq \sum^{K}_{i=1}\sigma_{\max}^2 \sum^{K}_{j=1} (\bm{b}_i^{\T} \bm{v}_j)^2  \\
+    &= \sum^{K}_{i=1}\sigma_{\max}^2 \norm{\bm{b}_i^{\T} \bm{V}}_{\rm F}^2  \quad \text{(surprisingly, this is an important step)} \\
+    &= \sum^{K}_{i=1}\sigma_{\max}^2 \norm{\bm{b}_i }^2 \\
+    &= \sigma_{\max}^2 \norm{\bm{B}}_{\rm F}^2
+    \end{align*} 
+    The inequality \eqref{eq:svd_sigma_min_2} and \eqref{eq:svd_sigma_max_2} hold due to the symmetric role of $\bm{A}$ and $\bm{B}$.
+\end{proof}
+
+\begin{lemma}[\cite{weyl1912asymptotische}]
+    \label{lemma:perturbation_theory}
+    Let $\bm{X}, \boldsymbol \Delta \in \mathbb{R}^{m \times n}$, 
+    \[
+    \abs{\sigma_{i}(\bm{X}+ \boldsymbol \Delta) -\sigma_{i}(\bm{X})} \leq \norm{\boldsymbol \Delta}_{2} \quad (\; \leq \norm{\boldsymbol \Delta}_{\rm F}), \quad 1 \leq i \leq \min (m, n).
+    \] 
+\end{lemma}
+
+\section{Probability and Statistic}%
+\label{sec:probability_and_statistic}
+
+\section{Statistical Learning}%
+\label{sec:statistical_learning}
+
+\subsection{Rademacher Complexity}%
+\label{sub:rademacher_complexity}
+\begin{definition}
+    Rademacher complexity of a set $A \subset \mathbb{R}^{n}$ is defined as
+    \[
+    \mathcal{R}(A) \triangleq \dfrac{1}{n} \mathop{\mathbb{E}}_{\boldsymbol \sigma} \left[ \sup_{\bm{a} \in A} \langle \boldsymbol \sigma, \bm{a} \rangle\right],
+    \] 
+    where $\boldsymbol \sigma = [\sigma_1, \ldots , \sigma_n]$ are $n$ i.i.d. Rademacher random variables, i.e., 
+    \[
+    \begin{cases}
+    &\sigma_i = -1 \text{ with probability } 0.5, \text{ and } \\
+    &\sigma_i = 1 \text{ with probability  } 0.5
+    \end{cases} 
+    \] 
+\end{definition}
+This is a very general definition. But to put it into the picture: 
+in most cases, $A$ is the set constructed by applying a set of functions (function class) to a fixed dataset with size $n$.
+Note that although our interest is purely the ``size'' or the complexity of our function class, notion complexity introduced by Rademacher complexity is in relative to a fixed dataset.
+
+In most of the time, the best we can do is upper bound Rademacher complexity. We have 2 main strategies do to that.
+\begin{itemize}
+    \item Compute it directly from the definition
+    \item Pealing layer by layer.
+\end{itemize}
+For the second strategy, we will need the following lemma.
+\begin{lemma}[Contraction lemma \cite{shalev2014understanding} (Lemma 26.9)]
+    For each $i \in [n]$, let $\phi_{i}: \mathbb{R} \to \mathbb{R}$ be a $\rho$-Lipschitz continuous function, namely for all $\alpha, \beta \in \mathbb{R}$, 
+    \[
+    \abs{\phi_i(\alpha) - \phi_i(\beta)} \leq \rho \abs{\alpha - \beta}.
+    \] 
+    For $\bm{a} \in \mathbb{R}^{n}$, define 
+    \[
+    \boldsymbol \phi(\bm{a}) \triangleq [\phi_1(a_i), \ldots , \phi_n(a_n)].
+    \] 
+    Let $A$ be a subset of $\mathbb{R}^{n}$. Let $\boldsymbol \phi \circ A \triangleq \set{\boldsymbol \phi(\bm{a}): \bm{a} \in A}$. Then
+    \[
+    \mathcal{R}(\boldsymbol \phi \circ A) \leq \rho \mathcal{R}(A)
+    \] 
+\end{lemma}
+
+
+\section{Proof}%
+\label{sec:proof}
+
+
+\pagebreak
+\printbibliography
+
+\end{document}
+

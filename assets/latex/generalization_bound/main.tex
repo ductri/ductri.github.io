@@ -1,0 +1,58 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{tri_preamble}
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{Generalization Bound}
+\author{	Tri Nguyen \\\\
+        \texttt{nguyetr9@oregonstate.edu} \\\\
+        }
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+
+Though I got it but \ldots 
+
+Generalization bound is a characterization of a function class, measuring how hard the function class can be \textit{learned} using a finite sample.
+Let $L_{S}(f), L_{\mathcal{D}}(f)$ be empirical loss and true loss of a predictor $f$. Generalization bound is defined as
+\[
+\abs{L_{\mathcal{D}}(f) - L_{S}(f)}
+\] 
+We wish this bound to be small. It depends on size of dataset $S$. We have not said anything about the relationship between $f$ and $S$.
+
+At a glance, if $f$ is some given fixed predictor, then the bound can be bounded by concentration inequality. Let us be clear by defining these losses.
+\begin{align*}
+    L_S(f) &= \dfrac{1}{n} \sum^{n}_{i=1} \ell (f, \bm{z}_i), \quad \bm{z}_1, \ldots , \bm{z}_i \sim_{\text{i.i.d.}} \mathcal{D} \\
+    L_{\mathcal{D}}(f) &= \mathop{\mathbb{E}}_{\bm{z} \sim \mathcal{D}} \left[ \ell (f, \bm{z}) \right],
+\end{align*} 
+where $\ell (f, \bm{z})$ is the loss evaluated at data point $\bm{z}$. Now if we also assume that $0\leq \ell (f, \bm{z}) \leq C$, then we revoke typical concentration inequality like Hoeffding inequality.
+
+\begin{theorem}[Hoeffding inequality]
+    \label{theorem:hoeffding}
+    Let $X_1, \ldots , X_n$ be independent, and $a_i \leq X_i \leq b_i, i\in [n]$, $S_n \triangleq \sum^{n}_{i=1} X_i$. The for $t > 0$, 
+    \[
+    \textsf{Pr}(S_n - \mathop{\mathbb{E}}[S_n] \geq t) \leq \text{exp}\left( -\dfrac{2t^2}{\sum^{n}_{i=1} (b_i - a_i)^2} \right)
+    \] 
+\end{theorem}
+Calling Theorem~\ref{theorem:hoeffding} we get
+\begin{align*}
+&\textsf{Pr}(nL_S(f) - nL_{\mathcal{D}}(f) \geq t) \leq \text{exp} \left( -\dfrac{2t^2}{nC^2} \right) \\
+&\textsf{Pr}(L_S(f) - L_{\mathcal{D}}(f) \geq \dfrac{t}{n}) \leq \text{exp} \left( -\dfrac{2t^2}{nC^2} \right) 
+\end{align*} 
+Equivalently, 
+\begin{equation}
+\label{eq:pitfall1}
+\textsf{Pr}\left(L_S(f) - L_{\mathcal{D}}(f) \geq C\sqrt{\dfrac{\log (1/\delta)}{2n}}\right) \leq \delta 
+\end{equation} 
+{\red the above derivation should be made with absolute operator.}
+
+The bound looks very standard. The pitfall here is that \textbf{$f$ is independent to the dataset $S$}, which is not true. The key is that the randomness is from the data $S$. One way to interpret the claim in \eqref{eq:pitfall1} is: Given a fixed predictor $f$, we draw randomly data set $S$ 100 times, then there would be not more than $100\delta$ times that the generalization error is large. Then it is apparent that \eqref{eq:pitfall1} is not applicable to predictors $f$ that depend on data $S$, such as $f = \text{ERM}(S)$.
+
+So this shows that concentration is not enough.
+
+The recipe is: Given one realization of data set $S$, find the worst predictor. The metric is based on $S$, while the predictor might or might not depend on $S$, just need it to be the worst.
+\end{document}
+

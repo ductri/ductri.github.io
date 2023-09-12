@@ -1,0 +1,37 @@
+---
+  name: "Tri Nguyen"
+  position: "4th yeah Ph.D. student"
+  company: "Oregon State University"
+  location: "OR, US"
+  email: "ductricse@gmail.com"
+  gravatar: "https://ductri.github.io/assets/images/leaf-symbol.png"
+  bio: |
+    Writing blog for fun? Nah, just another attempt to rise my chance of landing a job ;))))
+  #activate the social buttons you like by removing the comment
+  social:
+    github:
+      url: "http://github.com/ductri"
+      text: "/ductri"
+      btnClass: "btn-github"
+      logo: "fa-github"
+    linkedin:
+      url: "https://www.linkedin.com/in/tri-nguyen-613a10116/"
+      text: "/tri-nguyen-613a10116"
+      btnClass: "btn-linkedin"
+      logo: "fa-linkedin"
+    facebook:
+     url: "http://facebook.com/ductrivn"
+     text: "/ductrivn"
+     btnClass: "btn-facebook"
+     logo: "fa-facebook"
+    # stackoverflow:
+    #   url: "http://stackoverflow.com/users/youruserid/yourid"
+    #   text: "/yourid"
+    #   btnClass: "btn-stackoverflow"
+    #   logo: "fa-stack-overflow"
+    # soundcloud:
+    #   url: "http://soundcloud.com/yourid"
+    #   text: "/yourid"
+    #   btnClass: "btn-soundcloud"
+    #   logo: "fa-soundcloud"
+       
