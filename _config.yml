@@ -1,7 +1,7 @@
 # Site settings
 title: Tri Nguyen
 email: ductricse@gmail.com
-description: "description"
+description: "4-th year Ph.D. student"
 logo_location: "https://ductri.github.io/assets/images/naruto.jpg"
 
 baseurl: "" # the subpath of your site, e.g. /blog/
