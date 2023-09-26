@@ -2,12 +2,184 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tri Nguyen</title>
-    <description>description</description>
+    <description>4-th year Ph.D. student</description>
     <link>https://ductri.github.io/</link>
     <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 11 Sep 2023 22:35:00 -0700</pubDate>
-    <lastBuildDate>Mon, 11 Sep 2023 22:35:00 -0700</lastBuildDate>
+    <pubDate>Mon, 25 Sep 2023 21:14:32 -0700</pubDate>
+    <lastBuildDate>Mon, 25 Sep 2023 21:14:32 -0700</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>Some random papers on LLM</title>
+        <description>&lt;p&gt;We have readings on the trendy LLM. I collected some papers myself here. The list is still updating
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;attentiontransformer&quot;&gt;Attention/Transformer&lt;/h1&gt;
+
+&lt;p&gt;The goal is to encode an sequential data: $x_1 \to x_2 \to \ldots \to x_t$.&lt;/p&gt;
+
+&lt;p&gt;As usual, since $x_i$ is discrete, $x_i \in \mathcal{V}$. Each $v \in \mathcal{V}$ is represented as a trainable vector. In Transformer, this vector is partitioned into 3 disjoint parts:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;$\textbf{q} \in \mathbb{R}^{d_k}$&lt;/li&gt;
+  &lt;li&gt;$\textbf{k} \in \mathbb{R}^{d_k}$&lt;/li&gt;
+  &lt;li&gt;$\textbf{v} \in \mathbb{R}^{d_v}$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This way, a sentence is encoded by 3 matrices $\textbf{Q} \in \mathbb{R}^{t \times d_k}, \textbf{K} \in \mathbb{R}^{t \times d_k}, \textbf{V} \in \mathbb{R}^{t \times d_v}$.&lt;/p&gt;
+
+&lt;p&gt;Next idea: the presentation of $x_i$ is a convex combination of other $\textbf{x}_j$ where $j=1, \ldots , i-1$.
+The presentation is realized by $\textbf{v}_i$, so
+\(\text{atten}_i(\textbf{v}_i) = \sum_{\ell =1}^{i} a_\ell  \textbf{v}_\ell  
+= \textbf{a}^{\sf T} \textbf{V}, \quad \textbf{a} \in \mathbb{R}^{t}\)&lt;/p&gt;
+
+&lt;!-- - The final presentation should be fixed although the sequence length is varying. --&gt;
+&lt;!-- - The encoding mechanism should take into acount the sequential order of the input sample. --&gt;
+&lt;!-- - Each $x_i$ should have its own representation, and representation of $x_i$ could be affected by $x_j$, $j&lt;i$ as the context. --&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/attention-arch.png&quot; width=&quot;600px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-25-llm/attention.png&quot; width=&quot;500px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now the coefficient $a_i$ must be learned somehow. Attention suggests that 
+\(\begin{align*}
+&amp;amp;\widetilde{\textbf{a}}_i = [\widetilde{a}_1, \ldots , \widetilde{a}_t] = [\textbf{q}_i^{\sf T} \textbf{k}_1, \ldots , \textbf{q}_i^{\sf T} \textbf{k}_\ell, \ldots , \textbf{q}_i^{\sf T} \textbf{k}_t] = \textbf{q}_i^{\sf T} \textbf{K} \\
+&amp;amp;\widetilde{\textbf{A}} = [\widetilde{\textbf{a}}_1, \ldots , \widetilde{\textbf{a}}_t] = [\textbf{q}_1^{\sf T} \textbf{K}, \ldots , \textbf{q}_t^{\sf T} \textbf{K}] = \textbf{Q}^{\sf T} \textbf{K} \\
+&amp;amp;\textbf{A} = \text{softmax} (\widetilde{\textbf{A}}) \triangleq [\text{softmax}(\widetilde{\textbf{a}}_i), \ldots , \text{softmax}(\widetilde{\textbf{a}}_t)] \in \mathbb{R}^{t \times t}
+\end{align*}\) 
+Each vector $\textbf{a}_i$ represent distribution of “attention” of word $i$ paying over the whole sentence.&lt;/p&gt;
+
+&lt;p&gt;So take everything as matricies, we have
+\(\begin{align*}
+\text{attention} 
+&amp;amp;= \textbf{A}^{\sf T} \textbf{V}, \quad \textbf{A} \in \mathbb{R}^{d_v \times t} \\
+&amp;amp;= \text{softmax}(\textbf{K}^{\sf T} \textbf{Q}) \textbf{V} \in \mathbb{R}^{t \times d_v}
+\end{align*}\)&lt;/p&gt;
+
+&lt;h4 id=&quot;multiheads&quot;&gt;Multiheads&lt;/h4&gt;
+
+&lt;p&gt;Then, in order to allow for multiple learned patterns, each word is now presented with $H$ different triples $(\textbf{Q}_h, \textbf{K}_h, \textbf{V}_h)$.
+\(\text{attention} (\textbf{Q}\textbf{W}_h^{(1)}, \textbf{K}\textbf{W}_h^{(2)}, \textbf{V}\textbf{W}_h^{(3)}), \quad h=1, \ldots , H\) 
+Then as usuall, every thing is concatenated and input to a final FC layer.&lt;/p&gt;
+
+&lt;p&gt;Motivation:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/att_moti.png&quot; width=&quot;500px&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;order-encoding&quot;&gt;Order Encoding&lt;/h4&gt;
+
+&lt;p&gt;Now as the representation is just a convex combination of some set, there is no notion of order. Hence it is necessary that the order info is encoded in the $\textbf{v}$ vector.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/order-emb.png&quot; width=&quot;600px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-25-llm/tmp_img_2023-09-19-12-46-39.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So that’s basically it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/transformer-arch.png&quot; width=&quot;500px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;flamingo-a-visual-language-model-for-few-shot-learning&quot;&gt;Flamingo: a visual language model for few-shot learning&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/paper1.png&quot; width=&quot;600px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Task&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/flamingo.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mixing text and image, predict next word token, pretrained LLM, vision input is undergone a pretrain feature extractor, then to a trainable network to produce a fixed length vector for each image/video input.&lt;/p&gt;
+
+&lt;p&gt;Dataset is crawl from webpage, image is replaced by special token  &lt;imgx&gt;&lt;/imgx&gt;&lt;/p&gt;
+
+&lt;p&gt;The vision module produce a fixed number of tokens. These tokens are treated as word tokens.&lt;/p&gt;
+
+&lt;h3 id=&quot;method&quot;&gt;Method&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/fla-mle.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Input example:
+&lt;img src=&quot;/assets/images/2023-09-25-llm/fla-example-input.png&quot; width=&quot;800px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/fla-architecture.png&quot; width=&quot;800px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/fla-archi-zoomin.png&quot; width=&quot;800px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;in-more-details-&quot;&gt;In more details …&lt;/h3&gt;
+
+&lt;p&gt;Data collection:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;43 million webpages. Sample a random subsequence of 𝐿 = 256 tokens and take up to the first 𝑁 = 5 images included in the sampled sequence&lt;/li&gt;
+  &lt;li&gt;For image text pairs,
+    &lt;ul&gt;
+      &lt;li&gt;ALIGN [50] dataset contains 1.8 billion images paired with alt-text&lt;/li&gt;
+      &lt;li&gt;LTIP dataset consists of 312 million image and text pairs&lt;/li&gt;
+      &lt;li&gt;VTP dataset contains 27 million short videos (approximately 22 seconds on average) paired with sentence descriptions&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;beam search for decoding
+    &lt;h3 id=&quot;evaluation&quot;&gt;Evaluation&lt;/h3&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;What can it do? It can learn to perform new task pretty quickly using “In-context learning” \ldots like what has been used in GPT3.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Few shot learning: using only 4 examples&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;llm-knowledge-retrieval&quot;&gt;LLM knowledge retrieval&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-25-llm/paper2.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Setting: Given a dataset of text pairs (x, y), like x: question, y: answer.&lt;/p&gt;
+
+&lt;h3 id=&quot;idea&quot;&gt;Idea&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Model: Receive a sequence $x$, and output a prediction of sequence $\widehat{y}$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;LLM contains knowledge somehow, and can be seen to have a parametric memory. Let’s extend that by adding a non-parametric external memory, in this case from Wiki. 
+So given, for example, a question, model uses its internal knowledge, retrieve external resource, combine them and generate an answer.&lt;/p&gt;
+
+&lt;p&gt;More concretely, authors proposed a probabilistic model with 2 ways to do inference approximately: RAG-Sequence Model and RAG-Token Model,
+&lt;img src=&quot;/assets/images/2023-09-25-llm/llm-knowl-model-app.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Dive in to the model architecture:
+&lt;img src=&quot;/assets/images/2023-09-25-llm/llm-knowledge-arch.png&quot; width=&quot;800px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-25-llm/llm-knowledge-arch1.png&quot; width=&quot;800px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;The generator: BART-large, 400M parameters. Input is the concatenation of $x$ and top-k latent documents $z$. This BART-large model is accountable for ‘parametric memory’.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Train both Query encoder and Generator.
+Training objective is marginal log-likelihood of the target like usual, like in sequence generation.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;thoughts&quot;&gt;Thoughts?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Knowledge vs overfitting?&lt;/li&gt;
+  &lt;li&gt;What could be extended?
+    &lt;ul&gt;
+      &lt;li&gt;Offer evidence like in Bing.&lt;/li&gt;
+      &lt;li&gt;Instead of using Wiki, get top 5 articles from Google search, input them to the BERT decoder. Or in general, hot-swap memory? Why do they have to replace the whole Wiki instead of substituting relevant articles?&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 25 Sep 2023 14:05:00 -0700</pubDate>
+        <link>https://ductri.github.io/note/2023/09/25/llm-abc.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2023/09/25/llm-abc.html</guid>
+        
+        <category>llm</category>
+        
+        <category>attention</category>
+        
+        
+        <category>note</category>
+        
+      </item>
     
       <item>
         <title>My take on ICML2023</title>
@@ -395,7 +567,7 @@ Some definitions, but I wont cover all in details.&lt;/p&gt;
         <link>https://ductri.github.io/note/2023/09/11/my-take-on-icml2023.html</link>
         <guid isPermaLink="true">https://ductri.github.io/note/2023/09/11/my-take-on-icml2023.html</guid>
         
-        <category>diffusion,</category>
+        <category>diffusion</category>
         
         <category>prepresentation-learning</category>
         
