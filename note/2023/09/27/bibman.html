@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="BibMan - My bibliography manager I want a software to manage and organize collections of papers in my way.
+Mendeley is closed source so it is out. Zotero is pretty nice and open source with open abilities by installing extensions. However, what I want a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
+ 4-th year Ph.D. student">
+  <title> BibMan - My bibliography manager - Tri Nguyen </title>
+
+  <!-- stylesheets -->
+  <link media="all" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link media="all" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link media="all" rel="stylesheet" href="/assets/css/site.css">
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+
+</head>
+
+
+<body>
+  <header>
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a id="site-title" class="navbar-brand" href="/">
+          <img class="pull-left img-responsive" src="https://ductri.github.io/assets/images/naruto.jpg"> 
+          <span class="name-holder">Tri Nguyen</span>
+        </a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar">
+
+        <ul id="main-menu" class="nav navbar-nav navbar-right">
+
+          
+            <li><a href="/">
+              <i class="fa fa-home"></i> Home</a>
+            </li>
+          
+            <li><a href="/about/">
+              <i class="fa fa-info-circle"></i> About Me</a>
+            </li>
+          
+
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
+
+</header>
+
+  
+  <div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-offset-1 col-md-10 col-lg-offset-2 col-lg-8">
+      <div class="page">
+
+        <header class="page-header">
+          <h3 class="page-title"><a href="/note/2023/09/27/bibman.html">BibMan - My bibliography manager</a></h3>
+          <div class="post-metadata">
+            <div> <i class="fa fa-calendar"></i>
+              <time>
+                Wednesday, September 27, 2023
+              </time>
+            </div>
+            <div> <i class="fa fa-tag"></i>
+                
+                  <span class="label label-tag">ncurse</span>
+                
+                  <span class="label label-tag">python</span>
+                
+                  <span class="label label-tag">vim</span>
+                
+            </div>
+          </div>
+
+        </header>
+
+        <article class="page-content">
+          <p>I want a software to manage and organize collections of papers in <strong>my way</strong>.
+Mendeley is closed source so it is out. Zotero is pretty nice and open source with open abilities by installing extensions. However, what I want a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
+<!--more--></p>
+
+<p><img src="/assets/images/2023-09-27-bibman/main.png" width="800px" /></p>
+
+<p>I have used BibMan for more than a year without any major issues. So I believe it is quite stable. And with the philosophy of being transparency, valuable data (pdfs, note, bib files) are stored always as they are. That enables backup method of your choice, easily substituting data pretty, and if the software broke, your data is always safe.
+In fact, most errors I encountered so far were mostly rendering-related issues, which a temporarily fix of just re-run it.</p>
+
+<p>Beside basic functionality, such as adding/delete new paper, group papers according tags, searching, opening corresponding pdf, copy bibtex entry, things that I like to have but does not exist in other software are:</p>
+
+<ul>
+  <li>Easy taking note of a paper. By pressing ‘:note’, it would ask <code class="language-plaintext highlighter-rouge">vim</code> to the paper’s corresponding text file so that you can type your note. Exit <code class="language-plaintext highlighter-rouge">vim</code> would resume the interface.
+I have thought about the possibility of writing a latex note. But current, I’m satisfied with plain text.</li>
+</ul>
+
+<p><img src="/assets/images/2023-09-27-bibman/note1.png" width="300px" />
+<img src="/assets/images/2023-09-27-bibman/note3.png" width="200px" />
+<!-- <img src="/assets/images/2023-09-27-bibman/note2.png" width="300px"> -->
+<img src="/assets/images/2023-09-27-bibman/note4.png" width="200px" /></p>
+
+<ul>
+  <li>
+    <p>Easy modify attributes of a paper item. By pressing ‘V’, it would ask <code class="language-plaintext highlighter-rouge">vim</code> to open the <code class="language-plaintext highlighter-rouge">bib_collection.bib</code> file, and put the cursor under the current chosen paper. So that you can modify whatever information and save it.
+The interface will be updated accordingly.
+<img src="/assets/images/2023-09-27-bibman/bibfile.png" width="800px" /></p>
+  </li>
+  <li>
+    <p>You can add a paper/article with url link instead of a pdf. When pdf field is empty, BibMan will seek for url field. And if url field is not empty, it will open that url using your default browser.</p>
+  </li>
+  <li>
+    <p>You can search the whole thing. Currently, the search function allows you to search if a keyword appear in any data data fields. I’m planing to extend this functionality to including the pdf file as well.</p>
+  </li>
+</ul>
+
+<p>Yeah, that’s it. 
+Give it a try.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install bibman
+</code></pre></div></div>
+<p>Source code is at <a href="https://github.com/ductri/BibMan">https://github.com/ductri/BibMan</a></p>
+
+
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  
+
+<footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-offset-3 col-lg-6">
+            <div class="row">
+              <div class="col-xs-12 text-center">
+                <small>&copy; rifyll theme, 2014</small>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGK7PGG6HV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZGK7PGG6HV');
+</script>
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <!--<script src="/assets/js/prism.js"></script> -->
+  <script src="/assets/js/site.js"></script>
+
+</body>
+
+</html>

@@ -5,9 +5,68 @@
     <description>4-th year Ph.D. student</description>
     <link>https://ductri.github.io/</link>
     <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 25 Sep 2023 21:14:32 -0700</pubDate>
-    <lastBuildDate>Mon, 25 Sep 2023 21:14:32 -0700</lastBuildDate>
+    <pubDate>Wed, 27 Sep 2023 16:54:13 -0700</pubDate>
+    <lastBuildDate>Wed, 27 Sep 2023 16:54:13 -0700</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>BibMan - My bibliography manager</title>
+        <description>&lt;p&gt;I want a software to manage and organize collections of papers in &lt;strong&gt;my way&lt;/strong&gt;.
+Mendeley is closed source so it is out. Zotero is pretty nice and open source with open abilities by installing extensions. However, what I want a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-27-bibman/main.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I have used BibMan for more than a year without any major issues. So I believe it is quite stable. And with the philosophy of being transparency, valuable data (pdfs, note, bib files) are stored always as they are. That enables backup method of your choice, easily substituting data pretty, and if the software broke, your data is always safe.
+In fact, most errors I encountered so far were mostly rendering-related issues, which a temporarily fix of just re-run it.&lt;/p&gt;
+
+&lt;p&gt;Beside basic functionality, such as adding/delete new paper, group papers according tags, searching, opening corresponding pdf, copy bibtex entry, things that I like to have but does not exist in other software are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Easy taking note of a paper. By pressing ‘:note’, it would ask &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vim&lt;/code&gt; to the paper’s corresponding text file so that you can type your note. Exit &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vim&lt;/code&gt; would resume the interface.
+I have thought about the possibility of writing a latex note. But current, I’m satisfied with plain text.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-27-bibman/note1.png&quot; width=&quot;300px&quot; /&gt;
+&lt;img src=&quot;/assets/images/2023-09-27-bibman/note3.png&quot; width=&quot;200px&quot; /&gt;
+&lt;!-- &lt;img src=&quot;/assets/images/2023-09-27-bibman/note2.png&quot; width=&quot;300px&quot;&gt; --&gt;
+&lt;img src=&quot;/assets/images/2023-09-27-bibman/note4.png&quot; width=&quot;200px&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Easy modify attributes of a paper item. By pressing ‘V’, it would ask &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vim&lt;/code&gt; to open the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bib_collection.bib&lt;/code&gt; file, and put the cursor under the current chosen paper. So that you can modify whatever information and save it.
+The interface will be updated accordingly.
+&lt;img src=&quot;/assets/images/2023-09-27-bibman/bibfile.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;You can add a paper/article with url link instead of a pdf. When pdf field is empty, BibMan will seek for url field. And if url field is not empty, it will open that url using your default browser.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;You can search the whole thing. Currently, the search function allows you to search if a keyword appear in any data data fields. I’m planing to extend this functionality to including the pdf file as well.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Yeah, that’s it. 
+Give it a try.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip install bibman
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Source code is at &lt;a href=&quot;https://github.com/ductri/BibMan&quot;&gt;https://github.com/ductri/BibMan&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 27 Sep 2023 09:14:00 -0700</pubDate>
+        <link>https://ductri.github.io/note/2023/09/27/bibman.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2023/09/27/bibman.html</guid>
+        
+        <category>ncurse</category>
+        
+        <category>python</category>
+        
+        <category>vim</category>
+        
+        
+        <category>note</category>
+        
+      </item>
     
       <item>
         <title>Some random papers on LLM</title>
