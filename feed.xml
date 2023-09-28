@@ -5,8 +5,8 @@
     <description>4-th year Ph.D. student</description>
     <link>https://ductri.github.io/</link>
     <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 27 Sep 2023 17:18:21 -0700</pubDate>
-    <lastBuildDate>Wed, 27 Sep 2023 17:18:21 -0700</lastBuildDate>
+    <pubDate>Wed, 27 Sep 2023 17:24:50 -0700</pubDate>
+    <lastBuildDate>Wed, 27 Sep 2023 17:24:50 -0700</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
     
       <item>
@@ -27,10 +27,10 @@ In fact, most of the errors I’ve encountered so far have been related to rende
 I have thought about the possibility of writing a latex note. But current, I’m satisfied with plain text.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-27-bibman/note1.png&quot; width=&quot;300px&quot; /&gt;
-&lt;img src=&quot;/assets/images/2023-09-27-bibman/note3.png&quot; width=&quot;200px&quot; /&gt;
+&lt;!-- &lt;img src=&quot;/assets/images/2023-09-27-bibman/note1.png&quot; width=&quot;350px&quot;&gt; --&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-27-bibman/note3.png&quot; width=&quot;350px&quot; /&gt;
 &lt;!-- &lt;img src=&quot;/assets/images/2023-09-27-bibman/note2.png&quot; width=&quot;300px&quot;&gt; --&gt;
-&lt;img src=&quot;/assets/images/2023-09-27-bibman/note4.png&quot; width=&quot;200px&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/images/2023-09-27-bibman/note4.png&quot; width=&quot;350px&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
