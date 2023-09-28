@@ -5,10 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description"
-    content="BibMan - My bibliography manager I want a software to manage and organize collections of papers in my way.
-Mendeley is closed source so it is out. Zotero is pretty nice and open source with open abilities by installing extensions. However, what I want a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
+    content="BibMan - A Keyboard-based Bibliography Manager I want a software to manage and organize collections of papers in my way.
+Mendeley is closed source so it is out of the picture. Zotero is pretty nice and open source with extensible capabilities through extensions. However, as a Vim and Ranger user, I crave for a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
  4-th year Ph.D. student">
-  <title> BibMan - My bibliography manager - Tri Nguyen </title>
+  <title> BibMan - A Keyboard-based Bibliography Manager - Tri Nguyen </title>
 
   <!-- stylesheets -->
   <link media="all" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -76,7 +76,7 @@ MathJax = {
       <div class="page">
 
         <header class="page-header">
-          <h3 class="page-title"><a href="/note/2023/09/27/bibman.html">BibMan - My bibliography manager</a></h3>
+          <h3 class="page-title"><a href="/note/2023/09/27/bibman.html">BibMan - A Keyboard-based Bibliography Manager</a></h3>
           <div class="post-metadata">
             <div> <i class="fa fa-calendar"></i>
               <time>
@@ -98,18 +98,18 @@ MathJax = {
 
         <article class="page-content">
           <p>I want a software to manage and organize collections of papers in <strong>my way</strong>.
-Mendeley is closed source so it is out. Zotero is pretty nice and open source with open abilities by installing extensions. However, what I want a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
+Mendeley is closed source so it is out of the picture. Zotero is pretty nice and open source with extensible capabilities through extensions. However, as a <code class="language-plaintext highlighter-rouge">Vim</code> and <code class="language-plaintext highlighter-rouge">Ranger</code> user, I crave for a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
 <!--more--></p>
 
 <p><img src="/assets/images/2023-09-27-bibman/main.png" width="800px" /></p>
 
-<p>I have used BibMan for more than a year without any major issues. So I believe it is quite stable. And with the philosophy of being transparency, valuable data (pdfs, note, bib files) are stored always as they are. That enables backup method of your choice, easily substituting data pretty, and if the software broke, your data is always safe.
-In fact, most errors I encountered so far were mostly rendering-related issues, which a temporarily fix of just re-run it.</p>
+<p>I have used BibMan for over a year without encountering any major issues which gave me confidence in its stability. And with the philosophy of being transparency, valuable data including PDFs, notes, BibTex files are stored exactly as they are. This approach allow you to backup method of your data using the method of your choice, easily replace data pretty, and ensure that your data remains safe even if the software encounters issues. 
+In fact, most of the errors I’ve encountered so far have been related to rendering issues and can often be temporarily resolved by simply re-run the software.</p>
 
-<p>Beside basic functionality, such as adding/delete new paper, group papers according tags, searching, opening corresponding pdf, copy bibtex entry, things that I like to have but does not exist in other software are:</p>
+<p>In addition to essential features, such as adding/delete new paper, group papers according tags, searching, opening corresponding PDFs, copy BibTex entries, things that I like to have but does not exist in other software are:</p>
 
 <ul>
-  <li>Easy taking note of a paper. By pressing ‘:note’, it would ask <code class="language-plaintext highlighter-rouge">vim</code> to the paper’s corresponding text file so that you can type your note. Exit <code class="language-plaintext highlighter-rouge">vim</code> would resume the interface.
+  <li><strong>Convenient Note Taking:</strong>  By pressing <code class="language-plaintext highlighter-rouge">:note</code>, you can open the paper’s corresponding text file in <code class="language-plaintext highlighter-rouge">vim</code>, write down your thoughts, and exit <code class="language-plaintext highlighter-rouge">vim</code> to resume the interface.
 I have thought about the possibility of writing a latex note. But current, I’m satisfied with plain text.</li>
 </ul>
 
@@ -120,15 +120,15 @@ I have thought about the possibility of writing a latex note. But current, I’m
 
 <ul>
   <li>
-    <p>Easy modify attributes of a paper item. By pressing ‘V’, it would ask <code class="language-plaintext highlighter-rouge">vim</code> to open the <code class="language-plaintext highlighter-rouge">bib_collection.bib</code> file, and put the cursor under the current chosen paper. So that you can modify whatever information and save it.
+    <p><strong>Easy Attribute Modification:</strong> of a paper item. By pressing ‘V’, it would ask <code class="language-plaintext highlighter-rouge">vim</code> to open the <code class="language-plaintext highlighter-rouge">bib_collection.bib</code> file, and put the cursor under the current chosen paper. So that you can modify whatever information and save it.
 The interface will be updated accordingly.
 <img src="/assets/images/2023-09-27-bibman/bibfile.png" width="800px" /></p>
   </li>
   <li>
-    <p>You can add a paper/article with url link instead of a pdf. When pdf field is empty, BibMan will seek for url field. And if url field is not empty, it will open that url using your default browser.</p>
+    <p><strong>URL-based Paper:</strong> You can add a paper/article with url link instead of a pdf. When pdf field is empty, BibMan will seek for url field. And if url field is not empty, it will open that url using your default browser.</p>
   </li>
   <li>
-    <p>You can search the whole thing. Currently, the search function allows you to search if a keyword appear in any data data fields. I’m planing to extend this functionality to including the pdf file as well.</p>
+    <p><strong>Comprehensive Search:</strong> You can search the whole thing. Currently, the search function allows you to search if a keyword appear in any data data fields. I’m planing to extend this functionality to including the pdf file as well.</p>
   </li>
 </ul>
 
