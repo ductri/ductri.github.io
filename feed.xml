@@ -5,9 +5,9 @@
     <description>4-th year Ph.D. student</description>
     <link>https://ductri.github.io/</link>
     <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 07 Oct 2023 12:17:03 -0700</pubDate>
-    <lastBuildDate>Sat, 07 Oct 2023 12:17:03 -0700</lastBuildDate>
-    <generator>Jekyll v4.3.1</generator>
+    <pubDate>Thu, 12 Oct 2023 09:58:04 -0700</pubDate>
+    <lastBuildDate>Thu, 12 Oct 2023 09:58:04 -0700</lastBuildDate>
+    <generator>Jekyll v4.3.2</generator>
     
       <item>
         <title>BibMan - A Keyboard-based Bibliography Manager</title>
@@ -376,7 +376,7 @@ In principle, it is not the optimal way to do inference. To see that,&lt;/p&gt;
 
 &lt;p&gt;My main concern about this method is running time, since the optimization is over image space which could be large, and also it is needed for every steps in the backward process. In their exp, they only run 1 step of gradience ascent, and show that it is faster than the state-of-the-art while having comparable quality (quite surprising). Refer to Figure 3 in the paper.&lt;/p&gt;
 
-&lt;!-- Comment: Why didn't we see the issue addressed in this paper? It seems that both the issue and the proposed solution are not very novel to come up with. --&gt;
+&lt;!-- Comment: Why didn&apos;t we see the issue addressed in this paper? It seems that both the issue and the proposed solution are not very novel to come up with. --&gt;
 
 &lt;p&gt;On the same track of generating “consistent” samples with diffusion, there is another paper from Stanford:
 &lt;a href=&quot;http://proceedings.mlr.press/v202/lou23a/lou23a.pdf&quot;&gt;Lou, Aaron, and Stefano Ermon. “Reflected diffusion models.” arXiv preprint arXiv:2304.04740 (2023)&lt;/a&gt;.
