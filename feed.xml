@@ -5,8 +5,8 @@
     <description>4-th year Ph.D. student</description>
     <link>https://ductri.github.io/</link>
     <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 01 Nov 2023 01:28:48 -0700</pubDate>
-    <lastBuildDate>Wed, 01 Nov 2023 01:28:48 -0700</lastBuildDate>
+    <pubDate>Wed, 01 Nov 2023 10:49:17 -0700</pubDate>
+    <lastBuildDate>Wed, 01 Nov 2023 10:49:17 -0700</lastBuildDate>
     <generator>Jekyll v4.3.2</generator>
     
       <item>
@@ -34,7 +34,7 @@ This can be represented using a nonnegative vector $\textbf{m} \in \mathbb{R}^{K
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2023-11-01-community-detection/cat-dog.png&quot; width=&quot;300px&quot; style=&quot;border: 1px solid  black;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;But different from classification problem, we only observe the interaction among nodes. Particularly, an edge from $i$ to $j$ is more likely to be observed if node $i$ and $j$ belong to the same community. These edge can be directional, un-directional, unweighted, or weighted, depending on particular model and dataset.&lt;/p&gt;
+&lt;p&gt;But different from classification problem, we only observe interactions among nodes. Particularly, nodes within a community have similar chances of being connected to each other in compared to a connection among nodes of different communities. These connections are expressed as the edges of the network, and can be directional, un-directional, unweighted, or weighted, depending on particular model and dataset.&lt;/p&gt;
 
 &lt;p&gt;Consider a simple case of un-directional, unweighted edges. 
 Then an edge between two nodes $i$ and $j$ is modeled as a Bernoulli random variable, 
@@ -73,7 +73,7 @@ And secondly, the task is even more challenging since $\textbf{P}$ is unobserved
 \(\widetilde{\textbf{V}} \approx \textbf{V} \textbf{O},\) 
 for some orthogonal matrix $\textbf{O}$.
 Using simulated data, we can verify this statement empirically. We measure the difference of $\widetilde{\textbf{V}}$ and  $\textbf{V}$ in terms of angle between 2 subspaces via the command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;subspace&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Matlab&lt;/code&gt; and show the result in the following figure.
-&lt;img src=&quot;/assets/images/2023-11-01-community-detection/eigen.png&quot; width=&quot;600px&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/assets/images/2023-11-01-community-detection/eigen.png&quot; width=&quot;400px&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As you can see, as number of nodes increases, the angle between $\widetilde{\textbf{V}}$ and $\textbf{V}$ is smaller.
 That implies that with enough number of nodes, we can represent&lt;/p&gt;
