@@ -1,0 +1,257 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{tri_preamble}
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{Minimax Lower Bound: Fano's method}
+\author{	Tri Nguyen \\\\
+        \texttt{nguyetr9@oregonstate.edu} \\\\
+        }
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+
+Let's go with an example to have a more concrete understanding of what we are trying to analyze.
+
+\paragraph{Example. } Given a distribution family $\mathcal{N}_d = \set{N(\theta, \sigma^2 I_{d\times d}) \mid \theta \in \mathbb{R}^{d}}$. We wish to estimate $\theta(P), P \in \mathcal{N}_d$ in mean-squared error given $n$ i.i.d samples drawn from $P$.
+
+The question is what would be the best estimator that we can get in term of MSE 
+\[
+\mathbb{E} \left[\norm{\theta- \widehat{\theta}}^2\right]
+\] 
+% \[
+% \mathbb{E} [\Phi (\rho (\theta, \widehat{\theta}))]
+% \] 
+or
+\[
+\mathcal{M}(\theta(\mathcal{N}_d), \norm{\cdot}^2 ) := \inf_{\widehat{\theta}} \sup_{P \in \mathcal{P}} \mathbb{E} \left[\norm{ \theta - \widehat{\theta}}^2 \right]
+\] 
+
+\paragraph{First attempt: Cramer-Rao lower bound}. Funny, it is only applicable when $\theta \in \mathbb{R}$ --- a scalar. For a multi-dimension $\theta \in \mathbb{R}^{d}$, we don't have such bound.
+
+Likelihood function of the joint pdf is
+\[
+f(\theta) = \dfrac{1}{\sigma^{d} \sqrt{2\pi}^{d}} \prod^{n}_{i=1} \text{exp} \left(-\dfrac{1}{2\sigma^2} \norm{x_i - \theta}^2 \right)
+\] 
+\[
+\ln f(\theta) = \ln \left( \dfrac{1}{\sigma \sqrt{2\pi}} \right) - 
+ \dfrac{1}{2\sigma^2}\sum^{n}_{i=1}  \norm{x_i - \theta} ^2 
+\] 
+\[
+\dfrac{\partial\; \ln f(\theta)}{\partial\; \theta} = \dfrac{1}{\sigma^2} \sum^{n}_{i=1} (x_i - \theta)
+= \dfrac{n}{ \sigma^2} \left(\dfrac{1}{n} \sum^{n}_{i=1} x_i - \theta \right)
+\] 
+
+Hence the best unbiased estimator of $\theta$ is $\widehat{\theta} = \dfrac{1}{n} \sum^{n}_{i=1} x_i$, where it is the best in terms of MSE
+\[
+\text{Var}(\widehat{\theta}) = \mathbb{E}\left[\norm{\widehat{\theta} - \theta}^2\right] = \dfrac{\sigma^2}{n}
+\] 
+
+abcd, it is not natural in case of multiple variables. And I wonder is there any other method to analyze/find optimal MSE?
+
+
+\paragraph{Second attempt.} 
+
+{\blue When do we use unit ball, or grid space as the local packing?}
+
+First, consider 
+\[
+\mathcal{M}(\theta(\mathcal{N}_d), \Phi \circ \rho ) := \inf_{\widehat{\theta}} \sup_{P \in \mathcal{P}} \mathbb{E} [\Phi (\rho(\theta, \widehat{\theta}))]
+\] 
+
+In order to get a bound of this $\Phi (\rho (\theta, \widehat{\theta}))$, we can imagine to partition the whole  parameter $\theta$ space into a finite number of ``cells''. 
+Then, the process of choosing $\widehat{\theta}$ can be reduced to choosing a ``cell'' with the trade of some ``marginal'' error within that ``cell''. That means, if a cell is chosen correctly, the largest error can be made is the ``diameter'' of that cell.
+
+So that would be the idea of ``transforming`` an error analysis to hypothesis testing analysis. We have the following lemma.
+\begin{lemma}
+    Choose some distribution $P_v \in \mathcal{P}, v \in \mathcal{V}, \abs{V} \leq \infty$ to represent $\mathcal{P}$, such that for $v_i \neq v_j$, we have $\rho(\theta_{v_i}, \theta_{v_j}) \geq 2\delta$. 
+    Define
+    \begin{itemize}[noitemsep]
+        \item Let $V$ be a RV with uniform distribution over  $\mathcal{V}$,
+        \item For an estimator $\widehat{\theta}$, let $\Psi(X_1^{n}) := \argmin_{v \in \mathcal{V}} \rho(\theta_v, \widehat{\theta}(X_1^{n}))$, 
+    \end{itemize}
+    We have
+    \[
+    \mathcal{M}_{n}(\theta(\mathcal{P}), \Phi \circ \rho) \geq \Phi(\delta) \inf_{\Psi} P(\Psi(X_1^{n}) \neq V)
+    \] 
+\end{lemma}
+\begin{itemize}[noitemsep]
+    \item We want the RHS as large as possible.
+    \item The partitioning does not need to cover the whole space of $\theta$.
+\end{itemize}
+
+{\blue It seems that there is no relation between $X_1^{n}$ and $\theta$, or $V$.}
+
+\begin{remark}
+    The key in finding a tight bound is how to choose set $\mathcal{V}$ as well as $\delta$. 
+    \begin{itemize}[noitemsep]
+        \item If $\delta$ is large, then $\Phi(\delta)$ would be large. But it also leads to $\abs{\mathcal{V}}$ small, hence hypothesis testing error would be small.
+        \item And the contrary when $\delta$ is too small.
+        \item How to choose the right $\delta$ would depend on problem to problem.
+    \end{itemize}
+\end{remark}
+
+\begin{proof}
+    Recall the definition of $M_n(\theta(\mathcal{P}), \Phi \circ \rho)$,
+    \[
+    M_n(\theta(\mathcal{P}), \Phi \circ \rho) = \inf_{\widehat{\theta}} \sup_{P \in \mathcal{P}} \mathbb{E}[\Phi(\rho(\theta(P), \widehat{\theta}))]
+    \] 
+    \begin{align*}
+    \mathbb{E}[\Phi(\rho(\theta, \widehat{\theta}))] 
+    &\geq \mathbb{E} \left[ \Phi(\delta)I(\rho(\widehat{\theta}, \theta)\geq \delta) \right] \quad \text{(since $\Phi(x)$ is non-decreasing)} \\
+    &= \Phi(\delta) P(\rho(\theta, \widehat{\theta}) \geq \delta)
+    \end{align*}
+    Let's choose a set of $\abs{\mathcal{V}}$ candidates $P_v \in \mathcal{P}, v\in \mathcal{V}$ scattered enough such that for $v_i \neq v_j$, we have
+    \[
+    \rho(\theta(P_{v_i}), \theta(P_{v_j})) \geq 2\delta
+    \] 
+    For a fixed estimator $\widehat{\theta}$,
+    \begin{align*}
+    \sup_{P \in \mathcal{P}} \mathbb{P}_{X_1^{n}} (\rho(\theta(P), \widehat{\theta}) \geq \delta) 
+    \geq \dfrac{1}{\abs{\mathcal{V}}} \sum_{v} P(\rho(\theta(P_{v}), \widehat{\theta}) \geq \delta)
+    \end{align*}
+
+    Now define 
+    \[
+        \Psi(X_1^{n}) := \argmin_{v \in \mathcal{V}} \rho(\theta_v, \widehat{\theta}(X_1^{n}))
+    \]
+    Event $\Psi(X_1^{n}) \neq v$ implies $\rho(\theta(P_v), \widehat{\theta}) \geq \delta$ (the other way around does not hold). Hence,
+    \[
+    \mathbb{P}(\rho(\theta(P_v), \widehat{\theta}) \geq \delta) \geq \mathbb{P}(\Psi(X_1^{n}) \neq v)
+    \] 
+    which leads to
+    \[
+        \sup_{P \in \mathcal{P}} \mathbb{P}_{X_1^{n}} (\rho(\theta(P), \widehat{\theta}) \geq \delta)  \geq \dfrac{1}{\abs{\mathcal{V}}} \sum_{v} 
+\mathbb{P}(\Psi(X_1^{n}) \neq v)
+= \mathbb{P}(\Psi(X_1^{n}) \neq V)
+    \] 
+    where the last equality hold only if we assume $V$ is a RV uniformly distributed over  $\mathcal{V}$, which is in our control. 
+
+    Lastly, taking infimum over $\Psi$, we get our conclusion
+    \begin{align*}
+    \inf_{\widehat{\theta}} \sup_{P \in \mathcal{P}} 
+    \mathbb{E}[\Phi(\rho(\theta, \widehat{\theta}))] 
+    &\geq \inf_{\widehat{\theta}} \sup_{P \in \mathcal{P}} \Phi(\delta) \mathbb{P}(\rho(\theta, \widehat{\theta}) \geq \delta) \\
+    &\geq \Phi(\delta) \inf_{\widehat{\theta}}  \mathbb{P}(\Psi(X_1^{n}) \neq V) \\
+    &= \Phi(\delta) \inf_{\Psi} \mathbb{P}(\Psi(X_1^{n}) \neq V) \quad \text{(by the definition of $\Psi$)}
+    \end{align*} 
+
+
+% \begin{align*}
+%     P_{\theta, \widehat{\theta}}(\rho(\theta, \widehat{\theta})\geq \delta) 
+%     &= P_{\Psi, V}(\Psi(X_1^{n}) \neq V)  \quad \text{(because the way of partitioning)}\\
+%     \Rightarrow 
+%     \sup_{P} P_{\Psi}(\rho(\theta, \widehat{\theta})\geq \delta) 
+%     &= \sup_{V} P(\Psi(X_1^{n}) \neq V)  \\
+%     % \geq \dfrac{1}{\abs{\mathcal{V}}} \sum_{v} P(\Psi(X_1^{n}) \neq v) = \dfrac{1}{\abs{\mathcal{V}}} \sum^{_{i=1} P(\Psi(X_1^{n}) \neq V)\\
+%     \Rightarrow \inf_{\widehat{\theta}} \sup_P P(\rho(\theta, \widehat{\theta}) \geq \delta)  
+%     &\geq \dfrac{1}{\abs{\mathcal{V}}} \inf_{\Psi} P(\Psi(X_1^{n}) \neq v) = \inf_{\Psi} P(\Psi(X_1^{n}) \neq v)
+% \end{align*}
+    
+\end{proof}
+
+Next, we need to turn the hypothesis testing error into something that we can compute.
+
+\section{Local Fano} 
+\begin{lemma}[From Fano inequality]
+    \[
+    \inf_{\Psi} \mathbb{P}(\Psi(X_1^{n}) \neq V) \geq 1 - \dfrac{I(V; X_1^{n}) + \log 2}{\log \abs{\mathcal{V}}}
+    \] 
+\end{lemma}
+
+\begin{lemma}[Mutual Information to KL]
+    \begin{align*}
+        I(V; X) &= D_{\rm kl}( \mathbb{P}_{X, V} || \mathbb{P}_X \mathbb{P}_V)  \\
+        &= \dfrac{1}{\abs{\mathcal{V}}} \sum_{v \in \mathcal{V}} D_{\rm kl} (P_v || \overline{P}) \quad \text{(thanks to the uniform of $V$)} \\
+        &\leq \dfrac{1}{\abs{\mathcal{V}}^2} \sum_{v, v'}  D_{\rm kl}(P_v || P_{v'})
+    \end{align*}
+\end{lemma}
+\begin{remark}
+    Combine all these lemmas, we get
+    \[
+    \mathcal{M}(\theta(\mathcal{P}, \Phi \circ \rho)) 
+    \geq \Phi(\delta) \left( 1 - \dfrac{I(V; X_1^{n}) + \log 2}{\log \abs{\mathcal{V}}} \right)
+    \] 
+\end{remark}
+So the trick is to choose $\mathcal{V}$ so that it is both $2\delta$-packing in order to apply the first lemma (transforming to hypothesis testing ) and 
+\[
+D_{\rm kl}(P_v || P_{v'}) \leq C \delta^2 \quad \text{for all $v, v' \in \mathcal{V}$}
+\]
+in order to bound the RHS.
+
+{\blue We want to find a set $\mathcal{V}$ that contains scattered elements, but the ``diameter'' cannot be too large, and number of elements also needs to be high enough.}
+
+\subsection{Example}%
+\label{sub:example}
+
+\paragraph{Example 1 (Normal mean estimation)}  Given the family $\mathcal{N}_d = \set{N(\theta; \sigma^2 I_d) | \theta \in \mathbb{R}^{d}}$.
+The task is to estimate the mean $\theta(P)$ for some $P \in \mathcal{N}_d$ given $n$ i.i.d samples drawn from $P$. 
+We wish to find out the minimax error for this in terms of mean-squared error.
+
+Let's construct the ``local packing'' set $\mathcal{V}$ :
+\begin{itemize}
+    \item Let $\mathcal{V}_0$ be a $1/2$-packing of the unit $l_2$-ball with cardinality of at least $2^{d}$. The existence of this $\mathcal{V}$ is guaranteed by Lemma [xxx].
+    \item Our local packing would be $\mathcal{V} = \set{\delta v \in \mathbb{R}^{d} | v \in \mathcal{V}_0}$.
+\end{itemize}
+Then we have for any $v, v' \in \mathcal{V}, v \neq v'$,
+\[
+\norm{\theta_v - \theta_{v'}} = \delta \norm{v - v'} \geq \dfrac{\delta}{2} \quad \text{(since $\mathcal{V}_0$ is $1/2$-packing)}
+\] 
+and,
+\[
+\norm{\theta_v - \theta_{v'}} \leq \delta  \quad \text{(since $v, v'$ are in $l_2$-ball)}
+\] 
+Then, apply Lemma above,
+\begin{align*}
+\mathcal{M}(\theta(\mathcal{N}_d), \norm{\cdot}^2) 
+&\geq \left( \dfrac{1}{2} \dfrac{\delta}{2} \right)^2 \left( 1- \dfrac{I(V; X_1^{n}) + \log 2}{\log \abs{\mathcal{V}}} \right) \\
+&= \dfrac{\delta^2}{16} \left( 1- \dfrac{I(V; X_1^{n}) + \log 2}{\log \abs{\mathcal{V}}} \right)
+\end{align*} 
+Then, 
+\begin{align*}
+    I(V; X_1^{n}) 
+    &\leq \dfrac{1}{\abs{\mathcal{V}}^2} \sum_{v, v'}  D_{\rm kl}(P_v^{n} || P_{v'}^{n})  \quad \text{\red (hm?)} \\
+    &= \dfrac{1}{\abs{\mathcal{V}}^2} \sum_{v, v'} n D_{\rm kl}\left( N(\delta v, \sigma^2 I_d), N(\delta v', \sigma^2 I_d) \right) \\
+    &= n D_{\rm kl}\left( N(\delta v, \sigma^2 I_d), N(\delta v', \sigma^2 I_d) \right) \\
+    &= n \dfrac{\delta^2}{2\sigma^2 } \norm{v - v'}^2 \\
+    &\leq \dfrac{n \delta^2}{2 \sigma^2}
+\end{align*}
+Let's combine these 2 inequalities above,
+\begin{align*}
+    \mathcal{M}(\theta(\mathcal{N}_d), \norm{\cdot}^2) 
+    &\geq \dfrac{\delta^2}{16} \left( 1 - \dfrac{\dfrac{n \delta^2}{2 \sigma^2} + \log 2}{d \log 2} \right)
+    = \dfrac{1}{32 d \sigma^2 \log 2} \left(  \delta^2 (2 \sigma^2 (d-1) \log 2 - n\delta^2)\right)
+\end{align*} 
+That bound's optimal value is achieved at $\delta^2 = \dfrac{(d-1)\sigma^2 \log 2}{n}$, and the optimal value is
+\[
+\dfrac{(d-1)^2 \sigma^2 \log 2}{32 dn} \Rightarrow O\left(  \dfrac{d\sigma^2}{n} \right)
+\] 
+We can check to see that the sample mean estimator will attain this risk's order.
+
+{\blue We construct our local packing from the unit $l_2$-ball. Why? We know $\mathcal{V}_0$ can be exponentially large, but why choosing $l_2$-ball? }
+
+\paragraph{Another example?} 
+
+\section{A distance-based Fano method} 
+
+\begin{lemma}
+    Assume $V$ is uniformly distributed over $\mathcal{V}$,
+    \[
+    \mathcal{M}(\Theta(\mathcal{P}), \Phi \circ \rho) \geq \Phi(\delta) \left( 1 - \dfrac{I(X; V) + \log 2}{\log \abs{\mathcal{V}}} \right)
+    \] ,
+    \[
+    I(X;V)= \dfrac{1}{\abs{\mathcal{V}}} \sum_{v} D_{{\rm kl}}(P_v || \overline{P}) \leq \dfrac{1}{\abs{\mathcal{V}}^2} \sum_{v, v'} D_{\rm kl} (P_v || P_{v'})
+    \] 
+\end{lemma}
+
+Example: Given a $P$ from  $\mathcal{N}(\theta, \sigma^2 I_d)$, estimate $\theta$.
+
+Construct a $2\delta$-packing indexed by $V$: First, let  $\mathcal{V}$ as a 1/2-packing of unit $l_2$-ball with cardinality at least  $2^{d}$.
+% The thing is, since we only care about the worst case, we can always get a bound by assuming arbitrary prior distribution on $\theta$. 
+
+
+\end{document}
+
