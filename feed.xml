@@ -5,8 +5,8 @@
     <description>4-th year Ph.D. student</description>
     <link>https://ductri.github.io/</link>
     <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 13 Nov 2023 01:41:44 -0800</pubDate>
-    <lastBuildDate>Mon, 13 Nov 2023 01:41:44 -0800</lastBuildDate>
+    <pubDate>Mon, 13 Nov 2023 18:02:41 -0800</pubDate>
+    <lastBuildDate>Mon, 13 Nov 2023 18:02:41 -0800</lastBuildDate>
     <generator>Jekyll v4.3.2</generator>
     
       <item>
@@ -152,6 +152,7 @@ The results are shown below.&lt;/p&gt;
 Mendeley is closed source so it is out of the picture. Zotero is pretty nice and open source with extensible capabilities through extensions. However, as a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vim&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Ranger&lt;/code&gt; user, I crave for a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
 &lt;!--more--&gt;&lt;/p&gt;
 
+&lt;h4 id=&quot;quick-demo-httpswwwyoutubecomwatchvtt_wgjymhy8&quot;&gt;Quick Demo: &lt;a href=&quot;https://www.youtube.com/watch?v=Tt_wGJYMHY8&quot;&gt;https://www.youtube.com/watch?v=Tt_wGJYMHY8&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/images/2023-09-27-bibman/main.png&quot; width=&quot;800px&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I have used BibMan for over a year without encountering any major issues which gave me confidence in its stability. And with the philosophy of being transparency, valuable data including PDFs, notes, BibTex files are stored exactly as they are. This approach allows you to have a backup method of your choice, in addition to easily replacing your data collection. For instance, I have one directory for demo purpose and another for my real data, and switching the two can be done by modifying the configuration in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/bibman/config&lt;/code&gt;. It also separates the UI business from the data, so that the data remains safe given my ‘un-professional UI code’.
