@@ -59,20 +59,9 @@
   
     
     <url>
-      <loc>/documents.html</loc>
-      
-        <lastmod>2022-11-22T14:41:00-08:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
       <loc>/feed.xml</loc>
       
-        <lastmod>2023-11-15T18:44:10-08:00</lastmod>
+        <lastmod>2023-11-15T18:56:31-08:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -103,9 +92,20 @@
   
     
     <url>
+      <loc>/documents/</loc>
+      
+        <lastmod>2022-11-22T14:41:00-08:00</lastmod>
+      
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+    </url>
+    
+  
+    
+    <url>
       <loc>/assets/latex/RL_understanding/main.text</loc>
       
-        <lastmod>2023-11-15T18:44:10-08:00</lastmod>
+        <lastmod>2023-11-15T18:56:31-08:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
