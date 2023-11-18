@@ -3,10 +3,10 @@
   <channel>
     <title>Tri Nguyen</title>
     <description>4-th year Ph.D. student</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 15 Nov 2023 18:56:31 -0800</pubDate>
-    <lastBuildDate>Wed, 15 Nov 2023 18:56:31 -0800</lastBuildDate>
+    <link>https://ductri.github.io/</link>
+    <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Fri, 17 Nov 2023 17:55:12 -0800</pubDate>
+    <lastBuildDate>Fri, 17 Nov 2023 17:55:12 -0800</lastBuildDate>
     <generator>Jekyll v4.3.2</generator>
     
       <item>
@@ -130,8 +130,8 @@ The results are shown below.&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 31 Oct 2023 18:15:00 -0700</pubDate>
-        <link>http://localhost:4000/note/2023/10/31/community-detection.html</link>
-        <guid isPermaLink="true">http://localhost:4000/note/2023/10/31/community-detection.html</guid>
+        <link>https://ductri.github.io/note/2023/10/31/community-detection.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2023/10/31/community-detection.html</guid>
         
         <category>matrix</category>
         
@@ -192,8 +192,8 @@ Give it a try.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 27 Sep 2023 09:14:00 -0700</pubDate>
-        <link>http://localhost:4000/note/2023/09/27/bibman.html</link>
-        <guid isPermaLink="true">http://localhost:4000/note/2023/09/27/bibman.html</guid>
+        <link>https://ductri.github.io/note/2023/09/27/bibman.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2023/09/27/bibman.html</guid>
         
         <category>ncurse</category>
         
@@ -366,8 +366,8 @@ Training objective is marginal log-likelihood of the target like usual, like in 
 
 </description>
         <pubDate>Mon, 25 Sep 2023 14:05:00 -0700</pubDate>
-        <link>http://localhost:4000/note/2023/09/25/llm-abc.html</link>
-        <guid isPermaLink="true">http://localhost:4000/note/2023/09/25/llm-abc.html</guid>
+        <link>https://ductri.github.io/note/2023/09/25/llm-abc.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2023/09/25/llm-abc.html</guid>
         
         <category>llm</category>
         
@@ -761,8 +761,8 @@ Some definitions, but I wont cover all in details.&lt;/p&gt;
 
 </description>
         <pubDate>Mon, 11 Sep 2023 13:33:00 -0700</pubDate>
-        <link>http://localhost:4000/note/2023/09/11/my-take-on-icml2023.html</link>
-        <guid isPermaLink="true">http://localhost:4000/note/2023/09/11/my-take-on-icml2023.html</guid>
+        <link>https://ductri.github.io/note/2023/09/11/my-take-on-icml2023.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2023/09/11/my-take-on-icml2023.html</guid>
         
         <category>diffusion</category>
         
@@ -781,12 +781,12 @@ While re-reading Reinforcement Learning as an attempt to get rid of that heurist
 &lt;p&gt;So this is an attempt to make thing more concrete under a somewhat first principle view.&lt;/p&gt;
 
 &lt;p&gt;The note is currently very unorganized.
-&lt;a href=&quot;http://localhost:4000/assets/latex/RL_understanding/rl_understanding.pdf&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&quot;https://ductri.github.io/assets/latex/RL_understanding/rl_understanding.pdf&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 22 Nov 2022 14:41:00 -0800</pubDate>
-        <link>http://localhost:4000/note/2022/11/22/RL-is-so-confusing.html</link>
-        <guid isPermaLink="true">http://localhost:4000/note/2022/11/22/RL-is-so-confusing.html</guid>
+        <link>https://ductri.github.io/note/2022/11/22/RL-is-so-confusing.html</link>
+        <guid isPermaLink="true">https://ductri.github.io/note/2022/11/22/RL-is-so-confusing.html</guid>
         
         <category>RL</category>
         
