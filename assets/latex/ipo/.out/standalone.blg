@@ -1,9 +1,0 @@
-[0] Config.pm:307> INFO - This is Biber 2.19
-[0] Config.pm:310> INFO - Logfile is '.out/standalone.blg'
-[72] biber:340> INFO - === Thu Mar 27, 2025, 17:27:49
-[84] Biber.pm:419> INFO - Reading '.out/standalone.bcf'
-[143] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
-[158] bbl.pm:660> INFO - Writing '.out/standalone.bbl' with encoding 'UTF-8'
-[158] bbl.pm:763> INFO - Output to .out/standalone.bbl
-[158] Biber.pm:131> WARN - The file '.out/standalone.bcf' does not contain any citations!
-[158] Biber.pm:133> INFO - WARNINGS: 1
