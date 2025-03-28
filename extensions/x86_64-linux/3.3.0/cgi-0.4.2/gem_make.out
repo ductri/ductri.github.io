@@ -1,0 +1,18 @@
+current directory: /home/tringuyen/my-document/blog/gems/cgi-0.4.2/ext/cgi/escape
+/usr/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/tringuyen/my-document/blog/gems/cgi-0.4.2/ext/cgi/escape
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-n92qmc sitelibdir\=./.gem.20250327-1634012-n92qmc clean
+
+current directory: /home/tringuyen/my-document/blog/gems/cgi-0.4.2/ext/cgi/escape
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-n92qmc sitelibdir\=./.gem.20250327-1634012-n92qmc
+compiling escape.c
+linking shared-object cgi/escape.so
+
+current directory: /home/tringuyen/my-document/blog/gems/cgi-0.4.2/ext/cgi/escape
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-n92qmc sitelibdir\=./.gem.20250327-1634012-n92qmc install
+/usr/bin/install -c -m 0755 escape.so ./.gem.20250327-1634012-n92qmc/cgi
+
+current directory: /home/tringuyen/my-document/blog/gems/cgi-0.4.2/ext/cgi/escape
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-n92qmc sitelibdir\=./.gem.20250327-1634012-n92qmc clean

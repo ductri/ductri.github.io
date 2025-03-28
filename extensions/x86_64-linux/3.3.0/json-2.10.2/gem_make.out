@@ -1,0 +1,24 @@
+current directory: /home/tringuyen/my-document/blog/gems/json-2.10.2/ext/json/ext/parser
+/usr/bin/ruby extconf.rb
+checking for rb_enc_interned_str() in ruby.h... yes
+checking for rb_hash_new_capa() in ruby.h... yes
+checking for rb_hash_bulk_insert() in ruby.h... yes
+checking for rb_category_warn() in ruby.h... yes
+checking for strnlen() in string.h... yes
+checking for whether -std=c99 is accepted as CFLAGS... yes
+creating Makefile
+
+current directory: /home/tringuyen/my-document/blog/gems/json-2.10.2/ext/json/ext/parser
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-k83dwj sitelibdir\=./.gem.20250327-1634012-k83dwj clean
+
+current directory: /home/tringuyen/my-document/blog/gems/json-2.10.2/ext/json/ext/parser
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-k83dwj sitelibdir\=./.gem.20250327-1634012-k83dwj
+compiling parser.c
+linking shared-object json/ext/parser.so
+
+current directory: /home/tringuyen/my-document/blog/gems/json-2.10.2/ext/json/ext/parser
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-k83dwj sitelibdir\=./.gem.20250327-1634012-k83dwj install
+/usr/bin/install -c -m 0755 parser.so ./.gem.20250327-1634012-k83dwj/json/ext
+
+current directory: /home/tringuyen/my-document/blog/gems/json-2.10.2/ext/json/ext/parser
+make DESTDIR\= sitearchdir\=./.gem.20250327-1634012-k83dwj sitelibdir\=./.gem.20250327-1634012-k83dwj clean
