@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="207.19807mm"
-   height="59.273857mm"
-   viewBox="0 0 207.19808 59.273857"
+   width="200.83105mm"
+   height="61.032265mm"
+   viewBox="0 0 200.83106 61.032265"
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
@@ -24,14 +24,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="2.5398704"
-     inkscape:cx="387.81506"
-     inkscape:cy="89.374638"
+     inkscape:cx="275.21089"
+     inkscape:cy="102.36743"
      inkscape:window-width="3840"
      inkscape:window-height="2125"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1"
+     showgrid="false" />
   <defs
      id="defs1">
     <marker
@@ -148,86 +149,269 @@
          d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
          id="path4-3-9" />
     </marker>
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter46"
+       x="-0.090965375"
+       y="-1.495822"
+       width="1.2768421"
+       height="3.566577">
+      <feFlood
+         result="flood"
+         in="SourceGraphic"
+         flood-opacity="1.000000"
+         flood-color="rgb(0,0,0)"
+         id="feFlood45" />
+      <feGaussianBlur
+         result="blur"
+         in="SourceGraphic"
+         stdDeviation="7.500000"
+         id="feGaussianBlur45" />
+      <feOffset
+         result="offset"
+         in="blur"
+         dx="18.000000"
+         dy="-9.000000"
+         id="feOffset45" />
+      <feComposite
+         result="comp1"
+         operator="in"
+         in="flood"
+         in2="offset"
+         id="feComposite45" />
+      <feComposite
+         result="fbSourceGraphic"
+         operator="over"
+         in="SourceGraphic"
+         in2="comp1"
+         id="feComposite46" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix72" />
+      <feFlood
+         id="feFlood72"
+         result="flood"
+         in="fbSourceGraphic"
+         flood-opacity="1.000000"
+         flood-color="rgb(0,0,0)" />
+      <feGaussianBlur
+         id="feGaussianBlur72"
+         result="blur"
+         in="fbSourceGraphic"
+         stdDeviation="0.000000" />
+      <feOffset
+         id="feOffset72"
+         result="offset"
+         in="blur"
+         dx="0.832999"
+         dy="1.313217" />
+      <feComposite
+         id="feComposite72"
+         result="comp1"
+         operator="in"
+         in="flood"
+         in2="offset" />
+      <feComposite
+         id="feComposite73"
+         result="comp2"
+         operator="over"
+         in="fbSourceGraphic"
+         in2="comp1" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter91"
+       x="-0.01043204"
+       y="-0.10977274"
+       width="1.0250621"
+       height="1.2891858">
+      <feFlood
+         result="flood"
+         in="SourceGraphic"
+         flood-opacity="1.000000"
+         flood-color="rgb(0,0,0)"
+         id="feFlood90" />
+      <feGaussianBlur
+         result="blur"
+         in="SourceGraphic"
+         stdDeviation="0.800000"
+         id="feGaussianBlur90" />
+      <feOffset
+         result="offset"
+         in="blur"
+         dx="0.832999"
+         dy="1.313217"
+         id="feOffset90" />
+      <feComposite
+         result="comp1"
+         operator="in"
+         in="flood"
+         in2="offset"
+         id="feComposite90" />
+      <feComposite
+         result="comp2"
+         operator="over"
+         in="SourceGraphic"
+         in2="comp1"
+         id="feComposite91" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter91-9"
+       x="-0.01043204"
+       y="-0.10977274"
+       width="1.0250621"
+       height="1.2891858">
+      <feFlood
+         result="flood"
+         in="SourceGraphic"
+         flood-opacity="1.000000"
+         flood-color="rgb(0,0,0)"
+         id="feFlood90-6" />
+      <feGaussianBlur
+         result="blur"
+         in="SourceGraphic"
+         stdDeviation="0.800000"
+         id="feGaussianBlur90-3" />
+      <feOffset
+         result="offset"
+         in="blur"
+         dx="0.832999"
+         dy="1.313217"
+         id="feOffset90-8" />
+      <feComposite
+         result="comp1"
+         operator="in"
+         in="flood"
+         in2="offset"
+         id="feComposite90-5" />
+      <feComposite
+         result="comp2"
+         operator="over"
+         in="SourceGraphic"
+         in2="comp1"
+         id="feComposite91-6" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:label="Drop Shadow"
+       id="filter91-8"
+       x="-0.01043204"
+       y="-0.10977274"
+       width="1.0250621"
+       height="1.2891858">
+      <feFlood
+         result="flood"
+         in="SourceGraphic"
+         flood-opacity="1.000000"
+         flood-color="rgb(0,0,0)"
+         id="feFlood90-4" />
+      <feGaussianBlur
+         result="blur"
+         in="SourceGraphic"
+         stdDeviation="0.800000"
+         id="feGaussianBlur90-8" />
+      <feOffset
+         result="offset"
+         in="blur"
+         dx="0.832999"
+         dy="1.313217"
+         id="feOffset90-1" />
+      <feComposite
+         result="comp1"
+         operator="in"
+         in="flood"
+         in2="offset"
+         id="feComposite90-0" />
+      <feComposite
+         result="comp2"
+         operator="over"
+         in="SourceGraphic"
+         in2="comp1"
+         id="feComposite91-3" />
+    </filter>
   </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-1.5237825,-106.65332)">
+     transform="translate(-1.8946424,-106.60749)">
     <rect
-       style="fill:#0000b4;fill-opacity:0.150163;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-       id="rect6-1-2"
-       width="204.5968"
-       height="18.857141"
-       x="3.1740963"
-       y="146.1003" />
-    <rect
-       style="fill:#0000b4;fill-opacity:0.150163;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:0.150163;stroke:#000000;stroke-width:0.3;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter91)"
        id="rect6-1"
-       width="204.68831"
+       width="198.42715"
        height="18.857141"
-       x="3.14607"
-       y="126.91734" />
+       x="2.8252473"
+       y="127.33402" />
     <rect
-       style="fill:#0000b4;fill-opacity:0.150163;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-       id="rect6"
-       width="204.9093"
+       style="fill:none;fill-opacity:0.150163;stroke:#000000;stroke-width:0.3;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter91-9)"
+       id="rect6-1-1"
+       width="198.42715"
        height="18.857141"
-       x="3.1085722"
-       y="107.8541" />
+       x="2.7241399"
+       y="107.52421" />
     <rect
-       style="fill:#0019ff;fill-opacity:0.344415;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:0.150163;stroke:#000000;stroke-width:0.3;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter91-8)"
+       id="rect6-1-4"
+       width="198.42715"
+       height="18.857141"
+       x="2.8714614"
+       y="147.24088" />
+    <rect
+       style="fill:none;fill-opacity:0.344415;stroke:#000000;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
        id="rect7"
        width="24.576134"
        height="5.9665179"
        x="3.3896735"
-       y="108.59071" />
-    <rect
-       style="fill:#0019ff;fill-opacity:0.344415;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-       id="rect7-0"
-       width="24.576134"
-       height="5.9665179"
-       x="3.4461365"
-       y="127.45831" />
-    <rect
-       style="fill:#0019ff;fill-opacity:0.344415;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
-       id="rect7-0-9"
-       width="24.576134"
-       height="5.9665179"
-       x="3.7401304"
-       y="146.69363" />
+       y="108.82523" />
     <text
        xml:space="preserve"
        style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="8.4002104"
+       x="8.9293766"
        y="113.33913"
        id="text1"><tspan
          sodipodi:role="line"
-         style="font-weight:bold;font-size:5.29167px;stroke-width:0.264583"
-         x="8.4002104"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.29167px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.264583"
+         x="8.9293766"
          y="113.33913"
          id="tspan2">RLHF</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="8.4002104"
-       y="132.35593"
-       id="text1-9"><tspan
-         sodipodi:role="line"
-         style="font-weight:bold;font-size:5.29167px;stroke-width:0.264583"
-         x="8.4002104"
+    <g
+       id="g91"
+       transform="translate(0,1.1625053)">
+      <rect
+         style="fill:none;fill-opacity:0.344415;stroke:#000000;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+         id="rect7-9"
+         width="24.576134"
+         height="5.9665179"
+         x="3.4758663"
+         y="127.31718" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+         x="11.414351"
          y="132.35593"
-         id="tspan2-1">DPO</tspan></text>
+         id="text1-9"><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.29167px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.264583"
+           x="11.414351"
+           y="132.35593"
+           id="tspan2-1">DPO</tspan></text>
+    </g>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="73.132545"
+       x="68.899208"
        y="120.75378"
        id="text3"><tspan
          sodipodi:role="line"
          id="tspan3"
-         style="font-size:3.52778px;stroke-width:0.264583"
-         x="73.132545"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
+         x="68.899208"
          y="120.75378">learn score model  </tspan></text>
     <text
        xml:space="preserve"
@@ -237,7 +421,7 @@
        id="text3-0"><tspan
          sodipodi:role="line"
          id="tspan3-361"
-         style="font-size:3.52778px;stroke-width:0.264583"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
          x="3.241179"
          y="120.75378">pairwise preference data</tspan></text>
     <text
@@ -248,7 +432,7 @@
        id="text3-0-2"><tspan
          sodipodi:role="line"
          id="tspan3-361-0"
-         style="font-size:3.52778px;stroke-width:0.264583"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
          x="3.241179"
          y="140.03387">pairwise preference data</tspan></text>
     <text
@@ -259,98 +443,109 @@
        id="text3-0-2-5"><tspan
          sodipodi:role="line"
          id="tspan3-361-0-4"
-         style="font-size:3.52778px;stroke-width:0.264583"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
          x="3.241179"
          y="158.5477">pairwise preference data</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="73.132545"
+       x="68.899208"
        y="140.03387"
        id="text3-9"><tspan
          sodipodi:role="line"
          id="tspan3-36"
-         style="font-size:3.52778px;stroke-width:0.264583"
-         x="73.132545"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
+         x="68.899208"
          y="140.03387">learn score model  </tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="8.4002104"
-       y="150.8826"
-       id="text1-9-6"><tspan
-         sodipodi:role="line"
-         style="font-weight:bold;font-size:5.29167px;stroke-width:0.264583"
-         x="8.4002104"
-         y="150.8826"
-         id="tspan2-1-1">IPO</tspan></text>
+    <g
+       id="g92"
+       transform="translate(0,0.73751063)">
+      <rect
+         style="fill:none;fill-opacity:0.344415;stroke:#000000;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+         id="rect7-9-8"
+         width="24.576134"
+         height="5.9665179"
+         x="3.4758654"
+         y="147.49916" />
+      <text
+         xml:space="preserve"
+         style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+         x="11.575207"
+         y="152.47008"
+         id="text1-9-6"><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.29167px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.264583"
+           x="11.575207"
+           y="152.47008"
+           id="tspan2-1-1">IPO</tspan></text>
+    </g>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="122.00742"
+       x="117.77409"
        y="120.75378"
        id="text3-5"><tspan
          sodipodi:role="line"
          id="tspan3-3"
-         style="font-size:3.52778px;stroke-width:0.264583"
-         x="122.00742"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
+         x="117.77409"
          y="120.75378">deploy RL technique</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="176.18207"
+       x="171.94879"
        y="120.75378"
        id="text3-5-2"><tspan
          sodipodi:role="line"
          id="tspan3-3-3"
-         style="font-size:3.52778px;stroke-width:0.264583"
-         x="176.18207"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
+         x="171.94879"
          y="120.75378">Aligned model</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="176.18207"
+       x="171.94879"
        y="140.03387"
        id="text3-5-2-2"><tspan
          sodipodi:role="line"
          id="tspan3-3-3-2"
-         style="font-size:3.52778px;stroke-width:0.264583"
-         x="176.18207"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
+         x="171.94879"
          y="140.03387">Aligned model</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
-       x="176.18207"
+       x="171.94879"
        y="158.5477"
        id="text3-5-2-2-3"><tspan
          sodipodi:role="line"
          id="tspan3-3-3-2-6"
-         style="font-size:3.52778px;stroke-width:0.264583"
-         x="176.18207"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;font-family:'DejaVu Math TeX Gyre';-inkscape-font-specification:'DejaVu Math TeX Gyre';stroke-width:0.264583"
+         x="171.94879"
          y="158.5477">Aligned model</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized)"
-       d="M 56.644931,119.95269 H 68.186299"
+       d="M 52.411595,119.95269 H 63.952963"
        id="path5" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-4)"
-       d="M 56.644931,139.03186 H 68.186299"
+       d="M 52.411595,139.03186 H 63.952963"
        id="path5-49" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-4-4)"
-       d="M 57.113977,157.70863 H 173.65431"
+       d="M 52.880641,157.70863 H 169.42095"
        id="path5-49-0" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-4-6)"
-       d="m 110.92947,139.03182 h 62.74265"
+       d="m 106.69611,139.03182 h 62.74265"
        id="path5-49-2" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-5)"
-       d="m 110.11159,119.85107 h 8.3922"
+       d="m 105.87823,119.85107 h 8.3922"
        id="path5-4" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-5-0)"
-       d="m 165.19914,119.58648 h 8.2992"
+       d="m 160.96578,119.58648 h 8.2992"
        id="path5-4-6" />
   </g>
 </svg>
