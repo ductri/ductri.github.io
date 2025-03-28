@@ -3,8 +3,8 @@
   <channel>
     <title>Tri Nguyen</title>
     <description>Ph.D. student</description>
-    <link>http://localhost:4000</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <link>https://ductri.github.io</link>
+    <atom:link href="https://ductri.github.io/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
         <title>LLM Alignment:  DPO vs IPO</title>
@@ -481,8 +481,8 @@ away from &lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&
 
 </description>
         <pubDate>Thu, 27 Mar 2025 17:39:00 -0700</pubDate>
-        <link>http://localhost:4000//note/2025/03/27/dpo-vs-ipo/</link>
-        <guid isPermaLink="true">http://localhost:4000//note/2025/03/27/dpo-vs-ipo/</guid>
+        <link>https://ductri.github.io//note/2025/03/27/dpo-vs-ipo/</link>
+        <guid isPermaLink="true">https://ductri.github.io//note/2025/03/27/dpo-vs-ipo/</guid>
       </item>
     
       <item>
@@ -496,8 +496,8 @@ A brief reading about Direct Preference Optimization method to address the align
 
 </description>
         <pubDate>Fri, 09 Feb 2024 13:23:00 -0800</pubDate>
-        <link>http://localhost:4000//note/2024/02/09/llm-alignment/</link>
-        <guid isPermaLink="true">http://localhost:4000//note/2024/02/09/llm-alignment/</guid>
+        <link>https://ductri.github.io//note/2024/02/09/llm-alignment/</link>
+        <guid isPermaLink="true">https://ductri.github.io//note/2024/02/09/llm-alignment/</guid>
       </item>
     
       <item>
@@ -633,8 +633,8 @@ The results are shown below.&lt;/p&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 31 Oct 2023 18:15:00 -0700</pubDate>
-        <link>http://localhost:4000//note/2023/10/31/community-detection/</link>
-        <guid isPermaLink="true">http://localhost:4000//note/2023/10/31/community-detection/</guid>
+        <link>https://ductri.github.io//note/2023/10/31/community-detection/</link>
+        <guid isPermaLink="true">https://ductri.github.io//note/2023/10/31/community-detection/</guid>
       </item>
     
       <item>
@@ -683,8 +683,8 @@ Give it a try.&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 27 Sep 2023 09:14:00 -0700</pubDate>
-        <link>http://localhost:4000//note/2023/09/27/bibman/</link>
-        <guid isPermaLink="true">http://localhost:4000//note/2023/09/27/bibman/</guid>
+        <link>https://ductri.github.io//note/2023/09/27/bibman/</link>
+        <guid isPermaLink="true">https://ductri.github.io//note/2023/09/27/bibman/</guid>
       </item>
     
       <item>
@@ -847,8 +847,8 @@ Training objective is marginal log-likelihood of the target like usual, like in 
 
 </description>
         <pubDate>Mon, 25 Sep 2023 14:05:00 -0700</pubDate>
-        <link>http://localhost:4000//note/2023/09/25/llm-abc/</link>
-        <guid isPermaLink="true">http://localhost:4000//note/2023/09/25/llm-abc/</guid>
+        <link>https://ductri.github.io//note/2023/09/25/llm-abc/</link>
+        <guid isPermaLink="true">https://ductri.github.io//note/2023/09/25/llm-abc/</guid>
       </item>
     
       <item>
@@ -1235,8 +1235,8 @@ Some definitions, but I wont cover all in details.&lt;/p&gt;
 
 </description>
         <pubDate>Mon, 11 Sep 2023 13:33:00 -0700</pubDate>
-        <link>http://localhost:4000//note/2023/09/11/my-take-on-icml2023/</link>
-        <guid isPermaLink="true">http://localhost:4000//note/2023/09/11/my-take-on-icml2023/</guid>
+        <link>https://ductri.github.io//note/2023/09/11/my-take-on-icml2023/</link>
+        <guid isPermaLink="true">https://ductri.github.io//note/2023/09/11/my-take-on-icml2023/</guid>
       </item>
     
       <item>
@@ -1247,12 +1247,12 @@ While re-reading Reinforcement Learning as an attempt to get rid of that heurist
 &lt;p&gt;So this is an attempt to make thing more concrete under a somewhat first principle view.&lt;/p&gt;
 
 &lt;p&gt;The note is currently very unorganized.
-&lt;a href=&quot;http://localhost:4000/assets/latex/RL_understanding/rl_understanding.pdf&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&quot;https://ductri.github.io/assets/latex/RL_understanding/rl_understanding.pdf&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 22 Nov 2022 14:41:00 -0800</pubDate>
-        <link>http://localhost:4000//note/2022/11/22/RL-is-so-confusing/</link>
-        <guid isPermaLink="true">http://localhost:4000//note/2022/11/22/RL-is-so-confusing/</guid>
+        <link>https://ductri.github.io//note/2022/11/22/RL-is-so-confusing/</link>
+        <guid isPermaLink="true">https://ductri.github.io//note/2022/11/22/RL-is-so-confusing/</guid>
       </item>
     
   </channel>
