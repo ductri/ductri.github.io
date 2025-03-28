@@ -83,7 +83,7 @@
     <url>
       <loc>/404.html</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -94,7 +94,7 @@
     <url>
       <loc>/about/</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -105,7 +105,7 @@
     <url>
       <loc>/assets/latex/ipo/blog_version/</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -116,7 +116,7 @@
     <url>
       <loc>/feed.xml</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -138,7 +138,7 @@
     <url>
       <loc>/</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -160,7 +160,7 @@
     <url>
       <loc>/articles/</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -171,7 +171,7 @@
     <url>
       <loc>/assets/latex/RL_understanding/main.text</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
@@ -184,18 +184,7 @@
     <url>
       <loc>/style.css</loc>
       
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/gems/rouge-3.30.0/lib/rouge/demos/yaml</loc>
-      
-        <lastmod>2025-03-28T02:08:48-07:00</lastmod>
+        <lastmod>2025-03-28T02:13:27-07:00</lastmod>
       
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
