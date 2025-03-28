@@ -1,0 +1,42 @@
+<p>I want a software to manage and organize collections of papers in <strong>my way</strong>.
+Mendeley is closed source so it is out of the picture. Zotero is pretty nice and open source with extensible capabilities through extensions. However, as a <code class="language-plaintext highlighter-rouge">Vim</code> and <code class="language-plaintext highlighter-rouge">Ranger</code> user, I crave for a purely keyboard driven interface. And I could not find any thing like that. So I wrote one.
+<!--more--></p>
+
+<h4 id="quick-demo-httpswwwyoutubecomwatchvtt_wgjymhy8">Quick Demo: <a href="https://www.youtube.com/watch?v=Tt_wGJYMHY8">https://www.youtube.com/watch?v=Tt_wGJYMHY8</a></h4>
+<p><img src="/assets/images/2023-09-27-bibman/main.png" width="800px" /></p>
+
+<p>I have used BibMan for over a year without encountering any major issues which gave me confidence in its stability. And with the philosophy of being transparency, valuable data including PDFs, notes, BibTex files are stored exactly as they are. This approach allows you to have a backup method of your choice, in addition to easily replacing your data collection. For instance, I have one directory for demo purpose and another for my real data, and switching the two can be done by modifying the configuration in <code class="language-plaintext highlighter-rouge">~/.config/bibman/config</code>. It also separates the UI business from the data, so that the data remains safe given my ‘un-professional UI code’.
+In fact, most of the errors I’ve encountered so far have been related to rendering issues and can often be temporarily resolved by simply re-runing the software.</p>
+
+<p>In addition to essential features, such as adding/delete new paper, group papers according tags, searching, opening corresponding PDFs, copy BibTex entries, things that I like to have but does not exist in other software are:</p>
+
+<ul>
+  <li><strong>Convenient Note Taking:</strong>  By pressing <code class="language-plaintext highlighter-rouge">:note</code>, you can open the paper’s corresponding text file in <code class="language-plaintext highlighter-rouge">vim</code>, write down your thoughts, and exit <code class="language-plaintext highlighter-rouge">vim</code> to resume the interface.
+I have thought about the possibility of writing a latex note. But current, I’m satisfied with plain text.</li>
+</ul>
+
+<!-- <img src="/assets/images/2023-09-27-bibman/note1.png" width="350px"> -->
+<p><img src="/assets/images/2023-09-27-bibman/note3.png" width="350px" />
+<!-- <img src="/assets/images/2023-09-27-bibman/note2.png" width="300px"> -->
+<img src="/assets/images/2023-09-27-bibman/note4.png" width="350px" /></p>
+
+<ul>
+  <li>
+    <p><strong>Easy Attribute Modification:</strong> of a paper item. By pressing ‘V’, it would ask <code class="language-plaintext highlighter-rouge">vim</code> to open the <code class="language-plaintext highlighter-rouge">bib_collection.bib</code> file, and put the cursor under the current chosen paper. So that you can modify whatever information and save it.
+The interface will be updated accordingly.
+<img src="/assets/images/2023-09-27-bibman/bibfile.png" width="800px" /></p>
+  </li>
+  <li>
+    <p><strong>URL-based Paper:</strong> You can add a paper/article with url link instead of a pdf. When pdf field is empty, BibMan will seek for url field. And if url field is not empty, it will open that url using your default browser.</p>
+  </li>
+  <li>
+    <p><strong>Comprehensive Search:</strong> You can search the whole thing. Currently, the search function allows you to search if a keyword appear in any data data fields. I’m planing to extend this functionality to including the pdf file as well.</p>
+  </li>
+</ul>
+
+<p>Yeah, that’s it. 
+Give it a try.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install bibman
+</code></pre></div></div>
+<p>Source code is at <a href="https://github.com/ductri/BibMan">https://github.com/ductri/BibMan</a></p>
+

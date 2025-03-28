@@ -1,0 +1,9 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[0] Config.pm:310> INFO - Logfile is '.out/drawing.blg'
+[72] biber:340> INFO - === Tue Sep 19, 2023, 12:40:07
+[86] Biber.pm:419> INFO - Reading '.out/drawing.bcf'
+[153] Biber.pm:979> INFO - Found 0 citekeys in bib section 0
+[168] bbl.pm:660> INFO - Writing '.out/drawing.bbl' with encoding 'UTF-8'
+[169] bbl.pm:763> INFO - Output to .out/drawing.bbl
+[169] Biber.pm:131> WARN - The file '.out/drawing.bcf' does not contain any citations!
+[169] Biber.pm:133> INFO - WARNINGS: 1

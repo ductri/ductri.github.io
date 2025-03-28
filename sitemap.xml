@@ -1,205 +1,41 @@
+---
+layout: null
+sitemap:
+  exclude: "yes"
+---
+
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-    
+  {% for post in site.posts %}
+    {% unless post.published == false %}
     <url>
-      <loc>/note/2025/03/27/dpo-vs-ipo/</loc>
-      
-        <lastmod>2025-03-27T17:39:00-07:00</lastmod>
-      
+      <loc>{{ post.url | prepend: site.baseurl}}</loc>
+      {% if post.sitemap.lastmod %}
+        <lastmod>{{ post.lastmodified | date_to_xmlschema }}</lastmod>
+      {% elsif post.date %}
+        <lastmod>{{ post.date | date_to_xmlschema  }}</lastmod>
+      {% else %}
+        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+      {% endif %}
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
     </url>
-    
-  
-    
+    {% endunless %}
+  {% endfor %}
+  {% for page in site.pages %}
+    {% unless page.sitemap.exclude == "yes" %}
     <url>
-      <loc>/note/2024/02/09/llm-alignment/</loc>
-      
-        <lastmod>2024-02-09T13:23:00-08:00</lastmod>
-      
+      <loc>{{ page.url | prepend: site.baseurl }}</loc>
+      {% if page.lastmodified %}
+        <lastmod>{{ page.lastmodified | date_to_xmlschema}}</lastmod>
+      {% elsif page.date %}
+        <lastmod>{{ page.date | date_to_xmlschema }}</lastmod>
+      {% else %}
+        <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
+      {% endif %}
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
     </url>
-    
-  
-    
-    <url>
-      <loc>/note/2023/10/31/community-detection/</loc>
-      
-        <lastmod>2023-10-31T18:15:00-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/note/2023/09/27/bibman/</loc>
-      
-        <lastmod>2023-09-27T09:14:00-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/note/2023/09/25/llm-abc/</loc>
-      
-        <lastmod>2023-09-25T14:05:00-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/note/2023/09/11/my-take-on-icml2023/</loc>
-      
-        <lastmod>2023-09-11T13:33:00-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/note/2022/11/22/RL-is-so-confusing/</loc>
-      
-        <lastmod>2022-11-22T14:41:00-08:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-  
-    
-    <url>
-      <loc>/404.html</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/about/</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/assets/latex/ipo/blog_version/</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/feed.xml</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/about/</loc>
-      
-        <lastmod>2014-10-19T23:51:00-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/documents/</loc>
-      
-        <lastmod>2022-11-22T14:41:00-08:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/articles/</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/assets/latex/RL_understanding/main.text</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-  
-    
-    <url>
-      <loc>/style.css</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
-    
-    <url>
-      <loc>/gems/rouge-3.30.0/lib/rouge/demos/yaml</loc>
-      
-        <lastmod>2025-03-28T00:50:25-07:00</lastmod>
-      
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
-    </url>
-    
-  
+    {% endunless %}
+  {% endfor %}
 </urlset>

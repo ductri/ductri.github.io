@@ -1,0 +1,14 @@
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}1.1\else \numberline {1.1}Lemma\fi \thmtformatoptarg {Khatri-Rao product}}{3}{lemma.1.1}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}1.2\else \numberline {1.2}Lemma\fi \thmtformatoptarg {Special case of lemma permutation}}{3}{lemma.1.2}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}1.3\else \numberline {1.3}Lemma\fi \thmtformatoptarg {CPD uniqueness - Simple case}}{3}{lemma.1.3}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.1\else \numberline {2.1}Lemma\fi \thmtformatoptarg {Gramian matrix}}{4}{lemma.2.1}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.2\else \numberline {2.2}Lemma\fi \thmtformatoptarg {Rank/Range of matrix multiplication}}{4}{lemma.2.2}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.3\else \numberline {2.3}Lemma\fi \thmtformatoptarg {Least square problem}}{5}{lemma.2.3}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.4\else \numberline {2.4}Lemma\fi }{5}{lemma.2.4}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.5\else \numberline {2.5}Lemma\fi \thmtformatoptarg {First-order condition of convex function}}{6}{lemma.2.5}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.6\else \numberline {2.6}Lemma\fi \thmtformatoptarg {Global solution of convex function}}{6}{lemma.2.6}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}2.1\else \numberline {2.1}Definition\fi \thmtformatoptarg {Linear convergence}}{6}{definition.2.1}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.7\else \numberline {2.7}Lemma\fi \thmtformatoptarg {Frobenis norm bounds}}{7}{lemma.2.7}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}2.8\else \numberline {2.8}Lemma\fi \thmtformatoptarg {\blx@tocontentsinit {0}\cite {weyl1912asymptotische}}}{8}{lemma.2.8}%
+\contentsline {definition}{\ifthmt@listswap Definition\nobreakspace {}4.1\else \numberline {4.1}Definition\fi }{8}{definition.4.1}%
+\contentsline {lemma}{\ifthmt@listswap Lemma\nobreakspace {}4.1\else \numberline {4.1}Lemma\fi \thmtformatoptarg {Contraction lemma \blx@tocontentsinit {0}\cite {shalev2014understanding} (Lemma 26.9)}}{9}{lemma.4.1}%

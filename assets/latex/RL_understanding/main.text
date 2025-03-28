@@ -1,3 +1,13 @@
+---
+author:
+- |
+  Tri Nguyen\
+  `nguyetr9@oregonstate.edu`\
+bibliography:
+- refs.bib
+title: \[Personal Note\] Why do we have all these kinds of update?
+---
+
 In this paper [@madjiheurem2021expected], the authors motivate their new
 type of updates with this line of reasoning. The well-known TD-update
 only update value of the immediately preceding states (given if the
