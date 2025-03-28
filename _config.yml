@@ -31,6 +31,8 @@ plugins:
   - jekyll-scholar
   - jekyll-paginate
   - jekyll-katex
+  - kramdown-parser-gfm
+  - github-pages
 
 scholar:
   source: ./_bibliography
