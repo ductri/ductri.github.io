@@ -4,6 +4,10 @@ mainmenu:
     url: "/"
     text: "Home"
     icon_class: "fa-home"
+  documents:
+    url: "/documents/"
+    text: "Documents"
+    icon_class: "fa-file"
   aboutme:
     url: "/about/"
     text: "About Me"

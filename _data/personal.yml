@@ -1,12 +1,12 @@
 ---
   name: "Tri Nguyen"
-  position: "4th yeah Ph.D. student"
+  position: "4th year Ph.D. student"
   company: "Oregon State University"
   location: "OR, US"
   email: "ductricse@gmail.com"
   gravatar: "https://ductri.github.io/assets/images/leaf-symbol.png"
-  bio: |
-    Writing blog for fun? Nah, just another attempt to rise my chance of landing a job ;))))
+  bio: A Ph.D. student interesting in understanding and improving machine learning/deep learning/AI, using various tools such as optimization, estimation, statistical learning, identifiability of matrix/tensor decomposition.
+    
   #activate the social buttons you like by removing the comment
   social:
     github:
@@ -15,8 +15,8 @@
       btnClass: "btn-github"
       logo: "fa-github"
     linkedin:
-      url: "https://www.linkedin.com/in/tri-nguyen-613a10116/"
-      text: "/tri-nguyen-613a10116"
+      url: "https://www.linkedin.com/in/tri-nguyen-cs/"
+      text: "/tri-nguyen-cs"
       btnClass: "btn-linkedin"
       logo: "fa-linkedin"
     facebook:

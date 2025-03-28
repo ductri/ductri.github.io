@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="207.19807mm"
+   height="59.273857mm"
+   viewBox="0 0 207.19808 59.273857"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   sodipodi:docname="overview.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.5398704"
+     inkscape:cx="387.81506"
+     inkscape:cy="89.374638"
+     inkscape:window-width="3840"
+     inkscape:window-height="2125"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path4" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized-5"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path4-4" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized-5-0"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path4-4-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized-4"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path4-3" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized-4-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path4-3-8" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized-4-4"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path4-3-9" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1.5237825,-106.65332)">
+    <rect
+       style="fill:#0000b4;fill-opacity:0.150163;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6-1-2"
+       width="204.5968"
+       height="18.857141"
+       x="3.1740963"
+       y="146.1003" />
+    <rect
+       style="fill:#0000b4;fill-opacity:0.150163;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6-1"
+       width="204.68831"
+       height="18.857141"
+       x="3.14607"
+       y="126.91734" />
+    <rect
+       style="fill:#0000b4;fill-opacity:0.150163;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect6"
+       width="204.9093"
+       height="18.857141"
+       x="3.1085722"
+       y="107.8541" />
+    <rect
+       style="fill:#0019ff;fill-opacity:0.344415;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect7"
+       width="24.576134"
+       height="5.9665179"
+       x="3.3896735"
+       y="108.59071" />
+    <rect
+       style="fill:#0019ff;fill-opacity:0.344415;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect7-0"
+       width="24.576134"
+       height="5.9665179"
+       x="3.4461365"
+       y="127.45831" />
+    <rect
+       style="fill:#0019ff;fill-opacity:0.344415;stroke:none;stroke-width:0.2;stroke-linecap:round;stroke-miterlimit:1;stroke-dasharray:none;stroke-opacity:1"
+       id="rect7-0-9"
+       width="24.576134"
+       height="5.9665179"
+       x="3.7401304"
+       y="146.69363" />
+    <text
+       xml:space="preserve"
+       style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="8.4002104"
+       y="113.33913"
+       id="text1"><tspan
+         sodipodi:role="line"
+         style="font-weight:bold;font-size:5.29167px;stroke-width:0.264583"
+         x="8.4002104"
+         y="113.33913"
+         id="tspan2">RLHF</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="8.4002104"
+       y="132.35593"
+       id="text1-9"><tspan
+         sodipodi:role="line"
+         style="font-weight:bold;font-size:5.29167px;stroke-width:0.264583"
+         x="8.4002104"
+         y="132.35593"
+         id="tspan2-1">DPO</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="73.132545"
+       y="120.75378"
+       id="text3"><tspan
+         sodipodi:role="line"
+         id="tspan3"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="73.132545"
+         y="120.75378">learn score model  </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="3.241179"
+       y="120.75378"
+       id="text3-0"><tspan
+         sodipodi:role="line"
+         id="tspan3-361"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="3.241179"
+         y="120.75378">pairwise preference data</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="3.241179"
+       y="140.03387"
+       id="text3-0-2"><tspan
+         sodipodi:role="line"
+         id="tspan3-361-0"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="3.241179"
+         y="140.03387">pairwise preference data</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="3.241179"
+       y="158.5477"
+       id="text3-0-2-5"><tspan
+         sodipodi:role="line"
+         id="tspan3-361-0-4"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="3.241179"
+         y="158.5477">pairwise preference data</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="73.132545"
+       y="140.03387"
+       id="text3-9"><tspan
+         sodipodi:role="line"
+         id="tspan3-36"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="73.132545"
+         y="140.03387">learn score model  </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:5.29167px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="8.4002104"
+       y="150.8826"
+       id="text1-9-6"><tspan
+         sodipodi:role="line"
+         style="font-weight:bold;font-size:5.29167px;stroke-width:0.264583"
+         x="8.4002104"
+         y="150.8826"
+         id="tspan2-1-1">IPO</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="122.00742"
+       y="120.75378"
+       id="text3-5"><tspan
+         sodipodi:role="line"
+         id="tspan3-3"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="122.00742"
+         y="120.75378">deploy RL technique</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="176.18207"
+       y="120.75378"
+       id="text3-5-2"><tspan
+         sodipodi:role="line"
+         id="tspan3-3-3"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="176.18207"
+         y="120.75378">Aligned model</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="176.18207"
+       y="140.03387"
+       id="text3-5-2-2"><tspan
+         sodipodi:role="line"
+         id="tspan3-3-3-2"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="176.18207"
+         y="140.03387">Aligned model</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;line-height:1.25;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';stroke-width:0.264583"
+       x="176.18207"
+       y="158.5477"
+       id="text3-5-2-2-3"><tspan
+         sodipodi:role="line"
+         id="tspan3-3-3-2-6"
+         style="font-size:3.52778px;stroke-width:0.264583"
+         x="176.18207"
+         y="158.5477">Aligned model</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized)"
+       d="M 56.644931,119.95269 H 68.186299"
+       id="path5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-4)"
+       d="M 56.644931,139.03186 H 68.186299"
+       id="path5-49" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-4-4)"
+       d="M 57.113977,157.70863 H 173.65431"
+       id="path5-49-0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-4-6)"
+       d="m 110.92947,139.03182 h 62.74265"
+       id="path5-49-2" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-5)"
+       d="m 110.11159,119.85107 h 8.3922"
+       id="path5-4" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized-5-0)"
+       d="m 165.19914,119.58648 h 8.2992"
+       id="path5-4-6" />
+  </g>
+</svg>

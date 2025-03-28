@@ -1,0 +1,383 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{tri_preamble}
+
+% --------------------------------------------------------- 
+% TITLE, AUTHORS, ...
+% --------------------------------------------------------- 
+\title{LLM alignment fine-funining: DPO vs IPO}
+\author{	Tri Nguyen \\\\
+        \texttt{nguyetr9@oregonstate.edu} \\\\
+        }
+% --------------------------------------------------------- 
+% BEGIN DOCUMENT
+% --------------------------------------------------------- 
+\begin{document}
+\maketitle
+\section{``Notations"}%
+\label{sec:_notations_}
+\begin{itemize}
+    \item a LLM \textbf{generates} responses: perform certain decoding techniques given a language model. Popular choices: beam search, top-k sampling, top-p sample.
+    \item 
+\end{itemize}
+
+
+
+\section{What is LLM fine-tuning and why}%
+\label{sec:introduction}
+Large language models (LLMs) are becoming significantly popular and bring broad impacts across various aspects of our life. One of the key factors attributed to this success is the capability of a model to perform on very wide range of tasks: you can just input a task description and the relevant information and feed it to the model as a prompt. This ability is commonly referred to LLM being able to acquire various skills, or being able to follow instruction, or can be seen as LLM's generalization power {\red careful here}. 
+
+This amazing performance can be largely attributed to the fine-tuning steps, where the pretrained model is twisted to learn to produce outputs that are more aligned with human (or the creator's goals),
+whether it is to follow instruction, to produce "better response", including being helpful, harmless, factual, or refuse to response to malicious requests.
+The very first work that shakes the whole NLP/AI community is from OpenAI, where they kind of lay out the roadmap to do fine-tuning:
+\begin{enumerate}
+    \item Supervised fine-tuning. Assume access to demonstration dataset: $\set{(\bm{x}_n, \bm{y}_n)}_{n=1}^{N}$ where $\bm{y}_n$ is the ideal response given the prompt $\bm{x}$. {\red Example here pls}.
+        The objective in the step is to twist the model to produce more response like in the datasets. This is supervised learning objective and can be accomplished as any next-token predicting task.
+
+       The challenge in this step is not about the method but about the dataset. It is considerably hard to collect the ideal response that is varying over the whole prompt space. Even OpenAI can only collect \cite{[x]} pair of samples to do this. Therefore the need of second step, which is the focus of this article.
+    \item Preference learning. There are some variants, but many works considers a using pairwise preference dataset: $\set{\bm{x}_n, \bm{y}_n^{(1)}, \bm{y}_n^{(2)},  c_n}$, where given a prompt $\bm{x}_n$, and 2 possible responses $\bm{y}_n^{(1)}, \bm{y}_n^{(2)}$, the preference label $c_n \in \set{1,2}$ indicates which response is preferred over the others.
+
+        {\red Example:}
+        This type of dataset is arguably easier to collect: one can use pretrained LLMs to generate 2 different responses given the prompt $\bm{x}$, then ask a human annotator to choose which one is better. The particular details such as where to collect $\bm{x}$, how to define preference are depending on specific tasks. And although many works tend to refer the problem as human preference fine-tuning, preference can be anything, not necessarily based on human.
+
+Using this dataset, the popular work Reinforcement Learning with Human Feedback (RLHF) proposed to formulate the problem of fine-tuning LLM as:
+
+\begin{equation}
+\label{eq:original_obj}
+\maximize_{\pi} \quad  \mathop{\mathbb{E}}_{\bm{x} \sim \mathcal{D}} \left[  \mathop{\mathbb{E}}_{\bm{y} \sim \pi} \left[ s(\bm{x}, \bm{y})  - \beta \Dkl{\pi}{\pi_{\rm ref}}\right],
+\right] 
+\end{equation}
+where the \textit{score function} $s(\bm{x}, \bm{y})$ outputs a scalar value indicating how strongly aligned the response $\bm{y}$ is given prompt $\bm{x}$. 
+The objective in English is: learn a policy (a language model) $\pi$ that behaves not so much differently from $\pi_{\rm ref}$ and $\pi$ generates responses $\bm{y}$ with highest possible $s(\bm{x}, \bm{y})$.
+$\pi_{\rm ref}$ is a reference policy which can be seen as a good initialization to start with. In practice, $\pi_{\rm ref}$ is the trained policy obtained from step 1.
+\end{enumerate}
+
+Having the overall view of the fine-tuning pipeline, we are ready to dive what the existing works proposed.
+
+\section{RLHF and DPO}%
+\label{sec:rlhf_and_dpo}
+\subsection{RLHF}%
+\label{sub:rlhf}
+While the title didn't mention RLHF, we start from RLHF to see the cleverness in the development of DPO.
+The very first obstacle in optimizing \eqref{eq:original_obj} is that score function $s$ is \textbf{unknown}. 
+RLHF proposed to solve this as an independent problem. If we assume the preference label follow the Bradley-Terry (BT) model, we have
+\begin{equation}
+\label{eq:bt_model}
+\pr{c=1 \mid \bm{x}, \bm{y}^{(1)}, \bm{y}^{(2)}} = \dfrac{\exp(s(\bm{x}, \bm{y}^{(1)}))}{\exp(s(\bm{x}, \bm{y}^{(1)})) + \exp(s(\bm{x}, \bm{y}^{(2)}))}
+= \sigma(s(\bm{x}, \bm{y}^{(1)}) - s(\bm{x}, \bm{y}^{(2)}))
+\end{equation} 
+As the score function gives a higher score for better aligned response, it is pretty reasonable to employ the BT model.
+\paragraph{Pairwise Generative Model.}
+Under this model, the problem of learning $s$ can be cast as a somewhat special binary classification problem: Given a sample $(\bm{x}, \bm{y}^1, \bm{y}^2)$, we wish to learn $h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{1}, \bm{y}^{2})$ to predict the true binary label $c$.
+\begin{tcolorbox}[center]
+\begin{equation}
+\label{eq:bt_generative_model}
+\pr{c = 1 \mid \bm{y}^{a}, \bm{y}^{b}, \bm{x}} = \sigma(s^{\natural}(\bm{y}^{a}, \bm{x}) - s^{\natural}(\bm{y}^{b},\bm{x}))
+\end{equation}
+\end{tcolorbox}
+% \begin{equation}
+% \boxed{
+% \[
+% \pr{c = 1 \mid \bm{y}^{a}, \bm{y}^{b}, \bm{x}} = \sigma(s^{\natural}(\bm{y}^{a}, \bm{x}) - s^{\natural}(\bm{y}^{b},\bm{x}))
+% \]}
+% \end{equation} 
+
+
+There are some specific details that a general classification problem does not apply here:
+\begin{enumerate}
+\item Firstly, because of the underlying model given in \eqref{eq:bt_model}, $h_{\boldsymbol \theta}$ need to be parameterized as 
+\[
+h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{1}, \bm{y}^{2}) 
+\triangleq \sigma \left(  s_{\boldsymbol \theta}(\bm{x}, \bm{y}^{1}) - s_{\boldsymbol \theta}(\bm{x}, \bm{y}^{2})\right)
+\]
+where $s_{\boldsymbol \theta}$ can be parameterized using a LLM. The argument for the use of LLM is that LLM is so large, it has the potential to work on any task, including giving a score to a pair of prompt, response.
+Then maximum likelihood estimation gives us
+\begin{align}
+& \minimize_{\boldsymbol \theta} \quad -\mathop{\mathbb{E}}_{\bm{x}, \bm{y}_1, \bm{y}_2} \left[    \mathbb{I}[c=1] \log \sigma (h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{1}, \bm{y}^{2})) + \mathbb{I}[c=2] \log \left( 1-  \sigma(h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{1}, \bm{y}^{2}))\right)\right]
+\end{align}
+
+
+\item Secondly, 
+\begin{remark}
+If we obtain a sample $(\bm{x}, \bm{y}^{1}, \bm{y}^{2})$ with label $1$, it is equivalent to obtain the sample $(\bm{x}, \bm{y}^{2}, \bm{y}^{1})$ with label $2$.
+\end{remark}
+\begin{proof}
+\begin{align*}
+\pr{c=1 \mid \bm{y}^{1}, \bm{y}^{2}, \bm{x}} 
+&= 1- \pr{c=2 \mid \bm{y}^{1}, \bm{y}^{2}, \bm{x}} \\
+&= 1- \sigma(s^{\natural}(\bm{x}, \bm{y}^{2}) - s^{\natural}(\bm{x}, \bm{y}^{1})) \\
+&= 1 - \pr{c=1 \mid \bm{y}^{2}, \bm{y}^{1}, \bm{x}}\\
+&= \pr{c=2 \mid \bm{y}^{2}, \bm{y}^{1}, \bm{x}}
+\end{align*} 
+\end{proof}
+Well, this information is already encoded in the parameterization of $h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{1}, \bm{y}^{2})$, i.e., $h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{1}, \bm{y}^{2}) = 1-h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{2}, \bm{y}^{1})$.
+We will come back to this point latter since not every method inherently embed this structure in their parameterization.
+
+Because of this, we can rewrite the optimization as:
+\begin{align}
+\label{eq:score_learning}
+& \minimize_{\boldsymbol \theta} \quad \mathop{\mathbb{E}}_{\bm{x}, \bm{y}^{w} ,\bm{y}^{l}} \left[   - \log \sigma (h_{\boldsymbol \theta}(\bm{x}, \bm{y}^{w}, \bm{y}^{l})) \right],
+\end{align}
+\end{enumerate}
+After solving \eqref{eq:score_learning}, the alignment fine-tuning is performed by plugging the trained $s_{\boldsymbol \theta^{\star }}$ into \eqref{eq:original_obj} and employ any off-the-shelf RL techniques, e.g, PPO \citep{schulman2017proximal}.
+So that is the story of RLHF.
+
+The two-step approach is inherently quite complex and computation intensive. That's where DPO comes to play.
+
+\subsection{DPO}%
+\label{sub:dpo}
+An optimal solution of \eqref{eq:original_obj} can be derived as follows:
+\begin{align*}
+&\argmax_{\pi} \quad \mathop{\mathbb{E}}_{\bm{x}} \left[ \mathop{\mathbb{E}}_{\bm{y} \sim \pi(\cdot \mid \bm{x})} \left[  s(\bm{y}, \bm{x}) - \beta \Dkl{\pi}{\pi_{\rm ref}}\right] \right] \\
+&= \argmin_{\pi} \mathop{\mathbb{E}}_{\bm{x}} \left[ \mathop{\mathbb{E}}_{\bm{y} \sim \pi(\cdot \mid \bm{x})} \left[ \log \dfrac{\pi(\bm{y}\mid \bm{x})}{\exp(\beta^{-1}s(\bm{y}, \bm{x})) \pi_{\rm ref}(\bm{y} \mid \bm{x})} \right] \right]\\
+&=\argmin_{\pi} \mathop{\mathbb{E}}_{\bm{x}} \left[  \Dkl{\pi}{\dfrac{1}{Z(\bm{x})} \exp(\beta^{-1} s(\bm{y}, \bm{x})) \pi_{\rm ref}(\bm{y} \mid \bm{x})} \right] \\
+&= \dfrac{1}{Z(\bm{x})} \exp(\beta^{-1} s(\bm{y}, \bm{x})) \pi_{\rm ref}(\bm{y} \mid \bm{x})
+\end{align*}
+% Similar to DPO, the optimal policy for IPO's objective in (x) is
+And hence,
+\[
+\pi^{\star }(\bm{y} \mid \bm{x}) = \dfrac{1}{Z(\bm{x})} \pi_{\rm ref}(\bm{y} \mid \bm{x}) \exp \left( \beta^{-1}  s^{\natural}(\bm{y}, \bm{x}) \right),
+\] 
+\[
+\Leftrightarrow 
+s^{\natural}(\bm{y}, \bm{x}) = \beta \log \dfrac{\pi^{\star }(\bm{y} \mid \bm{x})}{\pi_{\rm ref}(\bm{y} \mid \bm{x})} + \beta \log Z(\bm{x})
+\] 
+where $\bm{Z}(\bm{x})$ is an intractable normalizing factor.
+
+Using the above identity, the generative model in \eqref{eq:bt_generative_model} is equivalent to
+\begin{tcolorbox}[center]
+\begin{equation}
+\label{eq:dpo_generative_model}
+\pr{c=1 \mid \bm{y}^{1},\bm{y}^{2}, \bm{x}} = \sigma \left( \beta \log \dfrac{\pi^{\star }(\bm{y}_1\mid \bm{x})}{\pi_{\rm ref}(\bm{y}_1 \mid \bm{x})} - \beta \log \dfrac{\pi^{\star }(\bm{y}_2\mid \bm{x})}{\pi_{\rm ref}(\bm{y}_2 \mid \bm{x})} \right)
+\end{equation}
+\end{tcolorbox}
+
+The new generative model is equivalent to \eqref{eq:bt_generative_model}, while offering a specific parameterization of the score function, i.e, 
+\[
+s_{\boldsymbol \theta}(\bm{y}, \bm{x}) = \beta \log \dfrac{\pi_{\boldsymbol \theta}(\bm{y} \mid \bm{x})}{\pi_{\rm ref}(\bm{y} \mid \bm{x})}.
+\] 
+Using this parameterization, the optimal solution $\boldsymbol \theta^{\star }$ of the sigmoid criterion \eqref{eq:score_learning} directly gives an optimal policy $\pi_{\boldsymbol \theta^{\star }}$ with respect to the fine-tuning objective \eqref{eq:original_obj}. This solution eliminates the need of RL step as in RLHF.
+
+{\blue is it truly equivalent?}
+
+\subsection{A unified view}%
+\label{sub:a_unified_view}
+\paragraph{Pairwise Preference Generative model.} 
+\[
+\pr{c=1\mid \bm{y}^{1}, \bm{y}^{2}, \bm{x}} = \sigma\left(q^{\natural}(\bm{y}_1, \bm{x}) - q^{\natural}(\bm{y}_2, \bm{x})\right),
+\] 
+The choice of $q^{\natural}(\bm{y}_{1}, \bm{x})$ depends on the interest of learning underlying model.
+\begin{itemize}
+    \item RLHF wishes to learn the score function: $q^{\natural}(\bm{y}_1, \bm{x}) = s^{\natural}(\bm{y}_1, \bm{x})$
+    \item DPO wishes to learn the optimal policy: $q^{\natural}(\bm{y}, \bm{x}) = \beta \log \dfrac{\pi^{\star }(\bm{y} \mid \bm{x})}{\pi_{\rm ref}(\bm{y}\mid \bm{x})}$
+\end{itemize}
+In any case, after deciding the choice for $q^{\natural}$, we can use maximum likelihood to estimate $q^{\natural}$ with $q_{\boldsymbol \theta}$.
+
+\begin{equation}
+\label{eq:unified_loss}
+\minimize_{\boldsymbol \theta} \mathop{\mathbb{E}}_{\bm{x}, \bm{y}_w, \bm{y}_{\ell }} \left[- \log \sigma (q_{\boldsymbol \theta}(\bm{y}_w, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_{\ell }, \bm{x})) \right]
+\end{equation} 
+\section{IPO}%
+\label{sec:ipo}
+This paper is kind of hard to read as the notation is a bit messed up. I have mixed feeling about it: the idea is quite nice after I figured out all the technical details and fought against my intuition during all the way. However the presentation of their development is quite \textit{cryptic}. 
+
+Let's start with their empirical loss:
+\begin{alignat*}{2}
+    & \minimize_{\boldsymbol \theta} \quad &&  (q_{\boldsymbol \theta}(\bm{y}_w,\bm{x}) - q_{\boldsymbol \theta}(\bm{y}_{\ell }, \bm{x}) - 0.5)^2,
+\end{alignat*}
+where $q_{\boldsymbol \theta}$ is defined as in DPO.
+
+This criterion is very counter-intuitive. Specifically,
+\begin{itemize}
+    \item Turning a classification-based to a regression-based objective. This is ahhhhhh. But this is just because of my view, nothing wrong here.
+    \item Why regressing toward $0.5$? What special about $0.5$? And why regressing all possible samples toward $0.5$? Does it mean that we treat preference evenly among all samples? While in comparison to \eqref{eq:unified_loss}, the gap $\bm{q}_{\boldsymbol \theta}(\bm{y}_{w}, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_l, \bm{x})$ to be as large as possible.
+\end{itemize}
+Well, I have some answered, but not all sadly.
+So intuition does not help here. Let's dive into the technical development to see if that helps.
+
+
+\subsection{IPO's Loss Derivation}%
+\label{sub:ipo_s_loss_derivation}
+
+In this section, I attempted to (i) follow and demystify IPO's derivation, make the whole thing a bit more rigorous to identify the key step, and (ii) make a slightly more general formulation.
+
+Note that IPO's goal is to perform the fine-tuning task via \eqref{eq:original_obj} as RLHF's and DPO's. What distinguish them is their proposed score function:
+\begin{equation}
+\label{eq:s_v}
+s^{\natural}(\bm{x}, \bm{y}) =  \mathop{\mathbb{E}}_{\bm{y}' \sim \mu} \left[ v(\bm{y}, \bm{y}', \bm{x}) \right],
+\end{equation} 
+where the scalar-valued function $v(\bm{y}, \bm{y}', \bm{x})\in \mathbb{R}$ denotes the degree of preference, i.e., $v(\bm{y}_1, \bm{y}_1', \bm{x}) \succ v(\bm{y}_2, \bm{y}_2', \bm{x})$ implies that the preference of $\bm{y}_1$ over $\bm{y}_1'$ is ``stronger'' compared to the preference comparison of $\bm{y}_2$ vs $\bm{y}_2'$. Here, \textit{$\mu$ is just some arbitrary policy}.
+
+With that physical meaning, $v(\bm{y}, \bm{y}', \bm{x})$ is any function satisfying:
+\begin{subequations}
+\begin{align}
+&v(\bm{y}, \bm{y}', \bm{x}) \in [\alpha_1,\alpha_2], \; \forall  \bm{y}, \bm{y}', \bm{x} \label{eq:ipo_boundedness}\\
+&v(\bm{y}, \bm{y}, \bm{x}) = 0.5(\alpha_2 + \alpha_1), \; \forall  \bm{y}, \bm{x} \label{eq:ipo_self_compare}\\
+&v(\bm{y}, \bm{y}', \bm{x}) = \alpha_1 + \alpha_2 - v(\bm{y}', \bm{y}, \bm{x}) \label{eq:ipo_symmetric}
+\end{align}
+\end{subequations}
+Condition \eqref{eq:ipo_boundedness} is to avoid DPO's issue in which over-fitting leads to policy deviating arbitrarily far away from $\pi_{\rm }$ regardless of $\beta$. Condition \eqref{eq:ipo_self_compare} and \eqref{eq:ipo_symmetric} is to enforce the physical meaning of pairwise preference.
+With that score function, IPO's generative model can be seen as follows.
+
+\textbf{IPO's Pairwise Generative Model.} The binary label $c \in \set{1, 2}$ for sample $\bm{y}_1, \bm{y}_2, \bm{x}$ is
+\begin{tcolorbox}[center]
+\begin{equation}
+\label{eq:ipo_generative_model}
+\pr{c=1} \propto v(\bm{y}_1, \bm{y}_2, \bm{x})
+\end{equation} 
+\end{tcolorbox}
+Here, binary RV $c=1$ indicates $\bm{y}_1 \succ \bm{y}_2$. The likelihood of this even happening is proportional to $v(\bm{y}_1, \bm{y}_2, \bm{x})$, while the exact probability is unknown. From modeling perspective, the lack of specification in \eqref{eq:ipo_generative_model} relative to the BT model makes it more general.
+
+% For IPO, they choose $v(\bm{y}, \bm{y}', \bm{x}) = \pr{\bm{y} \succ \bm{y}' \mid \bm{x}}$, and consequently,  $\alpha_1=0, \alpha_2=1$. Although this choice might appear sensible, \textbf{any other choices are just equally valid}. 
+
+% Under this perspective, IPO chooses $v(\bm{y}, \bm{y}', \bm{x}) = \pr{\bm{y} \succ \bm{y}' \mid \bm{x}}$. While IPO does not introduce $v(\bm{y}, \bm{y}', \bm{x})$, I find the notion of a function is easier to conceive compared to the quantity $\pr{\bm{y} \succ \bm{y}' \mid \bm{x}}$.
+% The distribution $\mu$ is just some random policy called \textit{behavior policy}.
+% The particular choice of $\mu$ does not matter in defining the unknown score function $s(\bm{y}, \bm{x})$ in \eqref{eq:s_v}. The intuitive reason is that for a pair of  $\mu, \mu'$, there should be a pair of $v, v'$ such that they both define the same score function.
+
+% The score function is still unknown, but it now has some structure to work with. 
+Similar to DPO, the optimal policy to IPO's objective in \eqref{eq:original_obj} is
+\[
+\pi^{\star }(\bm{y} \mid \bm{x}) = \dfrac{1}{Z(\bm{x})} \pi_{\rm ref}(\bm{y} \mid \bm{x}) \exp \left( \beta^{-1} \mathop{\mathbb{E}}_{\bm{y}' \sim \mu} \left[ v(\bm{y}, \bm{y}', \bm{x}) \right] \right),
+\] 
+which enables the trick originally made by DPO by comparing 2 responses:
+\begin{equation}
+\label{eq:ipo_opt_cond}
+q^{\star }(\bm{y}_1, \bm{x}) - q^{\star }(\bm{y}_2, \bm{x})
+= \mathop{\mathbb{E}}_{\bm{y} \sim \mu}\left[v(\bm{y}_1, \bm{y}, \bm{x}) - v(\bm{y}_2, \bm{y}, \bm{x}) \right],
+\end{equation} 
+where $q^{\star }(\bm{y}, \bm{x}) = \beta \log \pi^{\star }(\bm{y}\mid \bm{x}) - \beta \log \pi_{\rm ref}(\bm{y} \mid \bm{x})$.
+Let $ q_{\boldsymbol \theta}(\bm{y}, \bm{x}) = \beta \log \pi_{\boldsymbol \theta}(\bm{y}\mid \bm{x}) - \beta \log \pi_{\rm ref}(\bm{y} \mid \bm{x})$.
+All we want is to enforce the equality \eqref{eq:ipo_opt_cond} for all $\bm{y}_1, \bm{y}_2$ with respect to $q_{\boldsymbol \theta}$ , and one way to realize it is using squared loss
+\begin{alignat*}{2}
+    & \minimize_{\boldsymbol \theta} \quad && \mathop{\mathbb{E}}_{\bm{x}, \bm{y}_1, \bm{y}_2\sim \mu} \left[ \left(  q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}) - \mathop{\mathbb{E}}_{\bm{y} \sim \mu}\left[v(\bm{y}_1, \bm{y}, \bm{x}) - v(\bm{y}_2, \bm{y}, \bm{x}) \right] \right) ^2\right]
+\end{alignat*}
+
+Expanding the squared term, the optimization problem reduces to
+\begin{equation}
+\label{eq:qioqli}
+\min_{\boldsymbol \theta}  \mathop{\mathbb{E}}_{\substack{\bm{x},\\ \bm{y}_1, \bm{y}_2\sim \mu}} \left[ (q_{\boldsymbol \theta}(\bm{y}_1, \bm{x})- q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}))^2 - 2 [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_2, \bm{x})]\mathop{\mathbb{E}}_{\bm{y} \sim \mu}\left[v(\bm{y}_1, \bm{y}, \bm{x}) - v(\bm{y}_2, \bm{y}, \bm{x}) \right]  \right]
+\end{equation}
+The issue lays in the unknown factor in the second term.
+Now comes to the IPO's peculiar derivations. The second term can be written as
+\begin{align*}
+\quad \quad &\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2 \sim \mu} \left[ [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x})- q_{\boldsymbol \theta}(\bm{y}_2, \bm{x})]  \mathop{\mathbb{E}}_{\bm{y} \sim \mu}\left[ v(\bm{y}_1, \bm{y}, \bm{x}) - v(\bm{y}_2, \bm{y}, \bm{x}) \right]  \right] \\
+&= \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2, \bm{y} \sim \mu}[({\green q_{\boldsymbol \theta}(\bm{y}_1, \bm{x})} - {\blue q_{\boldsymbol \theta}(\bm{y}_2, \bm{x})}) \left({\green v(\bm{y}_1, \bm{y}, \bm{x})} - {\blue v(\bm{y}_2, \bm{y}, \bm{x})} \right)] \\
+&= \underbrace{\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2, \bm{y} \sim \mu} [{\green q_{\boldsymbol \theta}({\green \bm{y}_1}, \bm{x}) v(\bm{y}_1, \bm{y}, \bm{x})} + {\blue q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}) v(\bm{y}_2, \bm{y}, \bm{x})}]}_{(*)} \\
+&\qquad \qquad - \underbrace{\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2, \bm{y} \sim \mu } [{\green q_{\boldsymbol \theta}(\bm{y}_1, \bm{x})} {\blue v(\bm{y}_2, \bm{y}, \bm{x})}+ {\blue q_{\boldsymbol \theta}(\bm{y}_2, \bm{x})} {\green v(\bm{y}_1, \bm{y}, \bm{x})}] }_{(**)}
+\end{align*}
+For (*), notice that the two terms are essentially the same under expectation when $\bm{y}_1, \bm{y}_2, \bm{y}$ are i.i.d.
+\begin{align*}
+(*) &=\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2, \bm{y}} [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}, \bm{x}) + q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}) v(\bm{y}_2, \bm{y}, \bm{x})] \\
+&=\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}} [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}, \bm{x})] + \mathop{\mathbb{E}}_{\bm{y}_2, \bm{y}} [q_{\boldsymbol \theta}(\bm{y}_2, \bm{x} ) v(\bm{y}_2, \bm{y}, \bm{x})] \\
+&=\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} [{q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x})}] + \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}} [{q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}, \bm{x})}] \\
+&=\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} [{q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x})}] + \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} [{q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x})}] \\
+&= 2\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x})] \numberthis \label{eq:qobpal}
+\end{align*}
+This trick is pretty cool ha ;), I also used this one in one of my proof :))) [x].
+Note that the particular name of the variables under expectation might not matter as long as they share the same distribution. For example,
+\[
+\mathop{\mathbb{E}}_{x \sim p}[f(x)] + \mathop{\mathbb{E}}_{y \sim p}[f(y)]
+= \mathop{\mathbb{E}}_{x \sim p}[f(x)] + \mathop{\mathbb{E}}_{x \sim p}[f(x)]
+= 2\mathop{\mathbb{E}}_{x\sim p}[f(x)].
+\] 
+Similar trick can be applied for $(**)$ as well:
+\begin{align*}
+(**)&=\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2, \bm{y} \sim \mu } [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_2, \bm{y}, \bm{x}) + q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}) v(\bm{y}_1, \bm{y}, \bm{x})]  \\
+&= 2\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2, \bm{y} \sim \mu } [q_{\boldsymbol \theta}(\bm{y}_1,\bm{x}) v(\bm{y}_2, \bm{y}, \bm{x})] \\
+&= 2\mathop{\mathbb{E}}_{\bm{y}_1 \sim \mu } [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x})] \mathop{\mathbb{E}}_{\bm{y}_2, \bm{y}}[v(\bm{y}_2, \bm{y}, \bm{x})] \\
+&=(\alpha_1 +\alpha_2)\mathop{\mathbb{E}}_{\bm{y}_1 \sim \mu } [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x})] \numberthis \label{eq:qoaibl}
+\end{align*}
+where the last equality holds because $\bm{y}_1, \bm{y}_2, \bm{y}$ are independent and $ \mathop{\mathbb{E}}_{\bm{y}_2, \bm{y} \sim \mu}[v(\bm{y}_2, \bm{y}, \bm{x})] = 0.5(\alpha_1 + \alpha_2)$, which in turn can be derived from conditions \eqref{eq:ipo_self_compare} and \eqref{eq:ipo_symmetric}.
+Combining \eqref{eq:qobpal}, \eqref{eq:qoaibl} gives
+\begin{align*}
+(*) - (**)
+&= 2\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2}[q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x})] - (\alpha_1 + \alpha_2)\mathop{\mathbb{E}}_{\bm{y}_1} [q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) ] \\
+&= \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} \left[2q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x}) - (v(\bm{y}_1, \bm{y}_2, \bm{x})+v(\bm{y}_2, \bm{y}_1, \bm{x}))q_{\boldsymbol \theta}(\bm{y}_1, \bm{x} )  \right] \quad \text{(by \eqref{eq:ipo_symmetric})}\\
+&= \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} \left[q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x}) - v(\bm{y}_2, \bm{y}_1, \bm{x})q_{\boldsymbol \theta}(\bm{y}_1, \bm{x} )  \right] \\
+&= \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} \left[q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) v(\bm{y}_1, \bm{y}_2, \bm{x}) - v(\bm{y}_1, \bm{y}_2, \bm{x})q_{\boldsymbol \theta}(\bm{y}_2, \bm{x} )  \right] \\
+&= \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} \left[(q_{\boldsymbol \theta}(\bm{y}_1, \bm{x})-q_{\boldsymbol \theta}(\bm{y}_2, \bm{x})) v(\bm{y}_1, \bm{y}_2, \bm{x}) \right]
+\end{align*}
+% {\blue 
+% The equality $(a)$ holds because the first term in $(a)$ can be derived as
+% \begin{align*}
+% &\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2, \bm{y}} [q_{\boldsymbol \theta}(\bm{x}, \bm{y}_1) \pr{\bm{y}_1 \succ \bm{y} \mid \bm{x}} + q_{\boldsymbol \theta}(\bm{x}, \bm{y}_2) \pr{\bm{y}_2 \succ \bm{y} \mid \bm{x}}] \\
+% &= \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}} [q_{\boldsymbol \theta}(\bm{x}, \bm{y}_1) \pr{\bm{y}_1 \succ \bm{y} \mid \bm{x}}] + \mathop{\mathbb{E}}_{\bm{y}_2, \bm{y}} [q_{\boldsymbol \theta}(\bm{x}, \bm{y}_2) \pr{\bm{y}_2 \succ \bm{y} \mid \bm{x}}] \\
+% &= \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}} [q_{\boldsymbol \theta}(\bm{x}, \bm{y}_1) \pr{\bm{y}_1 \succ \bm{y} \mid \bm{x}}] + \mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}} [q_{\boldsymbol \theta}(\bm{x}, \bm{y}_1) \pr{\bm{y}_1 \succ \bm{y} \mid \bm{x}}] \quad \text{(just rename $\bm{y}_2$ to $\bm{y}_1$)}\\
+% &= 2\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}} [q_{\boldsymbol \theta}(\bm{x}, \bm{y}_1) \pr{\bm{y}_1 \succ \bm{y} \mid \bm{x}}] \\
+% &= 2\mathop{\mathbb{E}}_{\bm{y}_1, \bm{y}_2} [q_{\boldsymbol \theta}(\bm{x}, \bm{y}_1) \pr{\bm{y}_1 \succ \bm{y_2} \mid \bm{x}}] \quad \text{(just another renaming)},
+% \end{align*} 
+% and similar treatment can be used to derive the second term in $(a)$ and the equality $(b)$.
+% }
+% These series of equalities are derived using i.i.d property and just rename variables when needed.
+The expression in \eqref{eq:qioqli} becomes
+\begin{align*}
+&\argmin_{\boldsymbol \theta} \; \mathop{\mathbb{E}}_{\substack{\bm{x}, \\ \bm{y}_1, \bm{y}_2 \sim \mu}} \left[ (q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}))^2 \right] - 2 \mathop{\mathbb{E}}_{\substack{\bm{x}, \\ \bm{y}_1, \bm{y}_2 \sim \mu}} \left[ (q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_2, \bm{x})) v(\bm{y}_1, \bm{y}_2, \bm{x}) \right] \\
+&=\argmin_{\boldsymbol \theta} \mathop{\mathbb{E}}_{\substack{\bm{x}, \\ \bm{y}_1, \bm{y}_2 \sim \mu}} \left[ ( q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_2, \bm{x})- v(\bm{y}_1, \bm{y}_2, \bm{x}))^2 \right] \\
+&{\red \approx \argmin_{\boldsymbol \theta} \mathop{\mathbb{E}}_{\substack{\bm{x},\\\bm{y}_1, \bm{y}_2 \sim \mu}} \left( q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}) - \mathbb{I}[c=1]\alpha_2 - \mathbb{I}[c=2] \alpha_1 \right)^2, \numberthis \label{eq:qioqoqo}}
+\end{align*} 
+where $c \in \set{1,2}$ is the pairwise preference label.
+The approximation is very crude: using $\set{\alpha_1, \alpha_2}$ to approximate $v(\bm{y}_{1}, \bm{y}_{2}, \bm{x})$. In a more general view, this is a non-parametric estimation of $v(\bm{y}_1, \bm{y}_2, \bm{x})$ under the generative model \eqref{eq:ipo_generative_model} using only 1 sample $c$. Note that this estimation is made \textit{independently} to the alignment learning, i.e, optimizing \eqref{eq:qioqoqo}. It is also the reason why IPO claims that they \textbf{even don't need to learn the score function}. 
+
+A further variance-reduced improvement made in IPO is to consider the symmetrical property of the sample: if we obtain the triple $(\bm{y}_{1}, \bm{y}_{2}, \bm{x})$ with label $c$, then it is legitimate to assume another triple $(\bm{y}_{2}, \bm{y}_{1}, \bm{x})$ with label $2/c$. With that in mind, we arrive at the final criterion:
+\begin{align*}
+&\quad \argmin_{\boldsymbol \theta} \mathop{\mathbb{E}}_{\substack{\bm{x}, \\\bm{y}_1, \bm{y}_2 \sim \mu}} \left[  (h_{\boldsymbol \theta}(\bm{x}, \bm{y}_{1}, \bm{y}_{2}) - \mathbb{I}[c=1]\alpha_2 - \mathbb{I}[c=2] \alpha_1)^2 + (h_{\boldsymbol \theta}(\bm{x}, \bm{y}_{2}, \bm{y}_{1}) - \mathbb{I}[c=1]\alpha_1 - \mathbb{I}[c=2] \alpha_2)^2 \right]\\
+&= \argmin_{\boldsymbol \theta} \; \mathop{\mathbb{E}}_{\substack{\bm{x}, \\\bm{y}_1, \bm{y}_2 \sim \mu}} \left[   (h_{\boldsymbol \theta}(\bm{x}, \bm{y}_{w}, \bm{y}_{\ell }) - \alpha_2)^2 + (h_{\boldsymbol \theta}(\bm{x}_i, \bm{y}_{i,l}, \bm{y}_{i,w}) - \alpha_1)^2\right] \\
+&= \argmin_{\boldsymbol \theta} \mathop{\mathbb{E}}_{\substack{\bm{x}, \\\bm{y}_1, \bm{y}_2 \sim \mu}} \left[   (h_{\boldsymbol \theta}(\bm{x}, \bm{y}_{w}, \bm{y}_{\ell }) - 0.5(\alpha_1+\alpha_2))^2\right] \numberthis \label{eq:final_general_ipo}
+\end{align*} 
+
+\paragraph{IPO's particular choice.} In IPO, they settle with $v(\bm{y}_1, \bm{y}_2, \bm{x}) = \pr{\bm{y}_1 \succ \bm{y}_2 \mid \bm{x}}$, and hence $\alpha_1= 0, \alpha_2=1$.
+While it is looking sensible, any other arbitrary choice should be as valid.
+Anyhow, it leads to their criterion
+\[
+\minimize_{\boldsymbol \theta} \mathop{\mathbb{E}}_{\substack{\bm{x}, \\\bm{y}_1, \bm{y}_2 \sim \mu}} \left[  (h_{\boldsymbol \theta}(\bm{x}, \bm{y}_{w}, \bm{y}_{\ell }) - 0.5)^2\right]
+\] 
+
+\paragraph{Effect of $\alpha_1, \alpha_2$.}
+Firstly, the final criterion \eqref{eq:final_general_ipo} reveals that only the sum $\alpha_1 + \alpha_2$ matters, not the absolute values of $\alpha_1, \alpha_2$. Large $\alpha_1 + \alpha_2$ means a broader preference model. However, it also leads to higher estimation error.
+
+
+\subsection{IPO's loss discussion}%
+\label{sub:ipo_s_loss_discussion}
+\begin{itemize}
+    \item There is no score learning. The chosen score function has no parameter to estimate.  This is contrast to RLHF/DPO's approach where we known functional form of the score function governed by parameter $\boldsymbol \theta$. 
+    \item The seemingly disconnection between the score function and the preference model.  However, in reality, they are connected via: $\mu$ and the oracle preference probability $\pr{\bm{y}_1 \succ \bm{y}_2 \mid \bm{x}} = f^{\natural}(\bm{y}_1, \bm{y}_2, \bm{x})$, where $f^{\natural}$ is any function satisfying $f^{\natural}(\bm{y}_1, \bm{y}_2, \bm{x}) \in [0,1]$, $f^{\natural}(\bm{y}, \bm{y}, \bm{x})=0.5$, and $f^{\natural}(\bm{y}_1, \bm{y}_2, \bm{x})+f^{\natural}(\bm{y}_2, \bm{y}_1, \bm{x})=1$. Okay, we are getting some structure here. Under this view, the preference data directly dictates the score function.
+    \item There is no learning, there is no overfitting. We only use approximation
+    \item In terms of preference model, anything is feasible, including contradicting preferences, i.e, $\bm{y}_1 \succ \bm{y}_2, \bm{y}_2 \succ \bm{y}_3, \bm{y}_3 \succ \bm{y}_1$. The BT model does not allow this. Therefore, if this happen because of noisy labels, IPO would just adapt to it while RLHF/DPO won't.
+    \item Although the preference model is very liberal, i.e, allow for contradicting preferences, the objective implies that there is a total ordering over responses $\bm{y}$.
+    \item The score depends on $\mu$, which is not necessarily a good feature.
+    \item There could be this situation: $\pr{\bm{y}_1 \succ \bm{y}_2}$ and $s(\bm{y}_1, \bm{x}) < s(\bm{y}_2, \bm{x})$.
+    \item But the $f_{\boldsymbol \theta}(\bm{y}_1, \bm{y}_2, \bm{x})=q_{\boldsymbol \theta}(\bm{y}_1, \bm{x}) - q_{\boldsymbol \theta}(\bm{y}_2, \bm{x}) $ has structure.
+    \item Their motivation is to address DPO's weakness. To me, it is more like a by-produce that they archive that goal. Let's see.
+\end{itemize}
+
+
+
+\section{Experiment Design}%
+\label{sec:experiment_design}
+
+We want to show a single point: IPO's approximation could be terribly wrong, and hence, it could not reach the optimal solution. In the meantime, DPO attain optimal solution easily.
+But can we design generative models such that the preference labels for both IPO and DPO are the same? The problem is the score functions are not the same.
+
+Let assume bandit, 3 actions $y_0, y_1, y_2$.
+For DPO, assume 
+\begin{align}
+&s^{\natural}_{\rm DPO}(\bm{y}) = [10.000, 9.593, 7.800] \\
+&s^{\natural}_{\rm IPO}(y) = \mathop{\mathbb{E}}_{y'} [\pr{y \succ y'}]
+\end{align}
+
+
+There are 2 factors: score function, and preference generative model.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Method & Score function & Preference generative model \\ \hline \hline
+        DPO & $s^{\natural}(\bm{y})$ & $\pr{c=1} = \sigma(s^{\natural}(\bm{y}_1) - s^{\natural}(\bm{y}_2))$ \\ \hline
+        IPO & $ \mathop{\mathbb{E}}_{\bm{y}' \sim \mu}[v^{\natural}(\bm{y}, \bm{y}')]$ & $\pr{c=1} = v^{\natural}(\bm{y}_1, \bm{y}_2)$ \\ \hline
+    \end{tabular}
+\end{table}
+Score function of IPO has structure, and it implies this interesting property: total score is a constant. Not sure how to feel about it!
+
+
+\end{document}
+

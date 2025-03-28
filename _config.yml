@@ -1,8 +1,8 @@
 # Site settings
 title: Tri Nguyen
 email: ductricse@gmail.com
-description: "4-th year Ph.D. student"
-logo_location: "https://ductri.github.io/assets/images/naruto.jpg"
+description: "Ph.D. student"
+logo_location: "assets/images/naruto.jpg"
 
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "https://ductri.github.io" # the base hostname & protocol for your site
@@ -11,6 +11,7 @@ url: "https://ductri.github.io" # the base hostname & protocol for your site
 markdown: kramdown
 kramdown:
   input: GFM
+  math_engine: katex
 
 highlighter: rouge
 
@@ -21,3 +22,15 @@ excerpt_separator: <!--more-->
 
 #show the jumbotron header on index page
 show_blog_header: true
+
+math_engine: katex
+
+gems: ['jekyll/scholar']
+
+plugins:
+  - jekyll-scholar
+
+scholar:
+  source: ./_bibliography
+  bibliography: references.bib
+

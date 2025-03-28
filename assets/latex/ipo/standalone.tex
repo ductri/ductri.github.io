@@ -1,0 +1,41 @@
+\documentclass[preview]{standalone}
+\usepackage{tri_preamble}
+\usepackage{diagbox}
+
+\begin{document}
+
+\def\svgwidth{4.0in}
+
+\begin{tcolorbox}[center]
+    \begin{equation}
+        \label{eq:general_spec} \tag{2}
+\text{Unknown score function } s(\bm{x}, \bm{y}) \quad \xleftrightarrow{\quad \text{\red certain specification}\quad } \quad \text{Preference data } (\bm{x}, \bm{y}_1, \bm{y}_2, c)
+    \end{equation} 
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[center]
+\resizebox{\linewidth}{!}{
+\begin{equation*}
+\text{Unknown score function } s(\bm{x}, \bm{y}) \quad \xleftrightarrow {\red \substack{\quad \pr{c=1 \mid \bm{y}_1 ,\bm{y}_2, \bm{x}} = \sigma(s(\bm{y}_1, \bm{x}) - s(\bm{y}_2, \bm{x}))\quad \\ \text{ and }s  \in \mathcal{F}}} \quad \text{Preference data } (\bm{x}, \bm{y}_1, \bm{y}_2, c)
+\end{equation*}}
+\end{tcolorbox}
+
+\begin{tcolorbox}[center]
+\resizebox{\linewidth}{!}{
+\begin{equation*}
+\text{Unknown score function } s(\bm{x}, \bm{y}) \quad \xleftrightarrow {\red \substack{\quad \pr{c=1 \mid \bm{y}_1, \bm{y}_2, \bm{x}} = v(\bm{y}_1, \bm{y}_2, \bm{x}),\\ s(\bm{x}, \bm{y}) = \mathop{\mathbb{E}}_{\bm{y}' \sim \mu(\cdot \mid \bm{x})}[v(\bm{y}, \bm{y}', \bm{x})], \quad \\ \textbf{ and } \bm{y}_1, \bm{y}_2 \sim \mu(\cdot \mid \bm{x})}} \quad \text{Preference data } (\bm{x}, \bm{y}_1, \bm{y}_2, c)
+\end{equation*}}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[center,colback=white]
+The particular names of variables under expectation do not matter as long as they share the same distribution. A simple example demonstrating this point:
+\[
+\mathop{\mathbb{E}}_{x \sim p}[f(x)] + \mathop{\mathbb{E}}_{y \sim p}[f(y)]
+= \mathop{\mathbb{E}}_{x \sim p}[f(x)] + \mathop{\mathbb{E}}_{x \sim p}[f(x)]
+= 2\mathop{\mathbb{E}}_{x\sim p}[f(x)].
+\]
+\end{tcolorbox}
+
+\end{document}
